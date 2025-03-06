@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import { IconRocket, IconStars, IconBulb } from "@tabler/icons-react";
+import { useRouter } from "next/router";
 
 // Animation keyframes
 const fadeIn = keyframes({
@@ -27,6 +28,7 @@ const pulse = keyframes({
 });
 
 const JoinTheJourney: React.FC = () => {
+  const route = useRouter();
   const inspiringPhrases = [
     {
       icon: IconRocket,
@@ -60,7 +62,7 @@ const JoinTheJourney: React.FC = () => {
           <Badge
             variant="gradient"
             gradient={{ from: "indigo", to: "cyan" }}
-            size="xl"
+            size="lg"
             radius="sm"
             px="lg"
             py="xs"
@@ -119,6 +121,7 @@ const JoinTheJourney: React.FC = () => {
               animation: `${pulse} 2s infinite ease-in-out`,
               animationDelay: "2s",
             }}
+            onClick={() => route.push("/requestService")}
           >
             Begin Your Transformation
           </Button>

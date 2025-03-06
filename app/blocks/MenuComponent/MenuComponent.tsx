@@ -38,7 +38,7 @@ const MenuComponent = () => {
               <Menu.Dropdown>
                 <Menu.Item onClick={() => router.push("/discoverMore")}>
                   <Button variant="subtle">
-                    <Group gap={2}>
+                    <Group wrap="nowrap" gap={2}>
                       <IconHome size={12} />
                       <Text size="12">Discover More</Text>
                     </Group>
@@ -46,7 +46,7 @@ const MenuComponent = () => {
                 </Menu.Item>
                 <Menu.Item onClick={() => router.push("/joinTheJourney")}>
                   <Button variant="subtle">
-                    <Group gap={2}>
+                    <Group wrap="nowrap" gap={2}>
                       <IconUserScan size={12} />
                       <Text size="12">Join the Journey</Text>
                     </Group>
@@ -54,7 +54,7 @@ const MenuComponent = () => {
                 </Menu.Item>
                 <Menu.Item onClick={() => router.push("/ourPower")}>
                   <Button variant="subtle">
-                    <Group gap={2}>
+                    <Group wrap="nowrap" gap={2}>
                       <IconSettings size={12} />
                       <Text size="12">Our Power</Text>
                     </Group>
@@ -69,7 +69,7 @@ const MenuComponent = () => {
                 variant="subtle"
                 onClick={() => router.push("/discoverMore")}
               >
-                <Group gap={2}>
+                <Group wrap="nowrap" gap={2}>
                   <IconHome size={12} />
                   <Text size="12">Discover More</Text>
                 </Group>
@@ -78,13 +78,13 @@ const MenuComponent = () => {
                 variant="subtle"
                 onClick={() => router.push("/joinTheJourney")}
               >
-                <Group gap={2}>
+                <Group wrap="nowrap" gap={2}>
                   <IconUserScan size={12} />
                   <Text size="12">Join the Journey</Text>
                 </Group>
               </Button>
               <Button variant="subtle" onClick={() => router.push("/ourPower")}>
-                <Group gap={2}>
+                <Group wrap="nowrap" gap={2}>
                   <IconSettings size={12} />
                   <Text size="12">Our Power</Text>
                 </Group>
@@ -103,7 +103,7 @@ const MenuComponent = () => {
             <Menu.Dropdown>
               <Menu.Item onClick={() => router.push("/signUp")}>
                 <Button variant="subtle">
-                  <Group gap={2}>
+                  <Group wrap="nowrap" gap={2}>
                     <IconUser size={12} />
                     <Text size="12">SignUp</Text>
                   </Group>
@@ -117,11 +117,11 @@ const MenuComponent = () => {
                   </Group>
                 </Button>
               </Menu.Item>
-              <Menu.Item onClick={() => router.push("/submitOrder")}>
+              <Menu.Item onClick={() => router.push("/requestService")}>
                 <Button variant="subtle">
                   <Group gap={2}>
                     <IconMessageCircleQuestion size={12} />
-                    <Text size="12">Submit Order</Text>
+                    <Text size="12">Request Service</Text>
                   </Group>
                 </Button>
               </Menu.Item>
@@ -143,11 +143,11 @@ const MenuComponent = () => {
             </Button>
             <Button
               variant="subtle"
-              onClick={() => router.push("/submitOrder")}
+              onClick={() => router.push("/requestService")}
             >
               <Group gap={2}>
                 <IconMessageCircleQuestion size={12} />
-                <Text size="12">Submit Order</Text>
+                <Text size="12">Request Service</Text>
               </Group>
             </Button>
           </Group>

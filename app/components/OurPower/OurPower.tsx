@@ -82,7 +82,7 @@ const OurPower: React.FC = () => {
   ];
 
   return (
-    <Container size="lg" py={80}>
+    <Stack>
       {/* Hero Section */}
       <Stack align="center" mb={80} gap="xl">
         <Badge variant="filled" size="lg" color="blue" radius="sm">
@@ -277,7 +277,7 @@ const OurPower: React.FC = () => {
           </Grid.Col>
         </Grid>
       </Card>
-    </Container>
+    </Stack>
   );
 };
 

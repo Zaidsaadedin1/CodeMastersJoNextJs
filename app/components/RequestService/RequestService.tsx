@@ -294,8 +294,8 @@ export default function RequestService() {
         <Grid>
           <Grid.Col span={6}>
             <NumberInput
-              label="Budget Estimate (USD)"
-              placeholder="Enter budget"
+              label="Budget Estimate"
+              placeholder="Enter budget (USD)"
               min={100}
               mb="md"
               error={form.errors.budget}
@@ -350,13 +350,11 @@ export default function RequestService() {
         <Checkbox
           label={
             <>
-              I agree to the
               <Anchor target="_blank" size="sm" href="/termsOfService">
-                Terms of Service
+                I agree to the <strong>Terms of Service</strong> and
               </Anchor>
-              and
               <Anchor target="_blank" size="sm" href="/privacyPolicy">
-                Privacy Policy
+                <strong> Privacy Policy </strong>
               </Anchor>
             </>
           }

@@ -242,12 +242,10 @@ export default function SignUp() {
         />
         <Grid>
           <Grid.Col span={6}>
-            <Group>
-              <IconCalendar size={16} />
-              <Text> Select your birth date</Text>
-            </Group>
+            <Text>Birth Date</Text>
             <DatePickerInput
-              placeholder="Select your birth date"
+              wrapperProps={{ mb: "md" }}
+              placeholder="Birth date"
               value={form.values.birthDate}
               onChange={(date) =>
                 form.setFieldValue("birthDate", date as Date | null)
@@ -302,7 +300,16 @@ export default function SignUp() {
         />
 
         <Checkbox
-          label="I agree to the Terms of Service and Privacy Policy"
+          label={
+            <>
+              <Anchor target="_blank" size="sm" href="/termsOfService">
+                I agree to the <strong>Terms of Service</strong> and
+              </Anchor>
+              <Anchor target="_blank" size="sm" href="/privacyPolicy">
+                <strong> Privacy Policy </strong>
+              </Anchor>
+            </>
+          }
           mb="xl"
           error={form.errors.termsAccepted}
           {...form.getInputProps("termsAccepted", { type: "checkbox" })}
