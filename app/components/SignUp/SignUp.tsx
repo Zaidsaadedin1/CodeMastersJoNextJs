@@ -13,14 +13,15 @@ import {
   Divider,
   MultiSelect,
   Textarea,
-  Group,
   Anchor,
   Center,
 } from "@mantine/core";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
-import { IconCalendar, IconUser, IconPhone } from "@tabler/icons-react";
+import { IconUser, IconPhone } from "@tabler/icons-react";
 import { DatePickerInput } from "@mantine/dates";
+import { userController } from "../../controllers/userController";
+import axios from "axios";
 
 // Define the validation schema using Zod
 const schema = z
@@ -125,9 +126,55 @@ export default function SignUp() {
     validateInputOnBlur: true, // Validate on blur (when input loses focus)
   });
 
-  const handleSubmit = form.onSubmit((values: any) => {
-    console.log("Form submitted with values:", values);
-    // Here you would typically send the data to your backend
+  const handleSubmit = form.onSubmit(async (values: any) => {
+    try {
+      console.log("Form values to submit:", {
+        ...values,
+        password: "[REDACTED]",
+      });
+      const formattedValues = {
+        ...values,
+        birthDate:
+          values.birthDate instanceof Date
+            ? values.birthDate.toISOString()
+            : values.birthDate,
+      };
+
+      // Remove confirmPassword as it's not needed in the API
+      const { confirmPassword, ...userData } = values;
+
+      // Use axios to call the API endpoint
+      const response = await axios.post("/api/users", formattedValues, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("User created successfully:", response.data);
+
+      // Add success handling here (e.g., redirect to login page)
+      // router.push('/login');
+    } catch (error: unknown) {
+      console.error("Error creating user:", error);
+      // Handle error (e.g., show error message to user)
+      if (axios.isAxiosError(error) && error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error("Server error:", error.response.data.message);
+        form.setErrors({ email: error.response.data.message });
+      } else if (axios.isAxiosError(error) && error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+        form.setErrors({ email: "No response from server" });
+      } else if (axios.isAxiosError(error)) {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Request error:", error.message);
+        form.setErrors({ email: "Request failed" });
+      } else {
+        console.error("Unexpected error:", error);
+        form.setErrors({ email: "Unexpected error occurred" });
+      }
+    }
   });
 
   // Interest options for MultiSelect

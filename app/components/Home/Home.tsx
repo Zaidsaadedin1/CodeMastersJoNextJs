@@ -15,7 +15,6 @@ import {
   IconRocket,
   IconSchool,
   IconClipboardList,
-  IconUsers,
   IconMessage2Star,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
@@ -61,12 +60,21 @@ const HomePage = () => {
       });
     }
   }, []);
+  useEffect(() => {
+    console.log("Translations Loaded:", t("code_masters"));
+  }, [t]);
 
   return (
     <Stack>
+      <div>
+        <Title order={1}>{t("code_masters")}</Title>
+
+        <Text fw={700}>{t("intelligent_solutions")}</Text>
+        <h4>{t("inspiring_phrases.0")}</h4>
+      </div>
       <audio ref={audioRef} src="/audio/hope.mp3" preload="auto" loop />
 
-      <Title order={1}>Code Masters</Title>
+      <Title order={1}>{t("code_masters")}</Title>
 
       <Box
         style={{

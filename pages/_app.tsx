@@ -4,8 +4,9 @@ import { MantineProvider, Stack } from "@mantine/core";
 import { theme } from "../theme";
 import MenuComponent from "../app/blocks/MenuComponent/MenuComponent";
 import Footer from "../app/blocks/Footer/Footer";
+import { appWithTranslation } from "next-i18next";
 
-export default function App({ Component, pageProps }: any) {
+function App({ Component, pageProps }: any) {
   return (
     <MantineProvider theme={theme}>
       <Head>
@@ -17,7 +18,6 @@ export default function App({ Component, pageProps }: any) {
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
 
-      {/* Apply margin to the entire layout */}
       <Stack mr="10%" ml="10%">
         <MenuComponent />
         <Component {...pageProps} />
@@ -26,3 +26,4 @@ export default function App({ Component, pageProps }: any) {
     </MantineProvider>
   );
 }
+export default appWithTranslation(App);

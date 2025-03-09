@@ -11,6 +11,7 @@ import {
 import { useMediaQuery } from "@mantine/hooks";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 
 const MenuComponent = () => {
   const isMobileOrTablet = useMediaQuery("(max-width: 1200px)");
@@ -26,13 +27,14 @@ const MenuComponent = () => {
         height={50}
         onClick={() => router.push("/")}
       />
+      <LanguageSwitcher />
       <Group wrap="nowrap" justify="space-between">
         <Group wrap="nowrap">
           {isMobileOrTablet ? (
             <Menu shadow="md" width={200}>
               <Menu.Target>
                 <Button size="12" variant="subtle">
-                  Menu
+                  {t("menu")}
                 </Button>
               </Menu.Target>
               <Menu.Dropdown>
