@@ -1,1 +1,25 @@
-{}
+{
+    "company_name": "Code Masters",
+    "company_description": "Delivering innovative IT solutions that transform businesses and drive success in the digital landscape.",
+    "services": "Services",
+    "resources": "Resources",
+    "contact_us": "Contact Us",
+    "address": "Queen Rania Street, Amman, Jordan",
+    "phone": "+962 (78) 273 9761",
+    "email": "contact@codemastersjo.site",
+    "web_development": "Web Development",
+    "mobile_apps": "Mobile Applications",
+    "cloud_solutions": "Cloud Solutions",
+    "ai_integration": "AI Integration",
+    "devops_services": "DevOps Services",
+    "blog": "Blog",
+    "case_studies": "Case Studies",
+    "documentation": "Documentation",
+    "faq": "FAQ",
+    "support": "Support",
+    "rights_reserved": "All rights reserved.",
+    "privacy_policy": "Privacy Policy",
+    "terms_of_service": "Terms of Service",
+    "sitemap": "Sitemap"
+  }
+  

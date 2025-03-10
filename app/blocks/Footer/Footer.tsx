@@ -16,39 +16,26 @@ import {
   IconBrandTwitter,
   IconBrandFacebook,
   IconBrandLinkedin,
-  IconBrandGithub,
+  IconBrandInstagram,
   IconMail,
   IconPhone,
   IconMapPin,
-  IconBrandInstagram,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  const { t } = useTranslation("footer");
+  const { t, i18n } = useTranslation("footer");
+  const isRTL = i18n.language === "ar";
 
   return (
-    <Box mt={30} component="footer" py="xl">
+    <Box mt={30} py="xl" dir={isRTL ? "rtl" : "ltr"}>
       <Grid>
         <Grid.Col span={{ base: 12, md: 4 }}>
           <Stack gap="md">
-            <Title order={3}>Code Masters</Title>
-            <Text size="sm">
-              Delivering innovative IT solutions that transform businesses and
-              drive success in the digital landscape. We combine technical
-              excellence with creative problem-solving.
-            </Text>
+            <Title order={3}>{t("company_name")}</Title>
+            <Text size="sm">{t("company_description")}</Text>
             <Group gap="md">
-              {/* <Anchor
-                href="https://www.facebook.com/codemastersjo"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ActionIcon size="lg" variant="subtle">
-                  <IconBrandTwitter size={18} />
-                </ActionIcon>
-              </Anchor> */}
               <Anchor
                 href="https://www.facebook.com/codemastersjo"
                 target="_blank"
@@ -59,7 +46,7 @@ const Footer = () => {
                 </ActionIcon>
               </Anchor>
               <Anchor
-                href="https://www.linkedin.com/company/codemastersjo/?viewAsMember=true"
+                href="https://www.linkedin.com/company/codemastersjo"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -82,80 +69,68 @@ const Footer = () => {
 
         <Grid.Col span={{ base: 12, sm: 6, md: 2 }}>
           <Stack gap="md">
-            <Title order={4}>Services</Title>
+            <Title order={4}>{t("services")}</Title>
             <List
               spacing="xs"
               size="sm"
               center
               style={{ listStyleType: "none" }}
             >
-              <List.Item>
-                <Anchor underline="never">Web Development</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">Mobile Applications</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">Cloud Solutions</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">AI Integration</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">DevOps Services</Anchor>
-              </List.Item>
+              {[
+                "web_development",
+                "mobile_apps",
+                "cloud_solutions",
+                "ai_integration",
+                "devops_services",
+              ].map((service) => (
+                <List.Item key={service}>
+                  <Anchor underline="never">{t(service)}</Anchor>
+                </List.Item>
+              ))}
             </List>
           </Stack>
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, sm: 6, md: 2 }}>
           <Stack gap="md">
-            <Title order={4}>Resources</Title>
+            <Title order={4}>{t("resources")}</Title>
             <List
               spacing="xs"
               size="sm"
               center
               style={{ listStyleType: "none" }}
             >
-              <List.Item>
-                <Anchor underline="never">Blog</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">Case Studies</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">Documentation</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">FAQ</Anchor>
-              </List.Item>
-              <List.Item>
-                <Anchor underline="never">Support</Anchor>
-              </List.Item>
+              {["blog", "case_studies", "documentation", "faq", "support"].map(
+                (resource) => (
+                  <List.Item key={resource}>
+                    <Anchor underline="never">{t(resource)}</Anchor>
+                  </List.Item>
+                )
+              )}
             </List>
           </Stack>
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, md: 4 }}>
           <Stack gap="sm">
-            <Title order={4}>Contact Us</Title>
+            <Title order={4}>{t("contact_us")}</Title>
             <List spacing="md" size="sm" style={{ listStyleType: "none" }}>
               <List.Item>
                 <Group gap="sm" wrap="nowrap">
                   <IconMapPin size={16} />
-                  <Text>Queen Rania Street, Amman, Jordan</Text>
+                  <Text>{t("address")}</Text>
                 </Group>
               </List.Item>
               <List.Item>
                 <Group gap="sm" wrap="nowrap">
                   <IconPhone size={16} />
-                  <Text>+962 (78) 273 9761</Text>
+                  <Text>{t("phone")}</Text>
                 </Group>
               </List.Item>
               <List.Item>
                 <Group gap="sm" wrap="nowrap">
                   <IconMail size={16} />
-                  <Text>contact@codemastersjo.site</Text>
+                  <Text>{t("email")}</Text>
                 </Group>
               </List.Item>
             </List>
@@ -167,17 +142,17 @@ const Footer = () => {
 
       <Group justify="apart" align="center">
         <Text size="xs">
-          © {currentYear} Code Masters. All rights reserved.
+          © {currentYear} {t("company_name")}. {t("rights_reserved")}
         </Text>
         <Group gap="lg">
           <Anchor size="xs" underline="never" href="/privacyPolicy">
-            Privacy Policy
+            {t("privacy_policy")}
           </Anchor>
           <Anchor size="xs" underline="never" href="/termsOfService">
-            Terms of Service
+            {t("terms_of_service")}
           </Anchor>
           <Anchor size="xs" underline="never" href="/sitemap">
-            Sitemap
+            {t("sitemap")}
           </Anchor>
         </Group>
       </Group>

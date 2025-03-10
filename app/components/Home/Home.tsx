@@ -6,7 +6,6 @@ import {
   Card,
   Box,
   Stack,
-  rgba,
   SimpleGrid,
 } from "@mantine/core";
 import {
@@ -19,28 +18,26 @@ import {
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
 
-const inspiringPhrases = [
-  "Transforming Visions into Digital Reality",
-  "Crafting Tomorrow's Technology Today",
-  "Where Innovation Meets Excellence",
-  "Building Digital Solutions That Matter",
-  "Engineering the Future, One Line of Code at a Time",
-  "Turning Complex Challenges into Elegant Solutions",
-  "Your Technology Partner in a Digital World",
-  "Pushing the Boundaries of What's Possible",
-];
-
 const HomePage = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [fadeState, setFadeState] = useState("in");
-  const { t } = useTranslation("home");
+  const { t, i18n } = useTranslation("home");
 
-  // Animation for phrases
+  const inspiringPhrases = [
+    t("inspiring_phrases.0"),
+    t("inspiring_phrases.1"),
+    t("inspiring_phrases.2"),
+    t("inspiring_phrases.3"),
+    t("inspiring_phrases.4"),
+    t("inspiring_phrases.5"),
+    t("inspiring_phrases.6"),
+    t("inspiring_phrases.7"),
+  ];
+
   useEffect(() => {
     const phraseInterval = setInterval(() => {
       setFadeState("out");
-
       setTimeout(() => {
         setCurrentPhraseIndex((prevIndex) =>
           prevIndex === inspiringPhrases.length - 1 ? 0 : prevIndex + 1
@@ -48,11 +45,9 @@ const HomePage = () => {
         setFadeState("in");
       }, 1000);
     }, 5000);
-
     return () => clearInterval(phraseInterval);
-  }, []);
+  }, [inspiringPhrases]);
 
-  // Play audio on component mount
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.play().catch((error) => {
@@ -60,21 +55,13 @@ const HomePage = () => {
       });
     }
   }, []);
-  useEffect(() => {
-    console.log("Translations Loaded:", t("code_masters"));
-  }, [t]);
 
   return (
-    <Stack>
+    <Stack dir={i18n.language === "ar" ? "rtl" : "ltr"}>
       <div>
         <Title order={1}>{t("code_masters")}</Title>
-
-        <Text fw={700}>{t("intelligent_solutions")}</Text>
-        <h4>{t("inspiring_phrases.0")}</h4>
       </div>
       <audio ref={audioRef} src="/audio/hope.mp3" preload="auto" loop />
-
-      <Title order={1}>{t("code_masters")}</Title>
 
       <Box
         style={{
@@ -86,82 +73,35 @@ const HomePage = () => {
           transition: "opacity 1s ease-in-out",
         }}
       >
-        <Text
-          size="xl"
-          style={{
-            color: rgba("#000", 0.5),
-            fontStyle: "italic",
-            fontSize: "1.5rem",
-          }}
-        >
+        <Text size="xl" style={{ fontStyle: "italic", fontSize: "1.5rem" }}>
           {inspiringPhrases[currentPhraseIndex]}
         </Text>
       </Box>
 
-      <Text size="lg">
-        We are more than just an IT company. We are visionaries,
-        problem-solvers, and innovators dedicated to developing cutting-edge
-        solutions that transform businesses and elevate experiences. Our team of
-        experts combines technical excellence with creative thinking to deliver
-        results that exceed expectations.
-      </Text>
+      <Text size="lg">{t("about_us")}</Text>
 
       <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} mt="xl" spacing="lg">
-        <Card radius={10} shadow="sm" padding="lg">
-          <Group justify="center" mb="md">
-            <IconBrain size={36} />
-          </Group>
-          <Text fw={700}>Intelligent Solutions</Text>
-          <Text size="sm">
-            Harnessing AI and machine learning to solve complex problems
-          </Text>
-        </Card>
-
-        <Card radius={10} shadow="sm" padding="lg">
-          <Group justify="center" mb="md">
-            <IconCode size={36} />
-          </Group>
-          <Text fw={700}>Custom Development</Text>
-          <Text size="sm">Tailored software built with precision and care</Text>
-        </Card>
-
-        <Card radius={10} shadow="sm" padding="lg">
-          <Group justify="center" mb="md">
-            <IconRocket size={36} />
-          </Group>
-          <Text fw={700}>Digital Transformation</Text>
-          <Text size="sm">Guiding your business into the digital future</Text>
-        </Card>
-
-        <Card radius={10} shadow="sm" padding="lg">
-          <Group justify="center" mb="md">
-            <IconMessage2Star size={36} />
-          </Group>
-          <Text fw={700}>Digital Marketing</Text>
-          <Text size="sm">
-            Strategic campaigns that drive growth and boost visibility
-          </Text>
-        </Card>
-
-        <Card radius={10} shadow="sm" padding="lg">
-          <Group justify="center" mb="md">
-            <IconSchool size={36} />
-          </Group>
-          <Text fw={700}>Tech Education</Text>
-          <Text size="sm">
-            Professional training and workshops led by industry experts
-          </Text>
-        </Card>
-
-        <Card radius={10} shadow="sm" padding="lg">
-          <Group justify="center" mb="md">
-            <IconClipboardList size={36} />
-          </Group>
-          <Text fw={700}>Research & Documentation</Text>
-          <Text size="sm">
-            Comprehensive studies and technical documentation services
-          </Text>
-        </Card>
+        {[
+          "intelligent_solutions",
+          "custom_development",
+          "digital_transformation",
+          "digital_marketing",
+          "tech_education",
+          "research_documentation",
+        ].map((key, index) => (
+          <Card key={index} radius={10} shadow="sm" padding="lg">
+            <Group justify="center" mb="md">
+              {index === 0 && <IconBrain size={36} />}
+              {index === 1 && <IconCode size={36} />}
+              {index === 2 && <IconRocket size={36} />}
+              {index === 3 && <IconMessage2Star size={36} />}
+              {index === 4 && <IconSchool size={36} />}
+              {index === 5 && <IconClipboardList size={36} />}
+            </Group>
+            <Text fw={700}>{t(`${key}.title`)}</Text>
+            <Text size="sm">{t(`${key}.description`)}</Text>
+          </Card>
+        ))}
       </SimpleGrid>
     </Stack>
   );

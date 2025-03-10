@@ -30,8 +30,8 @@ const pulse = keyframes({
 
 const JoinTheJourney: React.FC = () => {
   const route = useRouter();
-  const { t } = useTranslation("joinTheJourney");
-
+  const { t, i18n } = useTranslation("joinTheJourney");
+  const isRTL = i18n.language === "ar";
   const inspiringPhrases = [
     {
       icon: IconRocket,
@@ -52,7 +52,7 @@ const JoinTheJourney: React.FC = () => {
 
   return (
     <Stack>
-      <Stack align="center" gap="xl" py={80}>
+      <Stack align="center" gap="xl" py={80} dir={isRTL ? "rtl" : "ltr"}>
         <Box
           component="div"
           style={{
@@ -125,7 +125,7 @@ const JoinTheJourney: React.FC = () => {
         </Box>
       </Stack>
 
-      <Stack mt={100} gap={50}>
+      <Stack mt={100} gap={50} dir={isRTL ? "rtl" : "ltr"}>
         {inspiringPhrases.map((phrase, index) => (
           <Box
             key={phrase.title}

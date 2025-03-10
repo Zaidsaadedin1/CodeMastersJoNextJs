@@ -18,7 +18,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       ...(await serverSideTranslations(locale || i18nConfig.defaultLocale, [
         "joinTheJourney",
-        "common",
+        "menuComponent",
+        "footer",
       ])),
     },
   };
