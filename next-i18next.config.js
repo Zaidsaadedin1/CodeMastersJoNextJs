@@ -1,10 +1,9 @@
 // next-i18next.config.js
 module.exports = {
   i18n: {
-    defaultLocale: "en", // The default language of your application
-    locales: ["en", "ar"], // Add the languages you want to support
+    locales: ["en", "ar"],
+    defaultLocale: "en",
+    localeDetection: false,
   },
-  react: {
-    useSuspense: false, // Disable suspense for i18next if needed
-  },
+  reloadOnPrerender: process.env.NODE_ENV === "development",
 };

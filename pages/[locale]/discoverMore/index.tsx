@@ -1,5 +1,5 @@
+import DiscoverMore from "../../../app/components/DiscoverMore/DiscoverMore";
 import { GetServerSideProps } from "next";
-import RequestService from "../../app/components/RequestService/RequestService";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
@@ -7,4 +7,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default RequestService;
+export default DiscoverMore;

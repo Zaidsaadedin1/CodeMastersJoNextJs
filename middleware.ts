@@ -1,21 +1,50 @@
+// middleware.ts
 import { NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_FILE = /\.(.*)$/;
+const locales = ["en", "ar"];
+const defaultLocale = "en";
 
-export async function middleware(req: NextRequest) {
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Skip static files and API routes
   if (
-    req.nextUrl.pathname.startsWith("/_next") ||
-    req.nextUrl.pathname.includes("/api/") ||
-    PUBLIC_FILE.test(req.nextUrl.pathname)
+    pathname.startsWith("/_next") ||
+    pathname.includes("/api/") ||
+    /\.(.*)$/.test(pathname)
   ) {
     return;
   }
 
-  if (req.nextUrl.locale === "default") {
-    const locale = req.cookies.get("NEXT_LOCALE")?.value || "en";
+  // Check existing path for valid locale
+  const pathLocale = locales.find(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
 
-    return NextResponse.redirect(
-      new URL(`/${locale}${req.nextUrl.pathname}${req.nextUrl.search}`, req.url)
-    );
+  // If valid locale found, set cookie and continue
+  if (pathLocale) {
+    const response = NextResponse.next();
+    response.cookies.set("NEXT_LOCALE", pathLocale);
+    return response;
   }
+
+  // Get preferred locale
+  const preferredLocale =
+    request.cookies.get("NEXT_LOCALE")?.value ||
+    request.headers.get("accept-language")?.split(",")[0]?.split("-")[0] ||
+    defaultLocale;
+
+  const locale = locales.includes(preferredLocale)
+    ? preferredLocale
+    : defaultLocale;
+
+  // Clean existing locale prefixes
+  const cleanPath = pathname
+    .split("/")
+    .filter((segment) => !locales.includes(segment))
+    .join("/");
+
+  // Redirect to localized path
+  request.nextUrl.pathname = `/${locale}${cleanPath}`;
+  return NextResponse.redirect(request.nextUrl);
 }

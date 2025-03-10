@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import Sitemap from "../../app/components/Sitemap/Sitemap";
+import ForgotPassword from "../../../app/components/ForgotPassword/ForgotPassword";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
@@ -7,4 +7,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default Sitemap;
+export default ForgotPassword;

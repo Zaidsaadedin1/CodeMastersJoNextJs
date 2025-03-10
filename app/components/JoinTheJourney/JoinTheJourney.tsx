@@ -14,6 +14,7 @@ import {
 import { keyframes } from "@emotion/react";
 import { IconRocket, IconStars, IconBulb } from "@tabler/icons-react";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 // Animation keyframes
 const fadeIn = keyframes({
@@ -29,6 +30,8 @@ const pulse = keyframes({
 
 const JoinTheJourney: React.FC = () => {
   const route = useRouter();
+  const { t } = useTranslation("home");
+
   const inspiringPhrases = [
     {
       icon: IconRocket,
@@ -67,7 +70,7 @@ const JoinTheJourney: React.FC = () => {
             px="lg"
             py="xs"
           >
-            Transform • Innovate • Excel
+            {t("transform-Innovate-Excel")}
           </Badge>
         </Box>
 
