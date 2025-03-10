@@ -5,9 +5,20 @@ import MenuComponent from "../app/blocks/MenuComponent/MenuComponent";
 import Footer from "../app/blocks/Footer/Footer";
 import "@mantine/core/styles.css";
 import { theme } from "../theme";
-import { useClientTranslation } from "../app/hooks/useClientTranslation";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+
 function App({ Component, pageProps }: any) {
-  const { i18n } = useClientTranslation();
+  const router = useRouter();
+
+  // Handle RTL/LTR direction
+  const dir = router.locale === "ar" ? "rtl" : "ltr";
+
+  // Set document direction and language
+  useEffect(() => {
+    document.documentElement.dir = dir;
+    document.documentElement.lang = router.locale || "en";
+  }, [dir, router.locale]);
 
   return (
     <MantineProvider
@@ -24,7 +35,7 @@ function App({ Component, pageProps }: any) {
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
 
-      <Stack mr="10%" ml="10%" style={{ direction: i18n.dir() }}>
+      <Stack mr="10%" ml="10%" style={{ direction: dir }}>
         <MenuComponent />
         <Component {...pageProps} />
         <Footer />
