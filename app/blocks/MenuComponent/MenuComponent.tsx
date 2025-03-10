@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Group, Text, Paper, Image, Menu } from "@mantine/core";
+import { Button, Group, Text, Image, Menu, Grid } from "@mantine/core";
 import {
   IconHome,
   IconLogin,
@@ -12,22 +12,23 @@ import { useMediaQuery } from "@mantine/hooks";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
+import { useClientTranslation } from "../../hooks/useClientTranslation";
 
 const MenuComponent = () => {
   const isMobileOrTablet = useMediaQuery("(max-width: 1200px)");
-  const { t } = useTranslation("menu");
+  const { t, i18n } = useClientTranslation("menuComponent");
+  const currentLang = i18n.language;
   const router = useRouter();
 
   return (
-    <Group wrap="nowrap" mt={"xs"} justify="space-between" gap={20}>
+    <Grid align="center" columns={3} mt={"xs"} justify="space-between">
       <Image
         src="/images/blackLogo.png"
-        alt="Description"
+        alt="Logo"
         width={50}
         height={50}
         onClick={() => router.push("/")}
       />
-      <LanguageSwitcher />
       <Group wrap="nowrap" justify="space-between">
         <Group wrap="nowrap">
           {isMobileOrTablet ? (
@@ -42,7 +43,7 @@ const MenuComponent = () => {
                   <Button variant="subtle">
                     <Group wrap="nowrap" gap={2}>
                       <IconHome size={12} />
-                      <Text size="12">Discover More</Text>
+                      <Text size="12">{t("discover_more")}</Text>
                     </Group>
                   </Button>
                 </Menu.Item>
@@ -50,7 +51,7 @@ const MenuComponent = () => {
                   <Button variant="subtle">
                     <Group wrap="nowrap" gap={2}>
                       <IconUserScan size={12} />
-                      <Text size="12">Join the Journey</Text>
+                      <Text size="12">{t("join_the_journey")}</Text>
                     </Group>
                   </Button>
                 </Menu.Item>
@@ -58,7 +59,7 @@ const MenuComponent = () => {
                   <Button variant="subtle">
                     <Group wrap="nowrap" gap={2}>
                       <IconSettings size={12} />
-                      <Text size="12">Our Power</Text>
+                      <Text size="12">{t("our_power")}</Text>
                     </Group>
                   </Button>
                 </Menu.Item>
@@ -73,7 +74,7 @@ const MenuComponent = () => {
               >
                 <Group wrap="nowrap" gap={2}>
                   <IconHome size={12} />
-                  <Text size="12">Discover More</Text>
+                  <Text size="12">{t("discover_more")}</Text>
                 </Group>
               </Button>
               <Button
@@ -82,13 +83,13 @@ const MenuComponent = () => {
               >
                 <Group wrap="nowrap" gap={2}>
                   <IconUserScan size={12} />
-                  <Text size="12">Join the Journey</Text>
+                  <Text size="12">{t("join_the_journey")}</Text>
                 </Group>
               </Button>
               <Button variant="subtle" onClick={() => router.push("/ourPower")}>
                 <Group wrap="nowrap" gap={2}>
                   <IconSettings size={12} />
-                  <Text size="12">Our Power</Text>
+                  <Text size="12">{t("our_power")}</Text>
                 </Group>
               </Button>
             </Group>
@@ -99,7 +100,7 @@ const MenuComponent = () => {
           <Menu shadow="md" width={200}>
             <Menu.Target>
               <Button size="12" variant="subtle">
-                Account
+                {t("account")}
               </Button>
             </Menu.Target>
             <Menu.Dropdown>
@@ -107,7 +108,7 @@ const MenuComponent = () => {
                 <Button variant="subtle">
                   <Group wrap="nowrap" gap={2}>
                     <IconUser size={12} />
-                    <Text size="12">SignUp</Text>
+                    <Text size="12">{t("sign_up")}</Text>
                   </Group>
                 </Button>
               </Menu.Item>
@@ -115,7 +116,7 @@ const MenuComponent = () => {
                 <Button variant="subtle">
                   <Group gap={2}>
                     <IconLogin size={12} />
-                    <Text size="12">Login</Text>
+                    <Text size="12">{t("login")}</Text>
                   </Group>
                 </Button>
               </Menu.Item>
@@ -123,7 +124,7 @@ const MenuComponent = () => {
                 <Button variant="subtle">
                   <Group gap={2}>
                     <IconMessageCircleQuestion size={12} />
-                    <Text size="12">Request Service</Text>
+                    <Text size="12">{t("request_service")}</Text>
                   </Group>
                 </Button>
               </Menu.Item>
@@ -134,13 +135,13 @@ const MenuComponent = () => {
             <Button variant="subtle" onClick={() => router.push("/signUp")}>
               <Group gap={2}>
                 <IconUser size={12} />
-                <Text size="12">SignUp</Text>
+                <Text size="12">{t("sign_up")}</Text>
               </Group>
             </Button>
             <Button variant="subtle" onClick={() => router.push("/login")}>
               <Group gap={2}>
                 <IconLogin size={12} />
-                <Text size="12">Login</Text>
+                <Text size="12">{t("login")}</Text>
               </Group>
             </Button>
             <Button
@@ -149,13 +150,15 @@ const MenuComponent = () => {
             >
               <Group gap={2}>
                 <IconMessageCircleQuestion size={12} />
-                <Text size="12">Request Service</Text>
+                <Text size="12">{t("request_service")}</Text>
               </Group>
             </Button>
           </Group>
         )}
       </Group>
-    </Group>
+
+      <LanguageSwitcher />
+    </Grid>
   );
 };
 

@@ -5,9 +5,16 @@ import MenuComponent from "../app/blocks/MenuComponent/MenuComponent";
 import Footer from "../app/blocks/Footer/Footer";
 import "@mantine/core/styles.css";
 import { theme } from "../theme";
+import { useClientTranslation } from "../app/hooks/useClientTranslation";
 function App({ Component, pageProps }: any) {
+  const { i18n } = useClientTranslation();
+
   return (
-    <MantineProvider theme={theme}>
+    <MantineProvider
+      theme={theme}
+      cssVariablesSelector="html"
+      getRootElement={() => document.documentElement}
+    >
       <Head>
         <title>Code Masters</title>
         <meta
@@ -17,7 +24,7 @@ function App({ Component, pageProps }: any) {
         <link rel="shortcut icon" href="/favicon.svg" />
       </Head>
 
-      <Stack mr="10%" ml="10%">
+      <Stack mr="10%" ml="10%" style={{ direction: i18n.dir() }}>
         <MenuComponent />
         <Component {...pageProps} />
         <Footer />

@@ -4,24 +4,28 @@ import { useRouter } from "next/router";
 
 const languages = [
   { code: "en", label: "English" },
-  { code: "ar", label: "Arabic" },
+  { code: "ar", label: "العربية" },
 ];
 
 export default function LanguageSwitcher() {
   const router = useRouter();
-  const { locale, pathname, asPath } = router;
+  const { locale, asPath } = router;
 
   const changeLocale = (newLocale: string) => {
-    router.push(pathname, asPath, { locale: newLocale });
+    if (locale === newLocale) return;
+
+    const pathWithoutLocale = asPath.replace(/^\/(en|ar)/, ""); // Remove current locale
+    const newPath = `/${newLocale}${pathWithoutLocale || "/"}`; // Add new locale
+
+    router.push(newPath);
   };
 
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <Button variant="light">
-          <IconLanguage size={16} />
+        <IconLanguage size={16}>
           {languages.find((lang) => lang.code === locale)?.label || "Language"}
-        </Button>
+        </IconLanguage>
       </Menu.Target>
 
       <Menu.Dropdown>

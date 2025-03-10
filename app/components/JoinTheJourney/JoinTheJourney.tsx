@@ -30,26 +30,23 @@ const pulse = keyframes({
 
 const JoinTheJourney: React.FC = () => {
   const route = useRouter();
-  const { t } = useTranslation("home");
+  const { t } = useTranslation("joinTheJourney");
 
   const inspiringPhrases = [
     {
       icon: IconRocket,
-      title: "Pioneering Digital Excellence",
-      description:
-        "Embark on a transformative journey where innovation meets vision. Together, we'll redefine the boundaries of technological possibility.",
+      title: t("pioneering_digital_excellence"),
+      description: t("pioneering_digital_excellence_desc"),
     },
     {
       icon: IconStars,
-      title: "Crafting Tomorrow's Solutions",
-      description:
-        "Join an ecosystem where creativity flourishes and cutting-edge solutions emerge. Your ideas will shape the digital landscape of the future.",
+      title: t("crafting_tomorrows_solutions"),
+      description: t("crafting_tomorrows_solutions_desc"),
     },
     {
       icon: IconBulb,
-      title: "Illuminating Digital Pathways",
-      description:
-        "Discover the convergence of expertise and innovation. Our collaborative journey unlocks new dimensions of technological advancement.",
+      title: t("illuminating_digital_pathways"),
+      description: t("illuminating_digital_pathways_desc"),
     },
   ];
 
@@ -89,7 +86,7 @@ const JoinTheJourney: React.FC = () => {
               WebkitTextFillColor: "transparent",
             })}
           >
-            Join the Digital Revolution
+            {t("join_the_digital_revolution")}
           </Title>
         </Box>
 
@@ -101,10 +98,7 @@ const JoinTheJourney: React.FC = () => {
           }}
         >
           <Text size="xl" c="dimmed" lh={1.6}>
-            Be part of an extraordinary ecosystem where visionaries, innovators,
-            and technologists converge to shape the future. Your journey with us
-            is more than a partnership—it's a statement of commitment to
-            excellence.
+            {t("digital_revolution_description")}
           </Text>
         </Box>
 
@@ -126,7 +120,7 @@ const JoinTheJourney: React.FC = () => {
             }}
             onClick={() => route.push("/requestService")}
           >
-            Begin Your Transformation
+            {t("begin_transformation")}
           </Button>
         </Box>
       </Stack>
