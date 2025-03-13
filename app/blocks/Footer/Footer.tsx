@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   Grid,
   Group,
   Text,
@@ -13,7 +12,6 @@ import {
   Box,
 } from "@mantine/core";
 import {
-  IconBrandTwitter,
   IconBrandFacebook,
   IconBrandLinkedin,
   IconBrandInstagram,
@@ -22,6 +20,7 @@ import {
   IconMapPin,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -140,21 +139,32 @@ const Footer = () => {
 
       <Divider my="xl" opacity={0.1} />
 
-      <Group justify="apart" align="center">
-        <Text size="xs">
-          © {currentYear} {t("company_name")}. {t("rights_reserved")}
-        </Text>
-        <Group gap="lg">
-          <Anchor size="xs" underline="never" href="/privacyPolicy">
+      <Group gap="lg">
+        <Link
+          href="/privacyPolicy"
+          locale={i18n.language}
+          passHref
+          legacyBehavior
+        >
+          <Anchor size="xs" underline="never">
             {t("privacy_policy")}
           </Anchor>
-          <Anchor size="xs" underline="never" href="/termsOfService">
+        </Link>
+        <Link
+          href="/termsOfService"
+          locale={i18n.language}
+          passHref
+          legacyBehavior
+        >
+          <Anchor size="xs" underline="never">
             {t("terms_of_service")}
           </Anchor>
-          <Anchor size="xs" underline="never" href="/sitemap">
+        </Link>
+        <Link href="/sitemap" locale={i18n.language} passHref legacyBehavior>
+          <Anchor size="xs" underline="never">
             {t("sitemap")}
           </Anchor>
-        </Group>
+        </Link>
       </Group>
     </Box>
   );

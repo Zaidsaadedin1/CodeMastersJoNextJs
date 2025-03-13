@@ -1,194 +1,143 @@
 import React from "react";
-import {
-  Container,
-  Title,
-  Text,
-  Box,
-  Divider,
-  Anchor,
-  Flex,
-  Stack,
-} from "@mantine/core";
+import { Title, Text, Box, Stack } from "@mantine/core";
+import { useTranslation } from "next-i18next";
 
 export default function TermsOfService() {
+  const { t, i18n } = useTranslation("termsOfService");
+  const currentLang = i18n.language;
+  const isRTL = currentLang === "ar";
+
+  const renderContent = (content: string | string[]) => {
+    if (Array.isArray(content)) {
+      return content.map((paragraph, index) => (
+        <Text key={index} mb="md" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+          {paragraph}
+        </Text>
+      ));
+    }
+    return (
+      <Text mb="md" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+        {content}
+      </Text>
+    );
+  };
+
   return (
-    <Container size="md" py="xl">
+    <Stack py="xl" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
       <Title order={1} mb="md">
-        Terms of Service
+        {t("title")}
       </Title>
       <Text size="sm" color="dimmed" mb="xl">
-        Last updated: March 1, 2025
+        {t("lastUpdated")}
       </Text>
 
       <Stack gap="xl">
+        {/* Introduction Section */}
         <Box>
           <Title order={3} mb="md">
-            1. Introduction
+            {t("sections.introduction.title")}
           </Title>
-          <Text mb="md">
-            Welcome to our platform. These Terms of Service ("Terms") govern
-            your access to and use of our website, products, and services. By
-            accessing or using our services, you agree to be bound by these
-            Terms and our Privacy Policy.
-          </Text>
-          <Text mb="md">
-            Please read these Terms carefully before using our services. If you
-            do not agree to these Terms, you must not access or use our
-            services.
-          </Text>
+          {renderContent(
+            t("sections.introduction.content", {
+              returnObjects: true,
+            }) as string[]
+          )}
         </Box>
 
+        {/* Definitions Section */}
         <Box>
           <Title order={3} mb="md">
-            2. Definitions
+            {t("sections.definitions.title")}
           </Title>
-          <Text mb="md">
-            <strong>"Service"</strong> refers to the website, application, and
-            services provided by our company.
-          </Text>
-          <Text mb="md">
-            <strong>"User"</strong> refers to individuals who access or use our
-            Service.
-          </Text>
-          <Text mb="md">
-            <strong>"Content"</strong> refers to text, graphics, images, music,
-            software, audio, video, information or other materials.
-          </Text>
+          <Text mb="md">{t("sections.definitions.content.service")}</Text>
+          <Text mb="md">{t("sections.definitions.content.user")}</Text>
+          <Text mb="md">{t("sections.definitions.content.content")}</Text>
         </Box>
 
+        {/* User Accounts Section */}
         <Box>
           <Title order={3} mb="md">
-            3. User Accounts
+            {t("sections.userAccounts.title")}
           </Title>
-          <Text mb="md">
-            3.1. To access certain features of our Service, you may be required
-            to create an account. You agree to provide accurate, current, and
-            complete information during the registration process.
-          </Text>
-          <Text mb="md">
-            3.2. You are responsible for safeguarding your password and for all
-            activities that occur under your account. You agree to notify us
-            immediately of any unauthorized use of your account.
-          </Text>
-          <Text mb="md">
-            3.3. We reserve the right to suspend or terminate your account if
-            any information provided during registration or thereafter proves to
-            be inaccurate, not current, or incomplete.
-          </Text>
+          {renderContent(
+            t("sections.userAccounts.content", {
+              returnObjects: true,
+            }) as string[]
+          )}
         </Box>
 
+        {/* Ordering Section */}
         <Box>
           <Title order={3} mb="md">
-            4. Ordering and Payment
+            {t("sections.ordering.title")}
           </Title>
-          <Text mb="md">
-            4.1. By placing an order through our Service, you are making an
-            offer to purchase the products or services described in your order.
-          </Text>
-          <Text mb="md">
-            4.2. We reserve the right to refuse or cancel any orders at our sole
-            discretion. If we cancel an order after you have already been
-            charged, we will refund the charged amount.
-          </Text>
-          <Text mb="md">
-            4.3. Payment must be made at the time of ordering. We accept various
-            payment methods as indicated on our Service.
-          </Text>
+          {renderContent(
+            t("sections.ordering.content", { returnObjects: true }) as string[]
+          )}
         </Box>
 
+        {/* Intellectual Property Section */}
         <Box>
           <Title order={3} mb="md">
-            5. Intellectual Property Rights
+            {t("sections.ip.title")}
           </Title>
-          <Text mb="md">
-            5.1. The Service and its original content, features, and
-            functionality are and will remain the exclusive property of our
-            company and its licensors.
-          </Text>
-          <Text mb="md">
-            5.2. Our trademarks and trade dress may not be used in connection
-            with any product or service without the prior written consent of our
-            company.
-          </Text>
+          {renderContent(
+            t("sections.ip.content", { returnObjects: true }) as string[]
+          )}
         </Box>
 
+        {/* User Content Section */}
         <Box>
           <Title order={3} mb="md">
-            6. User Content
+            {t("sections.userContent.title")}
           </Title>
-          <Text mb="md">
-            6.1. Our Service may allow you to post, link, store, share and
-            otherwise make available certain information, text, graphics,
-            videos, or other material. You are responsible for the Content that
-            you post on or through the Service.
-          </Text>
-          <Text mb="md">
-            6.2. By posting Content on or through the Service, you grant us the
-            right to use, modify, publicly perform, publicly display, reproduce,
-            and distribute such Content on and through the Service.
-          </Text>
+          {renderContent(
+            t("sections.userContent.content", {
+              returnObjects: true,
+            }) as string[]
+          )}
         </Box>
 
+        {/* Prohibited Uses Section */}
         <Box>
           <Title order={3} mb="md">
-            7. Prohibited Uses
+            {t("sections.prohibited.title")}
           </Title>
-          <Text mb="md">You agree not to use the Service:</Text>
-          <Text mb="md">
-            7.1. In any way that violates any applicable federal, state, local,
-            or international law or regulation.
-          </Text>
-          <Text mb="md">
-            7.2. To transmit, or procure the sending of, any advertising or
-            promotional material, including any "junk mail," "chain letter,"
-            "spam," or any other similar solicitation.
-          </Text>
-          <Text mb="md">
-            7.3. To impersonate or attempt to impersonate our company, a company
-            employee, another user, or any other person or entity.
-          </Text>
+          {renderContent(
+            t("sections.prohibited.content", {
+              returnObjects: true,
+            }) as string[]
+          )}
         </Box>
 
+        {/* Liability Section */}
         <Box>
           <Title order={3} mb="md">
-            8. Limitation of Liability
+            {t("sections.liability.title")}
           </Title>
-          <Text mb="md">
-            8.1. In no event shall our company, nor its directors, employees,
-            partners, agents, suppliers, or affiliates, be liable for any
-            indirect, incidental, special, consequential or punitive damages,
-            including without limitation, loss of profits, data, use, goodwill,
-            or other intangible losses.
-          </Text>
-          <Text mb="md">
-            8.2. Our liability is limited to the maximum extent permitted by
-            law.
-          </Text>
+          {renderContent(
+            t("sections.liability.content", { returnObjects: true }) as string[]
+          )}
         </Box>
 
+        {/* Changes Section */}
         <Box>
           <Title order={3} mb="md">
-            9. Changes to Terms
+            {t("sections.changes.title")}
           </Title>
-          <Text mb="md">
-            We reserve the right, at our sole discretion, to modify or replace
-            these Terms at any time. If a revision is material, we will provide
-            at least 30 days' notice prior to any new terms taking effect. What
-            constitutes a material change will be determined at our sole
-            discretion.
-          </Text>
+          {renderContent(t("sections.changes.content"))}
         </Box>
 
+        {/* Contact Section */}
         <Box>
           <Title order={3} mb="md">
-            10. Contact Us
+            {t("sections.contact.title")}
           </Title>
           <Text mb="md">
-            If you have any questions about these Terms, please contact us at
-            legal@example.com or through our contact form.
+            {t("sections.contact.content", { email: "legal@example.com" })}
           </Text>
         </Box>
       </Stack>
-    </Container>
+    </Stack>
   );
 }

@@ -7,7 +7,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: i18nConfig.locales.map((locale) => ({
       params: { locale },
     })),
-    fallback: false, // Ensures only predefined locales are generated
+    fallback: false,
   };
 };
 

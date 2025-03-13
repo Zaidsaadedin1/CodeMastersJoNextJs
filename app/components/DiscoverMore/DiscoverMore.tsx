@@ -9,7 +9,6 @@ import {
   Badge,
   Group,
   SimpleGrid,
-  Overlay,
   Stack,
   ThemeIcon,
 } from "@mantine/core";
@@ -21,28 +20,28 @@ import {
   IconTransform,
   IconNetwork,
 } from "@tabler/icons-react";
+import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const DiscoverMore: React.FC = () => {
+  const { t, i18n } = useTranslation("discoverMore");
+  const currentLang = i18n.language;
+  const isRTL = currentLang === "ar";
+
   const keyFeatures = [
     {
       icon: IconRocket,
-      title: "Digital Acceleration",
-      description:
-        "Propel your business forward with cutting-edge technological solutions.",
+      key: "digital_acceleration",
       color: "blue",
     },
     {
       icon: IconBulb,
-      title: "Innovative Strategies",
-      description:
-        "Transform challenges into opportunities through intelligent design.",
+      key: "innovative_strategies",
       color: "green",
     },
     {
       icon: IconShield,
-      title: "Secure Ecosystems",
-      description:
-        "Comprehensive cybersecurity solutions protecting your digital assets.",
+      key: "secure_ecosystems",
       color: "red",
     },
   ];
@@ -50,39 +49,40 @@ const DiscoverMore: React.FC = () => {
   const technologyServices = [
     {
       icon: IconCloudComputing,
-      title: "Cloud Solutions",
-      description:
-        "Scalable and flexible cloud infrastructure tailored to your needs.",
+      key: "cloud",
     },
     {
       icon: IconTransform,
-      title: "Digital Transformation",
-      description:
-        "Seamless integration of advanced technologies into your business model.",
+      key: "transformation",
     },
     {
       icon: IconNetwork,
-      title: "Enterprise Networking",
-      description:
-        "Robust and intelligent network architectures for modern enterprises.",
+      key: "networking",
     },
   ];
 
   return (
-    <Container size="xl" py={50}>
+    <Stack dir={i18n.language === "ar" ? "rtl" : "ltr"} py={50}>
       <Grid align="center" gutter="xl">
         <Grid.Col span={{ base: 12, md: 6 }}>
-          <Stack gap="lg">
+          <Stack dir={isRTL ? "rtl" : "ltr"} gap="lg">
             <Badge variant="light" size="lg" color="blue">
-              Future-Ready Solutions
+              {t("sections.tagline")}
             </Badge>
-            <Title order={1} size={48} fw={900}>
-              Explore Technological Frontiers
+            <Title
+              order={1}
+              size={48}
+              fw={900}
+              style={{ textAlign: isRTL ? "right" : "left" }}
+            >
+              {t("sections.mainTitle")}
             </Title>
-            <Text size="xl" c="dimmed">
-              Uncover innovative solutions that drive digital transformation,
-              empowering businesses to thrive in the ever-evolving technological
-              landscape.
+            <Text
+              size="xl"
+              c="dimmed"
+              style={{ textAlign: isRTL ? "right" : "left" }}
+            >
+              {t("sections.mainDescription")}
             </Text>
             <Group>
               <Button
@@ -90,10 +90,10 @@ const DiscoverMore: React.FC = () => {
                 variant="gradient"
                 gradient={{ from: "blue", to: "cyan", deg: 45 }}
               >
-                Discover Our Solutions
+                {t("buttons.discover")}
               </Button>
               <Button size="lg" variant="outline" color="blue">
-                Schedule Consultation
+                {t("buttons.consultation")}
               </Button>
             </Group>
           </Stack>
@@ -103,7 +103,7 @@ const DiscoverMore: React.FC = () => {
           <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
             {keyFeatures.map((feature) => (
               <Card
-                key={feature.title}
+                key={feature.key}
                 shadow="sm"
                 padding="lg"
                 radius="md"
@@ -118,10 +118,10 @@ const DiscoverMore: React.FC = () => {
                   <feature.icon size={28} stroke={1.5} />
                 </ThemeIcon>
                 <Text fz="lg" fw={700} mt="md">
-                  {feature.title}
+                  {t(`features.${feature.key}.title`)}
                 </Text>
                 <Text fz="sm" c="dimmed" mt="xs">
-                  {feature.description}
+                  {t(`features.${feature.key}.description`)}
                 </Text>
               </Card>
             ))}
@@ -130,13 +130,17 @@ const DiscoverMore: React.FC = () => {
       </Grid>
 
       <Container size="lg" mt={80}>
-        <Title order={2} mb="xl">
-          Our Technology Services
+        <Title
+          order={2}
+          mb="xl"
+          style={{ textAlign: isRTL ? "right" : "left" }}
+        >
+          {t("sections.servicesTitle")}
         </Title>
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
           {technologyServices.map((service) => (
             <Card
-              key={service.title}
+              key={service.key}
               shadow="sm"
               padding="lg"
               radius="md"
@@ -152,19 +156,19 @@ const DiscoverMore: React.FC = () => {
                 <service.icon size={32} stroke={1.5} />
               </ThemeIcon>
               <Text fz="xl" fw={700} mb="md">
-                {service.title}
+                {t(`services.${service.key}.title`)}
               </Text>
               <Text fz="md" c="dimmed">
-                {service.description}
+                {t(`services.${service.key}.description`)}
               </Text>
               <Button variant="light" color="blue" mt="md">
-                Learn More
+                {t("buttons.learnMore")}
               </Button>
             </Card>
           ))}
         </SimpleGrid>
       </Container>
-    </Container>
+    </Stack>
   );
 };
 

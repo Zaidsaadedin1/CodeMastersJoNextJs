@@ -19,7 +19,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale || i18nConfig.defaultLocale, [
-        "sitemap",
+        "siteMap",
         "menuComponent",
         "footer",
       ])),
