@@ -20,73 +20,90 @@ import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { IconUser, IconPhone } from "@tabler/icons-react";
 import { DatePickerInput } from "@mantine/dates";
-import { userController } from "../../controllers/userController";
 import axios from "axios";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { keyframes } from "@emotion/react";
 
-// Define the validation schema using Zod
-const schema = z
-  .object({
-    username: z
-      .string()
-      .min(3, { message: "Username must be at least 3 characters" })
-      .max(20, { message: "Username cannot exceed 20 characters" })
-      .regex(/^[a-zA-Z0-9_]+$/, {
-        message: "Username can only contain letters, numbers, and underscores",
-      }),
-    email: z
-      .string()
-      .min(1, { message: "Email is required" })
-      .email({ message: "Invalid email address" }),
-    password: z
-      .string()
-      .min(1, { message: "Password is required" })
-      .min(8, { message: "Password must be at least 8 characters" })
-      .regex(/[A-Z]/, {
-        message: "Password must include at least one uppercase letter",
-      })
-      .regex(/[0-9]/, { message: "Password must include at least one number" }),
-    confirmPassword: z
-      .string()
-      .min(1, { message: "Confirm password is required" }),
-    firstName: z.string().min(1, { message: "First name is required" }),
-    lastName: z.string().min(1, { message: "Last name is required" }),
-    phoneNumber: z
-      .string()
-      .min(1, { message: "Phone number is required" })
-      .regex(/^\+?[0-9]{10,15}$/, {
-        message: "Please enter a valid phone number (10-15 digits)",
-      }),
-    birthDate: z
-      .date({
-        required_error: "Birth date is required",
-        invalid_type_error: "Birth date is required",
-      })
-      .refine(
-        (date) => {
-          const today = new Date();
-          const age = today.getFullYear() - date.getFullYear();
-          return age >= 13;
-        },
-        { message: "You must be at least 13 years old to sign up" }
-      ),
-    occupation: z.string().optional(),
-    bio: z
-      .string()
-      .max(300, { message: "Bio cannot exceed 300 characters" })
-      .optional(),
-    interests: z.array(z.string()).optional(),
-    location: z.string().optional(),
-    referralSource: z.string().optional(),
-    termsAccepted: z.boolean().refine((value) => value === true, {
-      message: "You must accept the terms and conditions",
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+// Animation keyframes
+const fadeIn = keyframes({
+  from: { opacity: 0, transform: "translateY(20px)" },
+  to: { opacity: 1, transform: "translateY(0)" },
+});
 
-export default function SignUp() {
+const SignUp = () => {
+  const router = useRouter();
+  const { t, i18n } = useTranslation("signUp");
+  const currentLang = i18n.language;
+  const isRTL = currentLang === "ar";
+
+  // Define the validation schema using Zod
+  const schema = z
+    .object({
+      username: z
+        .string()
+        .min(3, { message: t("validation.username_min") })
+        .max(20, { message: t("validation.username_max") })
+        .regex(/^[a-zA-Z0-9_]+$/, {
+          message: t("validation.username_regex"),
+        }),
+      email: z
+        .string()
+        .min(1, { message: t("validation.email_required") })
+        .email({ message: t("validation.email_invalid") }),
+      password: z
+        .string()
+        .min(1, { message: t("validation.password_required") })
+        .min(8, { message: t("validation.password_min") })
+        .regex(/[A-Z]/, {
+          message: t("validation.password_uppercase"),
+        })
+        .regex(/[0-9]/, { message: t("validation.password_number") }),
+      confirmPassword: z
+        .string()
+        .min(1, { message: t("validation.confirm_password_required") }),
+      firstName: z
+        .string()
+        .min(1, { message: t("validation.first_name_required") }),
+      lastName: z
+        .string()
+        .min(1, { message: t("validation.last_name_required") }),
+      phoneNumber: z
+        .string()
+        .min(1, { message: t("validation.phone_required") })
+        .regex(/^\+?[0-9]{10,15}$/, {
+          message: t("validation.phone_invalid"),
+        }),
+      birthDate: z
+        .date({
+          required_error: t("validation.birth_date_required"),
+          invalid_type_error: t("validation.birth_date_required"),
+        })
+        .refine(
+          (date) => {
+            const today = new Date();
+            const age = today.getFullYear() - date.getFullYear();
+            return age >= 13;
+          },
+          { message: t("validation.age_minimum") }
+        ),
+      occupation: z.string().optional(),
+      bio: z
+        .string()
+        .max(300, { message: t("validation.bio_max") })
+        .optional(),
+      interests: z.array(z.string()).optional(),
+      location: z.string().optional(),
+      referralSource: z.string().optional(),
+      termsAccepted: z.boolean().refine((value) => value === true, {
+        message: t("validation.terms_required"),
+      }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("validation.passwords_match"),
+      path: ["confirmPassword"],
+    });
+
   // Initialize form with validation
   const form = useForm({
     initialValues: {
@@ -126,25 +143,25 @@ export default function SignUp() {
     validateInputOnBlur: true, // Validate on blur (when input loses focus)
   });
 
-  const handleSubmit = form.onSubmit(async (values: any) => {
+  const handleSubmit = form.onSubmit(async (values) => {
     try {
       console.log("Form values to submit:", {
         ...values,
         password: "[REDACTED]",
       });
-      const formattedValues = {
-        ...values,
-        birthDate:
-          values.birthDate instanceof Date
-            ? values.birthDate.toISOString()
-            : values.birthDate,
-      };
+      // const formattedValues = {
+      //   ...values,
+      //   birthDate:
+      //     values.birthDate instanceof Date
+      //       ? values.birthDate.toISOString()
+      //       : values.birthDate,
+      // };
 
       // Remove confirmPassword as it's not needed in the API
       const { confirmPassword, ...userData } = values;
 
       // Use axios to call the API endpoint
-      const response = await axios.post("/api/users", formattedValues, {
+      const response = await axios.post("/api/users", userData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -152,9 +169,9 @@ export default function SignUp() {
 
       console.log("User created successfully:", response.data);
 
-      // Add success handling here (e.g., redirect to login page)
-      // router.push('/login');
-    } catch (error: unknown) {
+      // Redirect to login page with the current locale
+      router.push("/login", undefined, { locale: currentLang });
+    } catch (error) {
       console.error("Error creating user:", error);
       // Handle error (e.g., show error message to user)
       if (axios.isAxiosError(error) && error.response) {
@@ -165,57 +182,86 @@ export default function SignUp() {
       } else if (axios.isAxiosError(error) && error.request) {
         // The request was made but no response was received
         console.error("No response received:", error.request);
-        form.setErrors({ email: "No response from server" });
+        form.setErrors({ email: t("errors.no_response") });
       } else if (axios.isAxiosError(error)) {
         // Something happened in setting up the request that triggered an Error
         console.error("Request error:", error.message);
-        form.setErrors({ email: "Request failed" });
+        form.setErrors({ email: t("errors.request_failed") });
       } else {
         console.error("Unexpected error:", error);
-        form.setErrors({ email: "Unexpected error occurred" });
+        form.setErrors({ email: t("errors.unexpected") });
       }
     }
   });
 
   // Interest options for MultiSelect
   const interestOptions = [
-    { value: "technology", label: "Technology" },
-    { value: "science", label: "Science" },
-    { value: "art", label: "Art & Design" },
-    { value: "sports", label: "Sports & Fitness" },
-    { value: "music", label: "Music" },
-    { value: "cooking", label: "Cooking" },
-    { value: "travel", label: "Travel" },
-    { value: "books", label: "Books & Literature" },
-    { value: "finance", label: "Finance & Investment" },
-    { value: "gaming", label: "Gaming" },
+    { value: "technology", label: t("interests.technology") },
+    { value: "science", label: t("interests.science") },
+    { value: "art", label: t("interests.art") },
+    { value: "sports", label: t("interests.sports") },
+    { value: "music", label: t("interests.music") },
+    { value: "cooking", label: t("interests.cooking") },
+    { value: "travel", label: t("interests.travel") },
+    { value: "books", label: t("interests.books") },
+    { value: "finance", label: t("interests.finance") },
+    { value: "gaming", label: t("interests.gaming") },
   ];
 
   // Referral source options
   const referralOptions = [
-    { value: "search", label: "Search Engine" },
-    { value: "social", label: "Social Media" },
-    { value: "friend", label: "Friend Referral" },
-    { value: "ad", label: "Advertisement" },
-    { value: "blog", label: "Blog or Article" },
-    { value: "other", label: "Other" },
+    { value: "search", label: t("referral.search") },
+    { value: "social", label: t("referral.social") },
+    { value: "friend", label: t("referral.friend") },
+    { value: "ad", label: t("referral.ad") },
+    { value: "blog", label: t("referral.blog") },
+    { value: "other", label: t("referral.other") },
   ];
 
   return (
-    <Container size="md" py="xl">
-      <Title order={2} mb="md">
-        Create Your Account
-      </Title>
-      <Text size="sm" color="dimmed" mb="xl">
-        Join our innovative network and unlock personalized experiences tailored
-        to your interests
-      </Text>
-      <Box component="form" onSubmit={handleSubmit}>
-        <Divider label="Account Information" labelPosition="center" mb="md" />
+    <Container size="md" py="xl" dir={isRTL ? "rtl" : "ltr"}>
+      <Box
+        component="div"
+        style={{
+          animation: `${fadeIn} 0.8s ease-out`,
+        }}
+      >
+        <Title
+          order={2}
+          mb="md"
+          style={(theme) => ({
+            background: `linear-gradient(45deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          })}
+        >
+          {t("title")}
+        </Title>
+      </Box>
+
+      <Box
+        component="div"
+        style={{
+          animation: `${fadeIn} 1s ease-out`,
+        }}
+      >
+        <Text size="sm" color="dimmed" mb="xl">
+          {t("subtitle")}
+        </Text>
+      </Box>
+
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        style={{
+          animation: `${fadeIn} 1.2s ease-out`,
+        }}
+      >
+        <Divider label={t("sections.account")} labelPosition="center" mb="md" />
 
         <TextInput
-          label="Username"
-          placeholder="Choose a unique username"
+          label={t("fields.username")}
+          placeholder={t("placeholders.username")}
           leftSection={<IconUser size={16} />}
           mb="md"
           error={form.errors.username}
@@ -225,8 +271,8 @@ export default function SignUp() {
         <Grid>
           <Grid.Col span={6}>
             <TextInput
-              label="First Name"
-              placeholder="Your first name"
+              label={t("fields.firstName")}
+              placeholder={t("placeholders.firstName")}
               mb="md"
               error={form.errors.firstName}
               {...form.getInputProps("firstName")}
@@ -234,8 +280,8 @@ export default function SignUp() {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
-              label="Last Name"
-              placeholder="Your last name"
+              label={t("fields.lastName")}
+              placeholder={t("placeholders.lastName")}
               mb="md"
               error={form.errors.lastName}
               {...form.getInputProps("lastName")}
@@ -244,16 +290,16 @@ export default function SignUp() {
         </Grid>
 
         <TextInput
-          label="Email"
-          placeholder="your@email.com"
+          label={t("fields.email")}
+          placeholder={t("placeholders.email")}
           mb="md"
           error={form.errors.email}
           {...form.getInputProps("email")}
         />
 
         <TextInput
-          label="Phone Number"
-          placeholder="+1234567890"
+          label={t("fields.phoneNumber")}
+          placeholder={t("placeholders.phoneNumber")}
           leftSection={<IconPhone size={16} />}
           mb="md"
           error={form.errors.phoneNumber}
@@ -263,8 +309,8 @@ export default function SignUp() {
         <Grid>
           <Grid.Col span={6}>
             <PasswordInput
-              label="Password"
-              placeholder="Create a strong password"
+              label={t("fields.password")}
+              placeholder={t("placeholders.password")}
               mb="md"
               error={form.errors.password}
               {...form.getInputProps("password")}
@@ -272,8 +318,8 @@ export default function SignUp() {
           </Grid.Col>
           <Grid.Col span={6}>
             <PasswordInput
-              label="Confirm Password"
-              placeholder="Confirm your password"
+              label={t("fields.confirmPassword")}
+              placeholder={t("placeholders.confirmPassword")}
               mb="md"
               error={form.errors.confirmPassword}
               {...form.getInputProps("confirmPassword")}
@@ -282,28 +328,28 @@ export default function SignUp() {
         </Grid>
 
         <Divider
-          label="Personal Details"
+          label={t("sections.personal")}
           labelPosition="center"
           mt="xl"
           mb="md"
         />
         <Grid>
           <Grid.Col span={6}>
-            <Text>Birth Date</Text>
+            <Text>{t("fields.birthDate")}</Text>
             <DatePickerInput
               wrapperProps={{ mb: "md" }}
-              placeholder="Birth date"
+              placeholder={t("placeholders.birthDate")}
               value={form.values.birthDate}
-              onChange={(date) =>
-                form.setFieldValue("birthDate", date as Date | null)
+              onChange={(date: Date | null) =>
+                form.setFieldValue("birthDate", date)
               }
               error={form.errors.birthDate}
             />
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
-              label="Location"
-              placeholder="City, Country"
+              label={t("fields.location")}
+              placeholder={t("placeholders.location")}
               mb="md"
               error={form.errors.location}
               {...form.getInputProps("location")}
@@ -312,16 +358,16 @@ export default function SignUp() {
         </Grid>
 
         <TextInput
-          label="Occupation"
-          placeholder="What do you do?"
+          label={t("fields.occupation")}
+          placeholder={t("placeholders.occupation")}
           mb="md"
           error={form.errors.occupation}
           {...form.getInputProps("occupation")}
         />
 
         <Textarea
-          label="Bio"
-          placeholder="Tell us a bit about yourself"
+          label={t("fields.bio")}
+          placeholder={t("placeholders.bio")}
           minRows={3}
           mb="md"
           error={form.errors.bio}
@@ -329,8 +375,9 @@ export default function SignUp() {
         />
 
         <MultiSelect
-          label="Interests"
-          placeholder="Select your interests"
+          dir={isRTL ? "rtl" : "ltr"}
+          label={t("fields.interests")}
+          placeholder={t("placeholders.interests")}
           data={interestOptions}
           mb="md"
           error={form.errors.interests}
@@ -338,8 +385,9 @@ export default function SignUp() {
         />
 
         <Select
-          label="How did you hear about us?"
-          placeholder="Select an option"
+          dir={isRTL ? "rtl" : "ltr"}
+          label={t("fields.referralSource")}
+          placeholder={t("placeholders.referralSource")}
           data={referralOptions}
           mb="xl"
           error={form.errors.referralSource}
@@ -349,11 +397,20 @@ export default function SignUp() {
         <Checkbox
           label={
             <>
-              <Anchor target="_blank" size="sm" href="/termsOfService">
-                I agree to the <strong>Terms of Service</strong> and
+              {t("terms.agree")}{" "}
+              <Anchor
+                target="_blank"
+                size="sm"
+                href={`/${currentLang}/termsOfService`}
+              >
+                <strong>{t("terms.termsOfService")}</strong>
               </Anchor>
-              <Anchor target="_blank" size="sm" href="/privacyPolicy">
-                <strong> Privacy Policy </strong>
+              <Anchor
+                target="_blank"
+                size="sm"
+                href={`/${currentLang}/privacyPolicy`}
+              >
+                <strong>{t("terms.privacyPolicy")}</strong>
               </Anchor>
             </>
           }
@@ -367,16 +424,35 @@ export default function SignUp() {
           fullWidth
           size="md"
           mb="xl"
-          disabled={!form.isValid}
+          gradient={{ from: "blue", to: "cyan" }}
+          variant="gradient"
+          style={{
+            animation: `${fadeIn} 1.4s ease-out`,
+          }}
+          disabled={!form.isValid()}
         >
-          Create Account
+          {t("buttons.create")}
         </Button>
       </Box>
       <Center>
-        <Anchor size="xs" ta="center" mt="md" href="/login">
-          Already have an account? Log in
+        <Anchor
+          size="xs"
+          ta="center"
+          mt="md"
+          href="/login"
+          onClick={(e) => {
+            e.preventDefault();
+            router.push("/login", undefined, { locale: currentLang });
+          }}
+          style={{
+            animation: `${fadeIn} 1.6s ease-out`,
+          }}
+        >
+          {t("login.text")}
         </Anchor>
       </Center>
     </Container>
   );
-}
+};
+
+export default SignUp;

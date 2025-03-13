@@ -13,97 +13,131 @@ import {
 import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { IconMail, IconAlertCircle, IconCheck } from "@tabler/icons-react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { keyframes } from "@emotion/react";
 
-// Define the validation schema using Zod
-const schema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Invalid email address" }),
+const fadeIn = keyframes({
+  from: { opacity: 0, transform: "translateY(20px)" },
+  to: { opacity: 1, transform: "translateY(0)" },
 });
 
 export default function ForgotPassword() {
   const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
+  const { t, i18n } = useTranslation("forgotPassword");
+  const currentLang = i18n.language;
+  const isRTL = currentLang === "ar";
 
-  // Initialize form with validation
+  const schema = z.object({
+    email: z
+      .string()
+      .min(1, { message: t("validation.email_required") })
+      .email({ message: t("validation.email_invalid") }),
+  });
+
   const form = useForm({
-    initialValues: {
-      email: "",
-    },
-
-    // Use Zod for validation
+    initialValues: { email: "" },
     validate: (values) => {
       try {
         schema.parse(values);
         return {};
       } catch (error: any) {
         const formattedErrors: Record<string, string> = {};
-
-        if (error.errors) {
-          error.errors.forEach((err: any) => {
-            formattedErrors[err.path[0]] = err.message;
-          });
-        }
-
+        error.errors?.forEach((err: any) => {
+          formattedErrors[err.path[0]] = err.message;
+        });
         return formattedErrors;
       }
     },
     validateInputOnBlur: true,
   });
 
-  const handleSubmit = form.onSubmit((values: any) => {
-    console.log("Forgot password form submitted with email:", values.email);
-    // Here you would typically send a password reset link
+  const handleSubmit = form.onSubmit(() => {
     setSubmitted(true);
   });
 
   return (
-    <Container size="sm" py="xl">
-      <Title order={2} mb="md">
-        Forgot Your Password
+    <Container size="sm" py="xl" dir={isRTL ? "rtl" : "ltr"}>
+      <Title
+        order={2}
+        mb="md"
+        style={{
+          animation: `${fadeIn} 0.8s ease-out`,
+          textAlign: isRTL ? "right" : "left",
+        }}
+      >
+        {t("title")}
       </Title>
 
-      <Text size="sm" color="dimmed" mb="xl">
-        Enter your email address below and we'll send you instructions to reset
-        your password.
+      <Text
+        size="sm"
+        color="dimmed"
+        mb="xl"
+        style={{
+          animation: `${fadeIn} 1s ease-out`,
+          textAlign: isRTL ? "right" : "left",
+        }}
+      >
+        {t("subtitle")}
       </Text>
 
       {submitted ? (
         <Alert
           icon={<IconCheck size={16} />}
-          title="Reset Link Sent!"
+          title={t("alerts.success_title")}
           color="green"
           mb="xl"
+          dir={isRTL ? "rtl" : "ltr"}
         >
-          We've sent password reset instructions to your email address. Please
-          check your inbox.
+          {t("alerts.success_description")}
         </Alert>
       ) : (
-        <Box component="form" onSubmit={handleSubmit}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          style={{ animation: `${fadeIn} 1.2s ease-out` }}
+        >
           <TextInput
-            label="Email"
-            placeholder="Enter your registered email"
+            label={t("fields.email")}
+            placeholder={t("placeholders.email")}
             leftSection={<IconMail size={16} />}
             mb="md"
             error={form.errors.email}
             {...form.getInputProps("email")}
           />
 
-          <Button type="submit" fullWidth size="md" mb="lg">
-            Send Reset Link
+          <Button
+            type="submit"
+            fullWidth
+            size="md"
+            mb="lg"
+            style={{ animation: `${fadeIn} 1.4s ease-out` }}
+          >
+            {t("buttons.send_reset")}
           </Button>
 
-          <Alert icon={<IconAlertCircle size={16} />} title="Note" color="blue">
-            For security reasons, we will only send a reset link if the email
-            address is registered in our system.
+          <Alert
+            icon={<IconAlertCircle size={16} />}
+            title={t("alerts.note_title")}
+            color="blue"
+            dir={isRTL ? "rtl" : "ltr"}
+          >
+            {t("alerts.note_description")}
           </Alert>
         </Box>
       )}
 
-      <Text size="xs" color="dimmed" ta="center" mt="xl">
-        Remember your password?{" "}
-        <Anchor component="a" size="xs" href="/login">
-          Back to login
+      <Text
+        size="xs"
+        color="dimmed"
+        ta="center"
+        mt="xl"
+        style={{ animation: `${fadeIn} 1.6s ease-out` }}
+      >
+        {t("links.remember_password")}{" "}
+        <Anchor component="a" size="xs" href={`/${currentLang}/login`} ml="xs">
+          {t("links.back_to_login")}
         </Anchor>
       </Text>
     </Container>

@@ -24,43 +24,60 @@ import {
   IconPhone,
   IconDeviceLaptop,
 } from "@tabler/icons-react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { keyframes } from "@emotion/react";
 
-// Define the validation schema using Zod
-const schema = z.object({
-  firstName: z.string().min(1, { message: "First name is required" }),
-  lastName: z.string().min(1, { message: "Last name is required" }),
-  email: z
-    .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Invalid email address" }),
-  phone: z
-    .string()
-    .min(1, { message: "Phone number is required" })
-    .regex(/^\+?[0-9]{10,15}$/, {
-      message: "Please enter a valid phone number",
-    }),
-  companyName: z.string().optional(),
-  projectType: z.string().min(1, { message: "Project type is required" }),
-  serviceType: z.string().min(1, { message: "Service type is required" }),
-  budget: z
-    .number({
-      required_error: "Budget estimate is required",
-      invalid_type_error: "Budget must be a number",
-    })
-    .min(1, { message: "Budget must be greater than 0" }),
-  timeline: z.string().min(1, { message: "Timeline is required" }),
-  projectDescription: z
-    .string()
-    .min(10, { message: "Description must be at least 10 characters" })
-    .max(1000, { message: "Description cannot exceed 1000 characters" }),
-  additionalRequirements: z.string().optional(),
-  termsAccepted: z.boolean().refine((value) => value === true, {
-    message: "You must accept the terms and conditions",
-  }),
+const fadeIn = keyframes({
+  from: { opacity: 0, transform: "translateY(20px)" },
+  to: { opacity: 1, transform: "translateY(0)" },
 });
 
 export default function RequestService() {
-  // Initialize form with validation
+  const router = useRouter();
+  const { t, i18n } = useTranslation("requestService");
+  const currentLang = i18n.language;
+  const isRTL = currentLang === "ar";
+
+  const schema = z.object({
+    firstName: z
+      .string()
+      .min(1, { message: t("validation.firstName_required") }),
+    lastName: z.string().min(1, { message: t("validation.lastName_required") }),
+    email: z
+      .string()
+      .min(1, { message: t("validation.email_required") })
+      .email({ message: t("validation.email_invalid") }),
+    phone: z
+      .string()
+      .min(1, { message: t("validation.phone_required") })
+      .regex(/^\+?[0-9]{10,15}$/, {
+        message: t("validation.phone_invalid"),
+      }),
+    companyName: z.string().optional(),
+    projectType: z
+      .string()
+      .min(1, { message: t("validation.projectType_required") }),
+    serviceType: z
+      .string()
+      .min(1, { message: t("validation.serviceType_required") }),
+    budget: z
+      .number({
+        required_error: t("validation.budget_required"),
+        invalid_type_error: t("validation.budget_number"),
+      })
+      .min(1, { message: t("validation.budget_min") }),
+    timeline: z.string().min(1, { message: t("validation.timeline_required") }),
+    projectDescription: z
+      .string()
+      .min(10, { message: t("validation.projectDescription_min") })
+      .max(1000, { message: t("validation.projectDescription_max") }),
+    additionalRequirements: z.string().optional(),
+    termsAccepted: z.boolean().refine((value) => value === true, {
+      message: t("validation.terms_required"),
+    }),
+  });
+
   const form = useForm({
     initialValues: {
       firstName: "",
@@ -77,21 +94,15 @@ export default function RequestService() {
       termsAccepted: false,
       attachments: null as File | null,
     },
-
-    // Use Zod for validation
     validate: (values) => {
       try {
         schema.parse(values);
         return {};
       } catch (error: any) {
         const formattedErrors: Record<string, string> = {};
-
-        if (error.errors) {
-          error.errors.forEach((err: any) => {
-            formattedErrors[err.path[0]] = err.message;
-          });
-        }
-
+        error.errors?.forEach((err: any) => {
+          formattedErrors[err.path[0]] = err.message;
+        });
         return formattedErrors;
       }
     },
@@ -100,117 +111,71 @@ export default function RequestService() {
 
   const handleSubmit = form.onSubmit((values) => {
     console.log("Service request submitted with values:", values);
-    // Here you would typically send the request to your backend
   });
 
-  // Project type options
-  const projectTypeOptions = [
-    { value: "mobileApp", label: "Mobile Application" },
-    { value: "website", label: "Website Development" },
-    { value: "gameApp", label: "Game Development" },
-    { value: "desktopApp", label: "Desktop Application" },
-    { value: "ecommerce", label: "E-commerce Solution" },
-    { value: "ai", label: "AI/Machine Learning" },
-    { value: "cloudSolution", label: "Cloud Solution" },
-    { value: "other", label: "Other IT Service" },
-  ];
-
-  // Service type options - these will change based on project type
-  const getServiceTypeOptions = (projectType: string) => {
-    switch (projectType) {
-      case "mobileApp":
-        return [
-          { value: "android", label: "Android App" },
-          { value: "ios", label: "iOS App" },
-          { value: "crossPlatform", label: "Cross-platform App" },
-          { value: "pwa", label: "Progressive Web App" },
-        ];
-      case "website":
-        return [
-          { value: "corporateWebsite", label: "Corporate Website" },
-          { value: "landingPage", label: "Landing Page" },
-          { value: "webApplication", label: "Web Application" },
-          { value: "cms", label: "CMS-based Website" },
-        ];
-      case "gameApp":
-        return [
-          { value: "mobileGame", label: "Mobile Game" },
-          { value: "pcGame", label: "PC Game" },
-          { value: "webGame", label: "Web-based Game" },
-          { value: "vrGame", label: "VR/AR Game" },
-        ];
-      case "desktopApp":
-        return [
-          { value: "windows", label: "Windows Application" },
-          { value: "mac", label: "macOS Application" },
-          { value: "linux", label: "Linux Application" },
-          { value: "crossDesktop", label: "Cross-platform Desktop" },
-        ];
-      case "ecommerce":
-        return [
-          { value: "shopify", label: "Shopify Store" },
-          { value: "woocommerce", label: "WooCommerce" },
-          { value: "customEcommerce", label: "Custom E-commerce" },
-          { value: "marketplaceApp", label: "Marketplace Platform" },
-        ];
-      case "ai":
-        return [
-          { value: "chatbot", label: "Chatbot/Virtual Assistant" },
-          { value: "dataAnalysis", label: "Data Analysis Solution" },
-          { value: "machineLearning", label: "Machine Learning Model" },
-          { value: "computerVision", label: "Computer Vision" },
-        ];
-      case "cloudSolution":
-        return [
-          { value: "aws", label: "AWS Implementation" },
-          { value: "azure", label: "Microsoft Azure" },
-          { value: "gcp", label: "Google Cloud Platform" },
-          { value: "privateCloud", label: "Private Cloud Solution" },
-        ];
-      default:
-        return [
-          { value: "consulting", label: "IT Consulting" },
-          { value: "maintenance", label: "Maintenance & Support" },
-          { value: "security", label: "Cybersecurity Services" },
-          { value: "custom", label: "Custom Development" },
-        ];
-    }
+  const getProjectTypeOptions = () => {
+    return Object.entries(t("projectTypes", { returnObjects: true })).map(
+      ([value, label]) => ({ value, label })
+    );
   };
 
-  // Timeline options
-  const timelineOptions = [
-    { value: "urgent", label: "Urgent (< 1 month)" },
-    { value: "short", label: "Short-term (1-3 months)" },
-    { value: "medium", label: "Medium-term (3-6 months)" },
-    { value: "long", label: "Long-term (6+ months)" },
-    { value: "flexible", label: "Flexible" },
-  ];
+  const getServiceTypeOptions = (projectType: string) => {
+    const serviceTypes =
+      t(`serviceTypes.${projectType}`, { returnObjects: true }) ||
+      t("serviceTypes.default", { returnObjects: true });
 
-  // Handle project type change to update service type options
+    return Object.entries(serviceTypes).map(([value, label]) => ({
+      value,
+      label,
+    }));
+  };
+
+  const timelineOptions = Object.entries(
+    t("timelines", { returnObjects: true })
+  ).map(([value, label]) => ({ value, label }));
+
   const handleProjectTypeChange = (value: string | null) => {
     form.setFieldValue("projectType", value || "");
-    form.setFieldValue("serviceType", ""); // Reset service type when project type changes
+    form.setFieldValue("serviceType", "");
   };
 
   return (
-    <Container size="md" py="xl">
-      <Title order={2} mb="md">
-        IT Service Request Form
+    <Container size="md" py="xl" dir={isRTL ? "rtl" : "ltr"}>
+      <Title
+        order={2}
+        mb="md"
+        style={{
+          animation: `${fadeIn} 0.8s ease-out`,
+          textAlign: isRTL ? "right" : "left",
+        }}
+      >
+        {t("title")}
       </Title>
 
-      <Text size="sm" color="dimmed" mb="xl">
-        Tell us about your project. Our team will review your requirements and
-        contact you within 24 hours to discuss next steps.
+      <Text
+        size="sm"
+        color="dimmed"
+        mb="xl"
+        style={{
+          animation: `${fadeIn} 1s ease-out`,
+          textAlign: isRTL ? "right" : "left",
+        }}
+      >
+        {t("subtitle")}
       </Text>
 
       <Box component="form" onSubmit={handleSubmit}>
-        <Divider label="Contact Information" labelPosition="center" mb="md" />
+        <Divider
+          label={t("fields.contactInfo")}
+          labelPosition="center"
+          mb="md"
+        />
 
         <Grid>
           <Grid.Col span={6}>
             <TextInput
-              label="First Name"
-              placeholder="Your first name"
+              label={t("fields.firstName")}
+              placeholder={t("placeholders.firstName")}
               leftSection={<IconUser size={16} />}
               mb="md"
               error={form.errors.firstName}
@@ -219,8 +184,8 @@ export default function RequestService() {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
-              label="Last Name"
-              placeholder="Your last name"
+              label={t("fields.lastName")}
+              placeholder={t("placeholders.lastName")}
               mb="md"
               error={form.errors.lastName}
               {...form.getInputProps("lastName")}
@@ -231,8 +196,8 @@ export default function RequestService() {
         <Grid>
           <Grid.Col span={6}>
             <TextInput
-              label="Email"
-              placeholder="your@email.com"
+              label={t("fields.email")}
+              placeholder={t("placeholders.email")}
               leftSection={<IconMail size={16} />}
               mb="md"
               error={form.errors.email}
@@ -241,8 +206,8 @@ export default function RequestService() {
           </Grid.Col>
           <Grid.Col span={6}>
             <TextInput
-              label="Phone"
-              placeholder="+1234567890"
+              label={t("fields.phone")}
+              placeholder={t("placeholders.phone")}
               leftSection={<IconPhone size={16} />}
               mb="md"
               error={form.errors.phone}
@@ -252,14 +217,14 @@ export default function RequestService() {
         </Grid>
 
         <TextInput
-          label="Company Name (Optional)"
-          placeholder="Your company or organization"
+          label={t("fields.companyName")}
+          placeholder={t("placeholders.companyName")}
           mb="md"
           {...form.getInputProps("companyName")}
         />
 
         <Divider
-          label="Project Requirements"
+          label={t("fields.projectRequirements")}
           labelPosition="center"
           mt="xl"
           mb="md"
@@ -268,25 +233,27 @@ export default function RequestService() {
         <Grid>
           <Grid.Col span={6}>
             <Select
-              label="Project Type"
-              placeholder="Select project type"
-              data={projectTypeOptions}
+              label={t("fields.projectType")}
+              placeholder={t("placeholders.projectType")}
+              data={getProjectTypeOptions()}
               mb="md"
               error={form.errors.projectType}
-              onChange={(value) => handleProjectTypeChange(value)}
+              onChange={handleProjectTypeChange}
               value={form.values.projectType}
               leftSection={<IconDeviceLaptop size={16} />}
+              dir={isRTL ? "rtl" : "ltr"}
             />
           </Grid.Col>
           <Grid.Col span={6}>
             <Select
-              label="Service Type"
-              placeholder="Select service type"
+              label={t("fields.serviceType")}
+              placeholder={t("placeholders.serviceType")}
               data={getServiceTypeOptions(form.values.projectType)}
               mb="md"
               disabled={!form.values.projectType}
               error={form.errors.serviceType}
               {...form.getInputProps("serviceType")}
+              dir={isRTL ? "rtl" : "ltr"}
             />
           </Grid.Col>
         </Grid>
@@ -294,8 +261,8 @@ export default function RequestService() {
         <Grid>
           <Grid.Col span={6}>
             <NumberInput
-              label="Budget Estimate"
-              placeholder="Enter budget (USD)"
+              label={t("fields.budget")}
+              placeholder={t("placeholders.budget")}
               min={100}
               mb="md"
               error={form.errors.budget}
@@ -307,19 +274,20 @@ export default function RequestService() {
           </Grid.Col>
           <Grid.Col span={6}>
             <Select
-              label="Project Timeline"
-              placeholder="Select expected timeline"
+              label={t("fields.timeline")}
+              placeholder={t("placeholders.timeline")}
               data={timelineOptions}
               mb="md"
               error={form.errors.timeline}
               {...form.getInputProps("timeline")}
+              dir={isRTL ? "rtl" : "ltr"}
             />
           </Grid.Col>
         </Grid>
 
         <Textarea
-          label="Project Description"
-          placeholder="Please describe your project requirements in detail"
+          label={t("fields.projectDescription")}
+          placeholder={t("placeholders.projectDescription")}
           minRows={4}
           mb="md"
           error={form.errors.projectDescription}
@@ -327,17 +295,17 @@ export default function RequestService() {
         />
 
         <Textarea
-          label="Additional Requirements (Optional)"
-          placeholder="Any specific features, integrations, or technical requirements"
+          label={t("fields.additionalRequirements")}
+          placeholder={t("placeholders.additionalRequirements")}
           minRows={2}
           mb="md"
           {...form.getInputProps("additionalRequirements")}
         />
 
         <FileInput
-          label="Attachments (Optional)"
-          description="Upload wireframes, mockups, or project documentation"
-          placeholder="Upload files"
+          label={t("fields.attachments")}
+          description={t("descriptions.attachments")}
+          placeholder={t("placeholders.attachments")}
           accept="image/png,image/jpeg,application/pdf,application/zip"
           leftSection={<IconFileUpload size={16} />}
           mb="xl"
@@ -350,11 +318,19 @@ export default function RequestService() {
         <Checkbox
           label={
             <>
-              <Anchor target="_blank" size="sm" href="/termsOfService">
-                I agree to the <strong>Terms of Service</strong> and
+              <Anchor
+                target="_blank"
+                size="sm"
+                href={`/${currentLang}/termsOfService`}
+              >
+                {t("links.agree")} <strong>{t("links.terms")}</strong>
               </Anchor>
-              <Anchor target="_blank" size="sm" href="/privacyPolicy">
-                <strong> Privacy Policy </strong>
+              <Anchor
+                target="_blank"
+                size="sm"
+                href={`/${currentLang}/privacyPolicy`}
+              >
+                {t("links.and")} <strong>{t("links.privacy")}</strong>
               </Anchor>
             </>
           }
@@ -370,8 +346,9 @@ export default function RequestService() {
           color="blue"
           mt="xl"
           disabled={!form.isValid()}
+          style={{ animation: `${fadeIn} 1.4s ease-out` }}
         >
-          Submit Request
+          {t("buttons.submit")}
         </Button>
       </Box>
     </Container>

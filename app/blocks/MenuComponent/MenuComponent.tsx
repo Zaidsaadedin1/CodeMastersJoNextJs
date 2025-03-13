@@ -39,7 +39,13 @@ const MenuComponent = () => {
                 </Button>
               </Menu.Target>
               <Menu.Dropdown>
-                <Menu.Item onClick={() => router.push("/discoverMore")}>
+                <Menu.Item
+                  onClick={() =>
+                    router.push("/discoverMore", undefined, {
+                      locale: currentLang,
+                    })
+                  }
+                >
                   <Button variant="subtle">
                     <Group wrap="nowrap" gap={2}>
                       <IconHome size={12} />
@@ -47,7 +53,13 @@ const MenuComponent = () => {
                     </Group>
                   </Button>
                 </Menu.Item>
-                <Menu.Item onClick={() => router.push("/joinTheJourney")}>
+                <Menu.Item
+                  onClick={() =>
+                    router.push("/joinTheJourney", undefined, {
+                      locale: currentLang,
+                    })
+                  }
+                >
                   <Button variant="subtle">
                     <Group wrap="nowrap" gap={2}>
                       <IconUserScan size={12} />
@@ -55,7 +67,11 @@ const MenuComponent = () => {
                     </Group>
                   </Button>
                 </Menu.Item>
-                <Menu.Item onClick={() => router.push("/ourPower")}>
+                <Menu.Item
+                  onClick={() =>
+                    router.push("/ourPower", undefined, { locale: currentLang })
+                  }
+                >
                   <Button variant="subtle">
                     <Group wrap="nowrap" gap={2}>
                       <IconSettings size={12} />
@@ -70,7 +86,11 @@ const MenuComponent = () => {
               <Button
                 size="compact-md"
                 variant="subtle"
-                onClick={() => router.push("/discoverMore")}
+                onClick={() =>
+                  router.push("/discoverMore", undefined, {
+                    locale: currentLang,
+                  })
+                }
               >
                 <Group wrap="nowrap" gap={2}>
                   <IconHome size={12} />
@@ -79,14 +99,23 @@ const MenuComponent = () => {
               </Button>
               <Button
                 variant="subtle"
-                onClick={() => router.push("/joinTheJourney")}
+                onClick={() =>
+                  router.push("/joinTheJourney", undefined, {
+                    locale: currentLang,
+                  })
+                }
               >
                 <Group wrap="nowrap" gap={2}>
                   <IconUserScan size={12} />
                   <Text size="12">{t("join_the_journey")}</Text>
                 </Group>
               </Button>
-              <Button variant="subtle" onClick={() => router.push("/ourPower")}>
+              <Button
+                variant="subtle"
+                onClick={() =>
+                  router.push("/ourPower", undefined, { locale: currentLang })
+                }
+              >
                 <Group wrap="nowrap" gap={2}>
                   <IconSettings size={12} />
                   <Text size="12">{t("our_power")}</Text>
@@ -132,13 +161,23 @@ const MenuComponent = () => {
           </Menu>
         ) : (
           <Group wrap="nowrap" justify="space-around" gap={5}>
-            <Button variant="subtle" onClick={() => router.push("/signUp")}>
+            <Button
+              variant="subtle"
+              onClick={() =>
+                router.push("/signUp", undefined, { locale: currentLang })
+              }
+            >
               <Group gap={2}>
                 <IconUser size={12} />
                 <Text size="12">{t("sign_up")}</Text>
               </Group>
             </Button>
-            <Button variant="subtle" onClick={() => router.push("/login")}>
+            <Button
+              variant="subtle"
+              onClick={() =>
+                router.push("/login", undefined, { locale: currentLang })
+              }
+            >
               <Group gap={2}>
                 <IconLogin size={12} />
                 <Text size="12">{t("login")}</Text>
@@ -146,7 +185,11 @@ const MenuComponent = () => {
             </Button>
             <Button
               variant="subtle"
-              onClick={() => router.push("/requestService")}
+              onClick={() =>
+                router.push("/requestService", undefined, {
+                  locale: currentLang,
+                })
+              }
             >
               <Group gap={2}>
                 <IconMessageCircleQuestion size={12} />

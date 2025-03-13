@@ -15,19 +15,30 @@ import {
 import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { IconMail, IconLock } from "@tabler/icons-react";
+import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import { keyframes } from "@emotion/react";
 
-// Define the validation schema using Zod
-const schema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Invalid email address" }),
-  password: z.string().min(1, { message: "Password is required" }),
-  rememberMe: z.boolean().optional(),
+const fadeIn = keyframes({
+  from: { opacity: 0, transform: "translateY(20px)" },
+  to: { opacity: 1, transform: "translateY(0)" },
 });
 
 export default function Login() {
-  // Initialize form with validation
+  const router = useRouter();
+  const { t, i18n } = useTranslation("login");
+  const currentLang = i18n.language;
+  const isRTL = currentLang === "ar";
+
+  const schema = z.object({
+    email: z
+      .string()
+      .min(1, { message: t("validation.email_required") })
+      .email({ message: t("validation.email_invalid") }),
+    password: z.string().min(1, { message: t("validation.password_required") }),
+    rememberMe: z.boolean().optional(),
+  });
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -35,45 +46,59 @@ export default function Login() {
       rememberMe: false,
     },
 
-    // Use Zod for validation
     validate: (values) => {
       try {
         schema.parse(values);
         return {};
       } catch (error: any) {
         const formattedErrors: Record<string, string> = {};
-
-        if (error.errors) {
-          error.errors.forEach((err: any) => {
-            formattedErrors[err.path[0]] = err.message;
-          });
-        }
-
+        error.errors?.forEach((err: any) => {
+          formattedErrors[err.path[0]] = err.message;
+        });
         return formattedErrors;
       }
     },
-    validateInputOnBlur: true, // Validate on blur (when input loses focus)
+    validateInputOnBlur: true,
   });
 
-  const handleSubmit = form.onSubmit((values: any) => {
+  const handleSubmit = form.onSubmit((values) => {
     console.log("Login form submitted with values:", values);
-    // Here you would typically handle authentication
+    // Authentication logic here
   });
 
   return (
-    <Container size="sm" py="xl">
-      <Title order={2} mb="md">
-        Welcome Back
+    <Container size="sm" py="xl" dir={isRTL ? "rtl" : "ltr"}>
+      <Title
+        order={2}
+        mb="md"
+        style={{
+          animation: `${fadeIn} 0.8s ease-out`,
+          textAlign: isRTL ? "right" : "left",
+        }}
+      >
+        {t("title")}
       </Title>
 
-      <Text size="sm" color="dimmed" mb="xl">
-        Log in to continue your journey with us.
+      <Text
+        size="sm"
+        color="dimmed"
+        mb="xl"
+        style={{
+          animation: `${fadeIn} 1s ease-out`,
+          textAlign: isRTL ? "right" : "left",
+        }}
+      >
+        {t("subtitle")}
       </Text>
 
-      <Box component="form" onSubmit={handleSubmit}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        style={{ animation: `${fadeIn} 1.2s ease-out` }}
+      >
         <TextInput
-          label="Email"
-          placeholder="Enter your email"
+          label={t("fields.email")}
+          placeholder={t("fields.email")}
           leftSection={<IconMail size={16} />}
           mb="md"
           error={form.errors.email}
@@ -81,8 +106,8 @@ export default function Login() {
         />
 
         <PasswordInput
-          label="Password"
-          placeholder="Enter your password"
+          label={t("fields.password")}
+          placeholder={t("fields.password")}
           leftSection={<IconLock size={16} />}
           mb="md"
           error={form.errors.password}
@@ -91,11 +116,15 @@ export default function Login() {
 
         <Group justify="space-between" mb="md">
           <Checkbox
-            label="Remember me"
+            label={t("fields.remember_me")}
             {...form.getInputProps("rememberMe", { type: "checkbox" })}
           />
-          <Anchor component="a" size="sm" href="/forgotPassword">
-            Forgot password?
+          <Anchor
+            component="a"
+            size="sm"
+            href={`/${currentLang}/forgotPassword`}
+          >
+            {t("links.forgot_password")}
           </Anchor>
         </Group>
 
@@ -104,17 +133,23 @@ export default function Login() {
           fullWidth
           size="md"
           mb="lg"
-          disabled={!form.isValid}
+          disabled={!form.isValid()}
+          style={{ animation: `${fadeIn} 1.4s ease-out` }}
         >
-          Login
+          {t("buttons.login")}
         </Button>
 
-        <Divider label="OR" labelPosition="center" my="md" />
+        <Divider label={t("divider")} labelPosition="center" my="md" />
 
         <Text size="xs" color="dimmed" ta="center" mt="md">
-          Don't have an account yet?
-          <Anchor component="a" size="xs" href="/signUp" ml="xs">
-            Sign up
+          {t("links.no_account")}
+          <Anchor
+            component="a"
+            size="xs"
+            href={`/${currentLang}/signUp`}
+            ml="xs"
+          >
+            {t("links.signup")}
           </Anchor>
         </Text>
       </Box>
