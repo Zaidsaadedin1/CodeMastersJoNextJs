@@ -23,7 +23,7 @@ const MenuComponent = () => {
   return (
     <Grid align="center" columns={3} mt={"xs"} justify="space-between">
       <Image
-        src="/images/blackLogo.png"
+        src="/images/logo.png"
         alt="Logo"
         width={50}
         height={50}

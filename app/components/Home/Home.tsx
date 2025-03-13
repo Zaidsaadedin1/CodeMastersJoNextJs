@@ -58,9 +58,6 @@ const HomePage = () => {
 
   return (
     <Stack dir={i18n.language === "ar" ? "rtl" : "ltr"}>
-      <div>
-        <Title order={1}>{t("code_masters")}</Title>
-      </div>
       <audio ref={audioRef} src="/audio/hope.mp3" preload="auto" loop />
 
       <Box
