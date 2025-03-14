@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   Title,
   TextInput,
   Button,
@@ -8,24 +7,24 @@ import {
   PasswordInput,
   Box,
   Grid,
-  Select,
   Checkbox,
   Divider,
-  MultiSelect,
-  Textarea,
   Anchor,
   Center,
+  Stack,
+  LoadingOverlay,
 } from "@mantine/core";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { IconUser, IconPhone } from "@tabler/icons-react";
 import { DatePickerInput } from "@mantine/dates";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
+import { useMutation } from "@tanstack/react-query";
+import { RegisterUserDto } from "../../types/authDtos/authDtos";
+import authController from "../../controllers/authController";
 
-// Animation keyframes
 const fadeIn = keyframes({
   from: { opacity: 0, transform: "translateY(20px)" },
   to: { opacity: 1, transform: "translateY(0)" },
@@ -37,7 +36,6 @@ const SignUp = () => {
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
 
-  // Define the validation schema using Zod
   const schema = z
     .object({
       username: z
@@ -87,14 +85,6 @@ const SignUp = () => {
           },
           { message: t("validation.age_minimum") }
         ),
-      occupation: z.string().optional(),
-      bio: z
-        .string()
-        .max(300, { message: t("validation.bio_max") })
-        .optional(),
-      interests: z.array(z.string()).optional(),
-      location: z.string().optional(),
-      referralSource: z.string().optional(),
       termsAccepted: z.boolean().refine((value) => value === true, {
         message: t("validation.terms_required"),
       }),
@@ -104,7 +94,6 @@ const SignUp = () => {
       path: ["confirmPassword"],
     });
 
-  // Initialize form with validation
   const form = useForm({
     initialValues: {
       username: "",
@@ -115,343 +104,221 @@ const SignUp = () => {
       lastName: "",
       phoneNumber: "",
       birthDate: null as Date | null,
-      occupation: "",
-      bio: "",
-      interests: [],
-      location: "",
-      referralSource: "",
       termsAccepted: false,
     },
-
-    // Use Zod for validation
     validate: (values) => {
       try {
         schema.parse(values);
         return {};
       } catch (error: any) {
         const formattedErrors: Record<string, string> = {};
-
-        if (error.errors) {
-          error.errors.forEach((err: any) => {
-            formattedErrors[err.path[0]] = err.message;
-          });
-        }
-
+        error.errors?.forEach((err: any) => {
+          formattedErrors[err.path[0]] = err.message;
+        });
         return formattedErrors;
       }
     },
-    validateInputOnBlur: true, // Validate on blur (when input loses focus)
+    validateInputOnBlur: true,
   });
 
-  const handleSubmit = form.onSubmit(async (values) => {
+  const registerMutation = useMutation({
+    mutationFn: authController.register,
+  });
+
+  const handleSubmit = form.onSubmit((values) => {
     try {
-      console.log("Form values to submit:", {
+      const registerData: RegisterUserDto = {
         ...values,
-        password: "[REDACTED]",
-      });
-      // const formattedValues = {
-      //   ...values,
-      //   birthDate:
-      //     values.birthDate instanceof Date
-      //       ? values.birthDate.toISOString()
-      //       : values.birthDate,
-      // };
-
-      // Remove confirmPassword as it's not needed in the API
-      const { confirmPassword, ...userData } = values;
-
-      // Use axios to call the API endpoint
-      const response = await axios.post("/api/users", userData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log("User created successfully:", response.data);
-
-      // Redirect to login page with the current locale
-      router.push("/login", undefined, { locale: currentLang });
-    } catch (error) {
-      console.error("Error creating user:", error);
-      // Handle error (e.g., show error message to user)
-      if (axios.isAxiosError(error) && error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.error("Server error:", error.response.data.message);
-        form.setErrors({ email: error.response.data.message });
-      } else if (axios.isAxiosError(error) && error.request) {
-        // The request was made but no response was received
-        console.error("No response received:", error.request);
-        form.setErrors({ email: t("errors.no_response") });
-      } else if (axios.isAxiosError(error)) {
-        // Something happened in setting up the request that triggered an Error
-        console.error("Request error:", error.message);
-        form.setErrors({ email: t("errors.request_failed") });
-      } else {
-        console.error("Unexpected error:", error);
-        form.setErrors({ email: t("errors.unexpected") });
-      }
+        userName: values.username,
+        birthDate: values.birthDate as Date,
+      };
+      registerMutation.mutate(registerData);
+    } catch {
+      //handeld
     }
   });
 
-  // Interest options for MultiSelect
-  const interestOptions = [
-    { value: "technology", label: t("interests.technology") },
-    { value: "science", label: t("interests.science") },
-    { value: "art", label: t("interests.art") },
-    { value: "sports", label: t("interests.sports") },
-    { value: "music", label: t("interests.music") },
-    { value: "cooking", label: t("interests.cooking") },
-    { value: "travel", label: t("interests.travel") },
-    { value: "books", label: t("interests.books") },
-    { value: "finance", label: t("interests.finance") },
-    { value: "gaming", label: t("interests.gaming") },
-  ];
-
-  // Referral source options
-  const referralOptions = [
-    { value: "search", label: t("referral.search") },
-    { value: "social", label: t("referral.social") },
-    { value: "friend", label: t("referral.friend") },
-    { value: "ad", label: t("referral.ad") },
-    { value: "blog", label: t("referral.blog") },
-    { value: "other", label: t("referral.other") },
-  ];
-
   return (
-    <Container size="md" py="xl" dir={isRTL ? "rtl" : "ltr"}>
-      <Box
-        component="div"
-        style={{
-          animation: `${fadeIn} 0.8s ease-out`,
-        }}
-      >
-        <Title
-          order={2}
-          mb="md"
-          style={(theme) => ({
-            background: `linear-gradient(45deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          })}
+    <>
+      {registerMutation.isPending && <LoadingOverlay visible />}
+      <Stack dir={isRTL ? "rtl" : "ltr"} p="md">
+        {/* Main Form Content */}
+        <Box component="div" style={{ animation: `${fadeIn} 0.8s ease-out` }}>
+          <Title
+            order={2}
+            mb="md"
+            style={(theme) => ({
+              background: `linear-gradient(45deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            })}
+          >
+            {t("title")}
+          </Title>
+        </Box>
+
+        <Box component="div" style={{ animation: `${fadeIn} 1s ease-out` }}>
+          <Text size="sm" color="dimmed" mb="xl">
+            {t("subtitle")}
+          </Text>
+        </Box>
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          style={{ animation: `${fadeIn} 1.2s ease-out` }}
         >
-          {t("title")}
-        </Title>
-      </Box>
+          <Divider
+            label={t("sections.account")}
+            labelPosition="center"
+            mb="md"
+          />
 
-      <Box
-        component="div"
-        style={{
-          animation: `${fadeIn} 1s ease-out`,
-        }}
-      >
-        <Text size="sm" color="dimmed" mb="xl">
-          {t("subtitle")}
-        </Text>
-      </Box>
+          <TextInput
+            label={t("fields.username")}
+            placeholder={t("placeholders.username")}
+            leftSection={<IconUser size={16} />}
+            mb="md"
+            error={form.errors.username}
+            {...form.getInputProps("username")}
+          />
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        style={{
-          animation: `${fadeIn} 1.2s ease-out`,
-        }}
-      >
-        <Divider label={t("sections.account")} labelPosition="center" mb="md" />
+          <Grid gutter="md">
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <TextInput
+                label={t("fields.firstName")}
+                placeholder={t("placeholders.firstName")}
+                error={form.errors.firstName}
+                {...form.getInputProps("firstName")}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <TextInput
+                label={t("fields.lastName")}
+                placeholder={t("placeholders.lastName")}
+                error={form.errors.lastName}
+                {...form.getInputProps("lastName")}
+              />
+            </Grid.Col>
+          </Grid>
 
-        <TextInput
-          label={t("fields.username")}
-          placeholder={t("placeholders.username")}
-          leftSection={<IconUser size={16} />}
-          mb="md"
-          error={form.errors.username}
-          {...form.getInputProps("username")}
-        />
+          <Grid gutter="md">
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <TextInput
+                label={t("fields.email")}
+                placeholder={t("placeholders.email")}
+                mt="md"
+                error={form.errors.email}
+                {...form.getInputProps("email")}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <TextInput
+                label={t("fields.phoneNumber")}
+                placeholder={t("placeholders.phoneNumber")}
+                mt="md"
+                leftSection={<IconPhone size={16} />}
+                error={form.errors.phoneNumber}
+                {...form.getInputProps("phoneNumber")}
+              />
+            </Grid.Col>
+          </Grid>
 
-        <Grid>
-          <Grid.Col span={6}>
-            <TextInput
-              label={t("fields.firstName")}
-              placeholder={t("placeholders.firstName")}
-              mb="md"
-              error={form.errors.firstName}
-              {...form.getInputProps("firstName")}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <TextInput
-              label={t("fields.lastName")}
-              placeholder={t("placeholders.lastName")}
-              mb="md"
-              error={form.errors.lastName}
-              {...form.getInputProps("lastName")}
-            />
-          </Grid.Col>
-        </Grid>
+          <Grid gutter="md" mt="md">
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <PasswordInput
+                label={t("fields.password")}
+                placeholder={t("placeholders.password")}
+                error={form.errors.password}
+                {...form.getInputProps("password")}
+              />
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <PasswordInput
+                label={t("fields.confirmPassword")}
+                placeholder={t("placeholders.confirmPassword")}
+                error={form.errors.confirmPassword}
+                {...form.getInputProps("confirmPassword")}
+              />
+            </Grid.Col>
+          </Grid>
 
-        <TextInput
-          label={t("fields.email")}
-          placeholder={t("placeholders.email")}
-          mb="md"
-          error={form.errors.email}
-          {...form.getInputProps("email")}
-        />
+          <Divider
+            label={t("sections.personal")}
+            labelPosition="center"
+            my="xl"
+          />
 
-        <TextInput
-          label={t("fields.phoneNumber")}
-          placeholder={t("placeholders.phoneNumber")}
-          leftSection={<IconPhone size={16} />}
-          mb="md"
-          error={form.errors.phoneNumber}
-          {...form.getInputProps("phoneNumber")}
-        />
+          <Grid gutter="md">
+            <Grid.Col span={{ base: 12, sm: 6 }}>
+              <DatePickerInput
+                label={t("fields.birthDate")}
+                placeholder={t("placeholders.birthDate")}
+                value={form.values.birthDate}
+                onChange={(date) => form.setFieldValue("birthDate", date)}
+                error={form.errors.birthDate}
+                popoverProps={{ withinPortal: true }}
+              />
+            </Grid.Col>
+          </Grid>
 
-        <Grid>
-          <Grid.Col span={6}>
-            <PasswordInput
-              label={t("fields.password")}
-              placeholder={t("placeholders.password")}
-              mb="md"
-              error={form.errors.password}
-              {...form.getInputProps("password")}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <PasswordInput
-              label={t("fields.confirmPassword")}
-              placeholder={t("placeholders.confirmPassword")}
-              mb="md"
-              error={form.errors.confirmPassword}
-              {...form.getInputProps("confirmPassword")}
-            />
-          </Grid.Col>
-        </Grid>
+          <Checkbox
+            mt="xl"
+            label={
+              <>
+                {t("terms.agree")}{" "}
+                <Anchor
+                  href={`/${currentLang}/termsOfService`}
+                  target="_blank"
+                  size="sm"
+                >
+                  {t("terms.termsOfService")}
+                </Anchor>{" "}
+                {t("terms.and")}{" "}
+                <Anchor
+                  href={`/${currentLang}/privacyPolicy`}
+                  target="_blank"
+                  size="sm"
+                >
+                  {t("terms.privacyPolicy")}
+                </Anchor>
+              </>
+            }
+            error={form.errors.termsAccepted}
+            {...form.getInputProps("termsAccepted", { type: "checkbox" })}
+          />
 
-        <Divider
-          label={t("sections.personal")}
-          labelPosition="center"
-          mt="xl"
-          mb="md"
-        />
-        <Grid>
-          <Grid.Col span={6}>
-            <Text>{t("fields.birthDate")}</Text>
-            <DatePickerInput
-              wrapperProps={{ mb: "md" }}
-              placeholder={t("placeholders.birthDate")}
-              value={form.values.birthDate}
-              onChange={(date: Date | null) =>
-                form.setFieldValue("birthDate", date)
-              }
-              error={form.errors.birthDate}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <TextInput
-              label={t("fields.location")}
-              placeholder={t("placeholders.location")}
-              mb="md"
-              error={form.errors.location}
-              {...form.getInputProps("location")}
-            />
-          </Grid.Col>
-        </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            size="md"
+            mt="xl"
+            gradient={{ from: "blue", to: "cyan" }}
+            variant="gradient"
+            loading={registerMutation.isPending}
+            style={{ animation: `${fadeIn} 1.4s ease-out` }}
+          >
+            {t("buttons.create")}
+          </Button>
+        </Box>
 
-        <TextInput
-          label={t("fields.occupation")}
-          placeholder={t("placeholders.occupation")}
-          mb="md"
-          error={form.errors.occupation}
-          {...form.getInputProps("occupation")}
-        />
-
-        <Textarea
-          label={t("fields.bio")}
-          placeholder={t("placeholders.bio")}
-          minRows={3}
-          mb="md"
-          error={form.errors.bio}
-          {...form.getInputProps("bio")}
-        />
-
-        <MultiSelect
-          dir={isRTL ? "rtl" : "ltr"}
-          label={t("fields.interests")}
-          placeholder={t("placeholders.interests")}
-          data={interestOptions}
-          mb="md"
-          error={form.errors.interests}
-          {...form.getInputProps("interests")}
-        />
-
-        <Select
-          dir={isRTL ? "rtl" : "ltr"}
-          label={t("fields.referralSource")}
-          placeholder={t("placeholders.referralSource")}
-          data={referralOptions}
-          mb="xl"
-          error={form.errors.referralSource}
-          {...form.getInputProps("referralSource")}
-        />
-
-        <Checkbox
-          label={
-            <>
-              {t("terms.agree")}{" "}
-              <Anchor
-                target="_blank"
-                size="sm"
-                href={`/${currentLang}/termsOfService`}
-              >
-                <strong>{t("terms.termsOfService")}</strong>
-              </Anchor>
-              <Anchor
-                target="_blank"
-                size="sm"
-                href={`/${currentLang}/privacyPolicy`}
-              >
-                <strong>{t("terms.privacyPolicy")}</strong>
-              </Anchor>
-            </>
-          }
-          mb="xl"
-          error={form.errors.termsAccepted}
-          {...form.getInputProps("termsAccepted", { type: "checkbox" })}
-        />
-
-        <Button
-          type="submit"
-          fullWidth
-          size="md"
-          mb="xl"
-          gradient={{ from: "blue", to: "cyan" }}
-          variant="gradient"
-          style={{
-            animation: `${fadeIn} 1.4s ease-out`,
-          }}
-          disabled={!form.isValid()}
-        >
-          {t("buttons.create")}
-        </Button>
-      </Box>
-      <Center>
-        <Anchor
-          size="xs"
-          ta="center"
-          mt="md"
-          href="/login"
-          onClick={(e) => {
-            e.preventDefault();
-            router.push("/login", undefined, { locale: currentLang });
-          }}
-          style={{
-            animation: `${fadeIn} 1.6s ease-out`,
-          }}
-        >
-          {t("login.text")}
-        </Anchor>
-      </Center>
-    </Container>
+        <Center mt="lg">
+          <Anchor
+            size="sm"
+            href="/login"
+            onClick={(e) => {
+              e.preventDefault();
+              router.push("/login", undefined, { locale: currentLang });
+            }}
+          >
+            {t("login.existingAccount")}{" "}
+            <Text span c="blue" inherit>
+              {t("login.signIn")}
+            </Text>
+          </Anchor>
+        </Center>
+      </Stack>
+    </>
   );
 };
 

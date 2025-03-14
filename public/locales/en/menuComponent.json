@@ -1,11 +1,14 @@
 {
-    "menu": "Menu",
-    "discover_more": "Discover More",
-    "join_the_journey": "Join the Journey",
-    "our_power": "Our Power",
-    "account": "Account",
-    "sign_up": "Sign Up",
-    "login": "Login",
-    "request_service": "Request Service"
-  }
-  
+  "menu": "Menu",
+  "discover_more": "Discover More",
+  "join_the_journey": "Join the Journey",
+  "our_power": "Our Power",
+  "account": "Account",
+  "sign_up": "Sign Up",
+  "login": "Login",
+  "request_service": "Request Service",
+  "user_dashboard": "User Dashboard",
+  "admin_dashboard": "Admin Dashboard",
+  "profile": "Profile",
+  "logout": "Logout"
+}

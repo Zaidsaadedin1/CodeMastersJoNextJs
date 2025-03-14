@@ -7,18 +7,238 @@ import {
   IconUser,
   IconUserScan,
   IconMessageCircleQuestion,
+  IconDashboard,
+  IconLogout,
 } from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
-import { useClientTranslation } from "../../hooks/useClientTranslation";
+import { useAuth } from "../../contexts/AuthContext";
 
 const MenuComponent = () => {
   const isMobileOrTablet = useMediaQuery("(max-width: 1200px)");
-  const { t, i18n } = useClientTranslation("menuComponent");
+  const { t, i18n } = useTranslation("menuComponent");
   const currentLang = i18n.language;
   const router = useRouter();
+  const { isAuthenticated, user, logout } = useAuth();
+  const isRTL = currentLang === "ar";
+
+  const renderAuthMenu = () => (
+    <Menu>
+      <Menu.Target>
+        <Button variant="subtle">
+          <Group
+            gap={2}
+            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+          >
+            <IconUser size={12} />
+            <Text size="12">{user?.name}</Text>
+          </Group>
+        </Button>
+      </Menu.Target>
+      <Menu.Dropdown>
+        <Menu.Item
+          onClick={() => router.push("/dashboard")}
+          style={{ direction: isRTL ? "rtl" : "ltr" }}
+        >
+          <Group gap={2}>
+            <IconDashboard size={14} />
+            <Text size="sm">{t("user_dashboard")}</Text>
+          </Group>
+        </Menu.Item>
+        {user?.Roles === "Admin" && (
+          <Menu.Item
+            onClick={() => router.push("/admin")}
+            style={{ direction: isRTL ? "rtl" : "ltr" }}
+          >
+            <Group gap={2}>
+              <IconDashboard size={14} />
+              <Text size="sm">{t("admin_dashboard")}</Text>
+            </Group>
+          </Menu.Item>
+        )}
+        <Menu.Item
+          onClick={() => router.push("/profile")}
+          style={{ direction: isRTL ? "rtl" : "ltr" }}
+        >
+          <Group gap={2}>
+            <IconUser size={14} />
+            <Text size="sm">{t("profile")}</Text>
+          </Group>
+        </Menu.Item>
+        <Menu.Item
+          onClick={logout}
+          style={{ direction: isRTL ? "rtl" : "ltr" }}
+        >
+          <Group gap={2}>
+            <IconLogout size={14} />
+            <Text size="sm">{t("logout")}</Text>
+          </Group>
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
+  );
+
+  const renderMainMenu = () =>
+    isMobileOrTablet ? (
+      <Menu shadow="md" width={200}>
+        <Menu.Target>
+          <Button
+            size="12"
+            variant="subtle"
+            style={{ direction: isRTL ? "rtl" : "ltr" }}
+          >
+            {t("menu")}
+          </Button>
+        </Menu.Target>
+        <Menu.Dropdown>
+          {[
+            { path: "/discoverMore", icon: IconHome, text: t("discover_more") },
+            {
+              path: "/joinTheJourney",
+              icon: IconUserScan,
+              text: t("join_the_journey"),
+            },
+            { path: "/ourPower", icon: IconSettings, text: t("our_power") },
+          ].map((item) => (
+            <Menu.Item
+              key={item.path}
+              onClick={() =>
+                router.push(item.path, undefined, { locale: currentLang })
+              }
+              style={{ direction: isRTL ? "rtl" : "ltr" }}
+            >
+              <Group gap={2}>
+                <item.icon size={12} />
+                <Text size="12">{item.text}</Text>
+              </Group>
+            </Menu.Item>
+          ))}
+        </Menu.Dropdown>
+      </Menu>
+    ) : (
+      <Group
+        wrap="nowrap"
+        gap={5}
+        style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+      >
+        {[
+          { path: "/discoverMore", icon: IconHome, text: t("discover_more") },
+          {
+            path: "/joinTheJourney",
+            icon: IconUserScan,
+            text: t("join_the_journey"),
+          },
+          { path: "/ourPower", icon: IconSettings, text: t("our_power") },
+        ].map((item) => (
+          <Button
+            key={item.path}
+            variant="subtle"
+            onClick={() =>
+              router.push(item.path, undefined, { locale: currentLang })
+            }
+            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+          >
+            <Group gap={2}>
+              <item.icon size={12} />
+              <Text size="12">{item.text}</Text>
+            </Group>
+          </Button>
+        ))}
+      </Group>
+    );
+
+  const renderAccountMenu = () =>
+    isMobileOrTablet ? (
+      <Menu shadow="md" width={200}>
+        <Menu.Target>
+          <Button
+            size="12"
+            variant="subtle"
+            style={{ direction: isRTL ? "rtl" : "ltr" }}
+          >
+            {t("account")}
+          </Button>
+        </Menu.Target>
+        <Menu.Dropdown>
+          {!isAuthenticated ? (
+            <>
+              <Menu.Item onClick={() => router.push("/signUp")}>
+                <Group
+                  gap={2}
+                  style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+                >
+                  <IconUser size={12} />
+                  <Text size="12">{t("sign_up")}</Text>
+                </Group>
+              </Menu.Item>
+              <Menu.Item onClick={() => router.push("/login")}>
+                <Group
+                  gap={2}
+                  style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+                >
+                  <IconLogin size={12} />
+                  <Text size="12">{t("login")}</Text>
+                </Group>
+              </Menu.Item>
+            </>
+          ) : (
+            <Menu.Item onClick={() => router.push("/requestService")}>
+              <Group
+                gap={2}
+                style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+              >
+                <IconMessageCircleQuestion size={12} />
+                <Text size="12">{t("request_service")}</Text>
+              </Group>
+            </Menu.Item>
+          )}
+        </Menu.Dropdown>
+      </Menu>
+    ) : (
+      <Group
+        wrap="nowrap"
+        gap={5}
+        style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+      >
+        {!isAuthenticated ? (
+          <>
+            <Button
+              variant="subtle"
+              onClick={() => router.push("/signUp")}
+              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+            >
+              <Group gap={2}>
+                <IconUser size={12} />
+                <Text size="12">{t("sign_up")}</Text>
+              </Group>
+            </Button>
+            <Button
+              variant="subtle"
+              onClick={() => router.push("/login")}
+              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+            >
+              <Group gap={2}>
+                <IconLogin size={12} />
+                <Text size="12">{t("login")}</Text>
+              </Group>
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant="subtle"
+            onClick={() => router.push("/requestService")}
+            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+          >
+            <Group gap={2}>
+              <IconMessageCircleQuestion size={12} />
+              <Text size="12">{t("request_service")}</Text>
+            </Group>
+          </Button>
+        )}
+      </Group>
+    );
 
   return (
     <Grid align="center" columns={3} mt={"xs"} justify="space-between">
@@ -28,179 +248,19 @@ const MenuComponent = () => {
         width={50}
         height={50}
         onClick={() => router.push("/")}
+        style={{ cursor: "pointer", order: isRTL ? 2 : 0 }}
       />
-      <Group wrap="nowrap" justify="space-between">
-        <Group wrap="nowrap">
-          {isMobileOrTablet ? (
-            <Menu shadow="md" width={200}>
-              <Menu.Target>
-                <Button size="12" variant="subtle">
-                  {t("menu")}
-                </Button>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  onClick={() =>
-                    router.push("/discoverMore", undefined, {
-                      locale: currentLang,
-                    })
-                  }
-                >
-                  <Button variant="subtle">
-                    <Group wrap="nowrap" gap={2}>
-                      <IconHome size={12} />
-                      <Text size="12">{t("discover_more")}</Text>
-                    </Group>
-                  </Button>
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() =>
-                    router.push("/joinTheJourney", undefined, {
-                      locale: currentLang,
-                    })
-                  }
-                >
-                  <Button variant="subtle">
-                    <Group wrap="nowrap" gap={2}>
-                      <IconUserScan size={12} />
-                      <Text size="12">{t("join_the_journey")}</Text>
-                    </Group>
-                  </Button>
-                </Menu.Item>
-                <Menu.Item
-                  onClick={() =>
-                    router.push("/ourPower", undefined, { locale: currentLang })
-                  }
-                >
-                  <Button variant="subtle">
-                    <Group wrap="nowrap" gap={2}>
-                      <IconSettings size={12} />
-                      <Text size="12">{t("our_power")}</Text>
-                    </Group>
-                  </Button>
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          ) : (
-            <Group wrap="nowrap" justify="space-around" gap={5}>
-              <Button
-                size="compact-md"
-                variant="subtle"
-                onClick={() =>
-                  router.push("/discoverMore", undefined, {
-                    locale: currentLang,
-                  })
-                }
-              >
-                <Group wrap="nowrap" gap={2}>
-                  <IconHome size={12} />
-                  <Text size="12">{t("discover_more")}</Text>
-                </Group>
-              </Button>
-              <Button
-                variant="subtle"
-                onClick={() =>
-                  router.push("/joinTheJourney", undefined, {
-                    locale: currentLang,
-                  })
-                }
-              >
-                <Group wrap="nowrap" gap={2}>
-                  <IconUserScan size={12} />
-                  <Text size="12">{t("join_the_journey")}</Text>
-                </Group>
-              </Button>
-              <Button
-                variant="subtle"
-                onClick={() =>
-                  router.push("/ourPower", undefined, { locale: currentLang })
-                }
-              >
-                <Group wrap="nowrap" gap={2}>
-                  <IconSettings size={12} />
-                  <Text size="12">{t("our_power")}</Text>
-                </Group>
-              </Button>
-            </Group>
-          )}
-        </Group>
-
-        {isMobileOrTablet ? (
-          <Menu shadow="md" width={200}>
-            <Menu.Target>
-              <Button size="12" variant="subtle">
-                {t("account")}
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item onClick={() => router.push("/signUp")}>
-                <Button variant="subtle">
-                  <Group wrap="nowrap" gap={2}>
-                    <IconUser size={12} />
-                    <Text size="12">{t("sign_up")}</Text>
-                  </Group>
-                </Button>
-              </Menu.Item>
-              <Menu.Item onClick={() => router.push("/login")}>
-                <Button variant="subtle">
-                  <Group gap={2}>
-                    <IconLogin size={12} />
-                    <Text size="12">{t("login")}</Text>
-                  </Group>
-                </Button>
-              </Menu.Item>
-              <Menu.Item onClick={() => router.push("/requestService")}>
-                <Button variant="subtle">
-                  <Group gap={2}>
-                    <IconMessageCircleQuestion size={12} />
-                    <Text size="12">{t("request_service")}</Text>
-                  </Group>
-                </Button>
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
-        ) : (
-          <Group wrap="nowrap" justify="space-around" gap={5}>
-            <Button
-              variant="subtle"
-              onClick={() =>
-                router.push("/signUp", undefined, { locale: currentLang })
-              }
-            >
-              <Group gap={2}>
-                <IconUser size={12} />
-                <Text size="12">{t("sign_up")}</Text>
-              </Group>
-            </Button>
-            <Button
-              variant="subtle"
-              onClick={() =>
-                router.push("/login", undefined, { locale: currentLang })
-              }
-            >
-              <Group gap={2}>
-                <IconLogin size={12} />
-                <Text size="12">{t("login")}</Text>
-              </Group>
-            </Button>
-            <Button
-              variant="subtle"
-              onClick={() =>
-                router.push("/requestService", undefined, {
-                  locale: currentLang,
-                })
-              }
-            >
-              <Group gap={2}>
-                <IconMessageCircleQuestion size={12} />
-                <Text size="12">{t("request_service")}</Text>
-              </Group>
-            </Button>
-          </Group>
-        )}
+      <Group wrap="nowrap" gap="md" style={{ order: isRTL ? 0 : 2 }}>
+        {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
+        <LanguageSwitcher />
       </Group>
-
-      <LanguageSwitcher />
+      <Group
+        wrap="nowrap"
+        justify="space-between"
+        style={{ flex: 1, padding: "0 20px" }}
+      >
+        {renderMainMenu()}
+      </Group>
     </Grid>
   );
 };

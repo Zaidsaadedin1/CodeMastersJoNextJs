@@ -1,8 +1,7 @@
 import SignUp from "../../../app/components/SignUp/SignUp";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { i18nConfig } from "../../../i18n-config";
-
 import { GetStaticPaths, GetStaticProps } from "next";
+import { i18nConfig } from "../../../i18n-config";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
