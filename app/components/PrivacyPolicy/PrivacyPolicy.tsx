@@ -1,221 +1,109 @@
 import React from "react";
-import { Container, Title, Text, Box, List, Divider } from "@mantine/core";
+import { Title, Text, Box, List, Divider, Stack } from "@mantine/core";
+import { useTranslation } from "next-i18next";
 
 export default function PrivacyPolicy() {
+  const { t, i18n } = useTranslation("privacyPolicy");
+  const currentLang = i18n.language;
+  const isRTL = currentLang === "ar";
+  const email = "info@codemastersjo.site";
+
+  interface Section {
+    title: string;
+    content?: string[] | string;
+    items?: { title?: string; content?: string }[];
+    contact?: string;
+  }
+
+  const renderSection = (sectionKey: string) => {
+    const section: Section = (t(`sections.${sectionKey}`, {
+      returnObjects: true,
+    }) as Section) || { title: "", content: "", items: [], contact: "" };
+
+    return (
+      <Box key={sectionKey} mb="xl">
+        <Title order={3} mb="md">
+          {section.title}
+        </Title>
+
+        {Array.isArray(section.content) ? (
+          section.content.map((paragraph, index) => (
+            <Text key={index} mb="md">
+              {paragraph}
+            </Text>
+          ))
+        ) : (
+          <Text mb="md">{section.content}</Text>
+        )}
+
+        {section.items && (
+          <List
+            mb="md"
+            spacing="sm"
+            pl={isRTL ? "md" : undefined}
+            pr={isRTL ? undefined : "md"}
+            icon={
+              <span
+                style={{
+                  marginInlineEnd: isRTL ? "0" : "0.5rem",
+                  marginInlineStart: isRTL ? "0.5rem" : "0",
+                }}
+              >
+                •
+              </span>
+            }
+          >
+            {section.items.map((item: any, index: number) => (
+              <List.Item key={index}>
+                {item.title ? (
+                  <>
+                    <strong>{item.title}:</strong> {item.content}
+                  </>
+                ) : (
+                  item
+                )}
+              </List.Item>
+            ))}
+          </List>
+        )}
+
+        {section.contact && (
+          <Text mb="md">{t(`sections.${sectionKey}.contact`, { email })}</Text>
+        )}
+      </Box>
+    );
+  };
+
   return (
-    <Container size="md" py="xl">
+    <Stack py="xl" dir={isRTL ? "rtl" : "ltr"}>
       <Title order={1} mb="md">
-        Privacy Policy
+        {t("title")}
       </Title>
       <Text color="dimmed" mb="xl">
-        Last Updated: March 1, 2025
+        {t("lastUpdated")}
       </Text>
 
-      <Box mb="xl">
-        <Title order={3} mb="md">
-          Introduction
-        </Title>
-        <Text mb="md">
-          At Example Company, we respect your privacy and are committed to
-          protecting your personal data. This privacy policy will inform you
-          about how we look after your personal data when you visit our website
-          and tell you about your privacy rights and how the law protects you.
-        </Text>
-        <Text mb="md">
-          This privacy policy applies to all information collected through our
-          website, mobile application, and/or any related services, sales,
-          marketing, or events (collectively, the "Services").
-        </Text>
-      </Box>
+      {renderSection("introduction")}
+      <Divider my="xl" />
 
+      {renderSection("informationCollected")}
+      <Divider my="xl" />
+
+      {renderSection("informationUse")}
+      <Divider my="xl" />
+
+      {renderSection("dataSharing")}
+      <Divider my="xl" />
+
+      {renderSection("yourRights")}
       <Divider my="xl" />
 
       <Box mb="xl">
         <Title order={3} mb="md">
-          Information We Collect
+          {t("sections.contact.title")}
         </Title>
-        <Text mb="md">
-          We collect several types of information from and about users of our
-          Services, including:
-        </Text>
-        <List mb="md">
-          <List.Item>
-            <Text>
-              <strong>Personal Identifiers:</strong> Name, email address, postal
-              address, phone number, and other similar identifiers.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              <strong>Account Information:</strong> Username, password, account
-              preferences, and purchase history.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              <strong>Payment Information:</strong> Credit card numbers, banking
-              information, and billing addresses.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              <strong>Usage Data:</strong> Information about how you use our
-              website, products, and services.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              <strong>Technical Data:</strong> IP address, browser type,
-              operating system, device information, and other technology
-              identifiers on the devices you use to access our Services.
-            </Text>
-          </List.Item>
-        </List>
+        <Text mb="md">{t("sections.contact.content", { email })}</Text>
       </Box>
-
-      <Divider my="xl" />
-
-      <Box mb="xl">
-        <Title order={3} mb="md">
-          How We Use Your Information
-        </Title>
-        <Text mb="md">
-          We use the information we collect about you for various purposes,
-          including:
-        </Text>
-        <List mb="md">
-          <List.Item>
-            <Text>To provide, maintain, and improve our Services.</Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              To process and fulfill your orders and send related information,
-              including order confirmations and invoices.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              To send administrative information, such as updates to our terms,
-              conditions, and policies.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              To personalize your experience and deliver content and product
-              offerings relevant to your interests.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              To respond to your comments, questions, and requests and provide
-              customer service.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              To protect, investigate, and deter against fraudulent,
-              unauthorized, or illegal activity.
-            </Text>
-          </List.Item>
-        </List>
-      </Box>
-
-      <Divider my="xl" />
-
-      <Box mb="xl">
-        <Title order={3} mb="md">
-          Data Sharing and Disclosure
-        </Title>
-        <Text mb="md">We may share your personal information with:</Text>
-        <List mb="md">
-          <List.Item>
-            <Text>
-              <strong>Service Providers:</strong> We may share your information
-              with third-party vendors, service providers, contractors, or
-              agents who perform services for us.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              <strong>Business Transfers:</strong> If we are involved in a
-              merger, acquisition, or sale of all or a portion of our assets,
-              your information may be transferred as part of that transaction.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              <strong>Compliance with Laws:</strong> We may disclose your
-              information where we are legally required to do so.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              <strong>With Your Consent:</strong> We may share your information
-              with third parties when you have given us your consent to do so.
-            </Text>
-          </List.Item>
-        </List>
-      </Box>
-
-      <Divider my="xl" />
-
-      <Box mb="xl">
-        <Title order={3} mb="md">
-          Your Rights
-        </Title>
-        <Text mb="md">
-          Depending on your location, you may have certain rights regarding your
-          personal information, including:
-        </Text>
-        <List mb="md">
-          <List.Item>
-            <Text>
-              The right to access and receive a copy of your personal
-              information.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              The right to request rectification or correction of your personal
-              information.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              The right to request erasure of your personal information.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              The right to restrict processing of your personal information.
-            </Text>
-          </List.Item>
-          <List.Item>
-            <Text>The right to data portability.</Text>
-          </List.Item>
-          <List.Item>
-            <Text>
-              The right to object to processing of your personal information.
-            </Text>
-          </List.Item>
-        </List>
-        <Text mb="md">
-          To exercise any of these rights, please contact us at
-          info@codemastersjo.site
-        </Text>
-      </Box>
-
-      <Divider my="xl" />
-
-      <Box mb="xl">
-        <Title order={3} mb="md">
-          Contact Us
-        </Title>
-        <Text mb="md">
-          If you have any questions about this privacy policy or our privacy
-          practices, please contact us at: info@codemastersjo.site
-        </Text>
-      </Box>
-    </Container>
+    </Stack>
   );
 }

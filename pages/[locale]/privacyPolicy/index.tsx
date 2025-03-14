@@ -1,8 +1,6 @@
 import PrivacyPolicy from "../../../app/components/PrivacyPolicy/PrivacyPolicy";
-
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { i18nConfig } from "../../../i18n-config";
-
 import { GetStaticPaths, GetStaticProps } from "next";
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -27,5 +25,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   };
 };
-
 export default PrivacyPolicy;

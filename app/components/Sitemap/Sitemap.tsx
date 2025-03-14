@@ -1,27 +1,14 @@
 import React from "react";
-import {
-  Container,
-  Title,
-  Text,
-  List,
-  Box,
-  Group,
-  Anchor,
-  Paper,
-  Stack,
-} from "@mantine/core";
+import { Title, Text, List, Group, Anchor, Paper, Stack } from "@mantine/core";
 import {
   IconHome,
   IconUsers,
   IconFileText,
   IconShoppingCart,
   IconHeadset,
-  IconBook,
   IconArticle,
-  IconListCheck,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 
 const sectionIcons = {
   mainPages: IconHome,
@@ -34,7 +21,6 @@ const sectionIcons = {
 
 export default function Sitemap() {
   const { t, i18n } = useTranslation("siteMap");
-  const router = useRouter();
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
 
@@ -70,20 +56,7 @@ export default function Sitemap() {
                 <IconComponent size={24} />
                 <Title order={3}>{section.title}</Title>
               </Group>
-              <List
-                spacing="sm"
-                size="md"
-                icon={
-                  <span
-                    style={{
-                      marginInlineEnd: isRTL ? "0" : "0.5rem",
-                      marginInlineStart: isRTL ? "0.5rem" : "0",
-                    }}
-                  >
-                    •
-                  </span>
-                }
-              >
+              <List spacing="sm" size="md" icon={<span>•</span>}>
                 {section.items.map((item: any, index: number) => (
                   <List.Item key={index}>
                     <Anchor href={`/${currentLang}${item.path}`}>
