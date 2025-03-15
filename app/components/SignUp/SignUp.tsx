@@ -243,12 +243,6 @@ const SignUp = () => {
             </Grid.Col>
           </Grid>
 
-          <Divider
-            label={t("sections.personal")}
-            labelPosition="center"
-            my="xl"
-          />
-
           <Grid gutter="md">
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <DatePickerInput

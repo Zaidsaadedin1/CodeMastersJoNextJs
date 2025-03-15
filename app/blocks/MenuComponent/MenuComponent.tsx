@@ -33,7 +33,7 @@ const MenuComponent = () => {
             style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
           >
             <IconUser size={12} />
-            <Text size="12">{user?.name}</Text>
+            <Text size="sm">{user?.name}</Text>
           </Group>
         </Button>
       </Menu.Target>
@@ -109,9 +109,9 @@ const MenuComponent = () => {
               }
               style={{ direction: isRTL ? "rtl" : "ltr" }}
             >
-              <Group gap={2}>
+              <Group>
                 <item.icon size={12} />
-                <Text size="12">{item.text}</Text>
+                <Text size="sm">{item.text}</Text>
               </Group>
             </Menu.Item>
           ))}
@@ -142,7 +142,7 @@ const MenuComponent = () => {
           >
             <Group gap={2}>
               <item.icon size={12} />
-              <Text size="12">{item.text}</Text>
+              <Text size="sm">{item.text}</Text>
             </Group>
           </Button>
         ))}
@@ -170,7 +170,7 @@ const MenuComponent = () => {
                   style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
                 >
                   <IconUser size={12} />
-                  <Text size="12">{t("sign_up")}</Text>
+                  <Text size="sm">{t("sign_up")}</Text>
                 </Group>
               </Menu.Item>
               <Menu.Item onClick={() => router.push("/login")}>
@@ -179,7 +179,7 @@ const MenuComponent = () => {
                   style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
                 >
                   <IconLogin size={12} />
-                  <Text size="12">{t("login")}</Text>
+                  <Text size="sm">{t("login")}</Text>
                 </Group>
               </Menu.Item>
             </>
@@ -190,7 +190,7 @@ const MenuComponent = () => {
                 style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
               >
                 <IconMessageCircleQuestion size={12} />
-                <Text size="12">{t("request_service")}</Text>
+                <Text size="sm">{t("request_service")}</Text>
               </Group>
             </Menu.Item>
           )}
@@ -211,7 +211,7 @@ const MenuComponent = () => {
             >
               <Group gap={2}>
                 <IconUser size={12} />
-                <Text size="12">{t("sign_up")}</Text>
+                <Text size="sm">{t("sign_up")}</Text>
               </Group>
             </Button>
             <Button
@@ -221,7 +221,7 @@ const MenuComponent = () => {
             >
               <Group gap={2}>
                 <IconLogin size={12} />
-                <Text size="12">{t("login")}</Text>
+                <Text size="sm">{t("login")}</Text>
               </Group>
             </Button>
           </>
@@ -250,9 +250,9 @@ const MenuComponent = () => {
         onClick={() => router.push("/")}
         style={{ cursor: "pointer", order: isRTL ? 2 : 0 }}
       />
+      <LanguageSwitcher />
       <Group wrap="nowrap" gap="md" style={{ order: isRTL ? 0 : 2 }}>
         {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
-        <LanguageSwitcher />
       </Group>
       <Group
         wrap="nowrap"

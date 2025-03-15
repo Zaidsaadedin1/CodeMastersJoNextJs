@@ -1,6 +1,7 @@
 // src/contexts/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { DecodedToken, decodeToken } from "../utils/authDecode";
+import { useRouter } from "next/router";
 
 type AuthContextType = {
   user: DecodedToken | null;
@@ -18,6 +19,7 @@ const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<DecodedToken | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    router.push("/");
     setUser(null);
   };
 

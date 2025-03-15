@@ -1,4 +1,3 @@
-// src/utils/auth.ts
 export interface DecodedToken {
   name: string;
   id: string;
