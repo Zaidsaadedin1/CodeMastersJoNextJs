@@ -1,7 +1,6 @@
 // Login component
 import React from "react";
 import {
-  Container,
   Title,
   TextInput,
   Button,
@@ -12,14 +11,12 @@ import {
   Anchor,
   Group,
   Divider,
-  Modal,
-  Loader,
   Stack,
   LoadingOverlay,
 } from "@mantine/core";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
-import { IconMail, IconLock, IconX, IconCheck } from "@tabler/icons-react";
+import { IconMail, IconLock } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
@@ -72,9 +69,16 @@ export default function Login() {
   const loginMutation = useMutation({
     mutationFn: authController.login,
     onSuccess: (response) => {
+      console.log("Login response:", response);
+
       if (response.success && response.data) {
-        login(response.data); // Use context login instead of direct localStorage
+        // Note: capitalized properties
+        console.log("Login response2:", response);
+
+        login(response.data);
         router.push("/dashboard");
+      } else {
+        console.error("Login response invalid:", response);
       }
     },
   });

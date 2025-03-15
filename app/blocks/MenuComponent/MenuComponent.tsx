@@ -162,38 +162,24 @@ const MenuComponent = () => {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          {!isAuthenticated ? (
-            <>
-              <Menu.Item onClick={() => router.push("/signUp")}>
-                <Group
-                  gap={2}
-                  style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
-                >
-                  <IconUser size={12} />
-                  <Text size="sm">{t("sign_up")}</Text>
-                </Group>
-              </Menu.Item>
-              <Menu.Item onClick={() => router.push("/login")}>
-                <Group
-                  gap={2}
-                  style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
-                >
-                  <IconLogin size={12} />
-                  <Text size="sm">{t("login")}</Text>
-                </Group>
-              </Menu.Item>
-            </>
-          ) : (
-            <Menu.Item onClick={() => router.push("/requestService")}>
-              <Group
-                gap={2}
-                style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
-              >
-                <IconMessageCircleQuestion size={12} />
-                <Text size="sm">{t("request_service")}</Text>
-              </Group>
-            </Menu.Item>
-          )}
+          <Menu.Item onClick={() => router.push("/signUp")}>
+            <Group
+              gap={2}
+              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+            >
+              <IconUser size={12} />
+              <Text size="sm">{t("sign_up")}</Text>
+            </Group>
+          </Menu.Item>
+          <Menu.Item onClick={() => router.push("/login")}>
+            <Group
+              gap={2}
+              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+            >
+              <IconLogin size={12} />
+              <Text size="sm">{t("login")}</Text>
+            </Group>
+          </Menu.Item>
         </Menu.Dropdown>
       </Menu>
     ) : (
@@ -202,41 +188,26 @@ const MenuComponent = () => {
         gap={5}
         style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
       >
-        {!isAuthenticated ? (
-          <>
-            <Button
-              variant="subtle"
-              onClick={() => router.push("/signUp")}
-              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
-            >
-              <Group gap={2}>
-                <IconUser size={12} />
-                <Text size="sm">{t("sign_up")}</Text>
-              </Group>
-            </Button>
-            <Button
-              variant="subtle"
-              onClick={() => router.push("/login")}
-              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
-            >
-              <Group gap={2}>
-                <IconLogin size={12} />
-                <Text size="sm">{t("login")}</Text>
-              </Group>
-            </Button>
-          </>
-        ) : (
-          <Button
-            variant="subtle"
-            onClick={() => router.push("/requestService")}
-            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
-          >
-            <Group gap={2}>
-              <IconMessageCircleQuestion size={12} />
-              <Text size="12">{t("request_service")}</Text>
-            </Group>
-          </Button>
-        )}
+        <Button
+          variant="subtle"
+          onClick={() => router.push("/signUp")}
+          style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+        >
+          <Group gap={2}>
+            <IconUser size={12} />
+            <Text size="sm">{t("sign_up")}</Text>
+          </Group>
+        </Button>
+        <Button
+          variant="subtle"
+          onClick={() => router.push("/login")}
+          style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+        >
+          <Group gap={2}>
+            <IconLogin size={12} />
+            <Text size="sm">{t("login")}</Text>
+          </Group>
+        </Button>
       </Group>
     );
 
@@ -250,17 +221,19 @@ const MenuComponent = () => {
         onClick={() => router.push("/")}
         style={{ cursor: "pointer", order: isRTL ? 2 : 0 }}
       />
+      <Group>
+        <Group wrap="nowrap" gap="md" style={{ order: isRTL ? 0 : 2 }}>
+          {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
+        </Group>
+        <Group
+          wrap="nowrap"
+          justify="space-between"
+          style={{ flex: 1, padding: "0 20px" }}
+        >
+          {renderMainMenu()}
+        </Group>
+      </Group>
       <LanguageSwitcher />
-      <Group wrap="nowrap" gap="md" style={{ order: isRTL ? 0 : 2 }}>
-        {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
-      </Group>
-      <Group
-        wrap="nowrap"
-        justify="space-between"
-        style={{ flex: 1, padding: "0 20px" }}
-      >
-        {renderMainMenu()}
-      </Group>
     </Grid>
   );
 };
