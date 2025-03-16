@@ -1,4 +1,3 @@
-// src/contexts/AuthContext.tsx
 import { createContext, useContext, useEffect, useState } from "react";
 import { DecodedToken, decodeToken } from "../utils/authDecode";
 import { useRouter } from "next/router";
@@ -22,7 +21,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    // Get token from cookies
+    const token = getCookie("token");
     if (token) {
       const decoded = decodeToken(token);
       if (decoded && decoded.exp * 1000 > Date.now()) {
@@ -33,10 +33,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  const login = (token: string) => {
-    // Save to localStorage
-    localStorage.setItem("token", token);
+  // Helper function to get cookie value
+  const getCookie = (name: string): string | null => {
+    const cookieValue = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith(name + "="));
 
+    return cookieValue ? cookieValue.split("=")[1] : null;
+  };
+
+  const login = (token: string) => {
     // Set cookie that will be sent with requests
     document.cookie = `token=${token}; path=/; max-age=${
       30 * 24 * 60 * 60
@@ -47,7 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    // Remove cookie
     document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
     router.push("/");
     setUser(null);

@@ -68,11 +68,9 @@ export default function Login() {
   const loginMutation = useMutation({
     mutationFn: authController.login,
     onSuccess: (response) => {
-      // Adjust this based on your API response structure
       if (response && response.data) {
-        // Assuming response.data is the token string
+        router.push(`/${currentLang}/dashboard`);
         login(response.data);
-        router.push(`/${currentLang}/dashboard`); // Or wherever you want to redirect after login
       } else {
         console.error("Login response invalid:", response);
         form.setErrors({ email: t("errors.invalid_credentials") });
