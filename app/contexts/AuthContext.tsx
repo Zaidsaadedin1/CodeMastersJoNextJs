@@ -34,14 +34,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const login = (token: string) => {
+    // Save to localStorage
     localStorage.setItem("token", token);
+
+    // Set cookie that will be sent with requests
+    document.cookie = `token=${token}; path=/; max-age=${
+      30 * 24 * 60 * 60
+    }; SameSite=Strict`;
+
     const decoded = decodeToken(token);
-    console.log("Decoded token:", decoded);
     if (decoded) setUser(decoded);
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
     router.push("/");
     setUser(null);
   };

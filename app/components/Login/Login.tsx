@@ -65,21 +65,22 @@ export default function Login() {
     },
     validateInputOnBlur: true,
   });
-
   const loginMutation = useMutation({
     mutationFn: authController.login,
     onSuccess: (response) => {
-      console.log("Login response:", response);
-
-      if (response.success && response.data) {
-        // Note: capitalized properties
-        console.log("Login response2:", response);
-
+      // Adjust this based on your API response structure
+      if (response && response.data) {
+        // Assuming response.data is the token string
         login(response.data);
-        router.push("/dashboard");
+        router.push(`/${currentLang}/dashboard`); // Or wherever you want to redirect after login
       } else {
         console.error("Login response invalid:", response);
+        form.setErrors({ email: t("errors.invalid_credentials") });
       }
+    },
+    onError: (error) => {
+      console.error("Login error:", error);
+      form.setErrors({ email: t("errors.server_error") });
     },
   });
 

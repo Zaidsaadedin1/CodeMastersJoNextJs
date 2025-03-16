@@ -1,30 +1,31 @@
+// checkIsAuthMiddleware.ts
 import { GetServerSidePropsContext } from "next";
-import { IncomingMessage } from "http";
 import { decodeToken } from "./app/utils/authDecode";
 
-// Create a generic request type that works for both SSR and API routes
-type AuthRequest = IncomingMessage & {
-  cookies: Partial<{
-    [key: string]: string;
-  }>;
-};
+export const checkAuth = async (context: GetServerSidePropsContext) => {
+  // Get token from cookies
+  const { req } = context;
+  const cookies =
+    req.headers.cookie?.split(";").reduce((acc, cookie) => {
+      const [key, value] = cookie.trim().split("=");
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, string>) || {};
 
-export const checkAuth = async (
-  context: GetServerSidePropsContext | { req: AuthRequest }
-) => {
-  const token = context.req.cookies.token;
+  const token = cookies.token || req.headers.authorization?.split(" ")[1];
 
   if (!token) {
     return { authenticated: false, user: null };
   }
 
-  const decoded = decodeToken(token);
-  if (!decoded || decoded.exp * 1000 < Date.now()) {
-    return { authenticated: false, user: null };
+  try {
+    const decoded = decodeToken(token);
+    if (decoded && decoded.exp * 1000 > Date.now()) {
+      return { authenticated: true, user: decoded };
+    }
+  } catch (error) {
+    console.error("Auth token verification failed:", error);
   }
 
-  return {
-    authenticated: true,
-    user: decoded,
-  };
+  return { authenticated: false, user: null };
 };
