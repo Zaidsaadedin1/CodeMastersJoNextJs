@@ -14,9 +14,10 @@ import {
   Stack,
   LoadingOverlay,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconUser, IconPhone, IconCheck, IconX } from "@tabler/icons-react";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
-import { IconUser, IconPhone } from "@tabler/icons-react";
 import { DatePickerInput } from "@mantine/dates";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
@@ -121,8 +122,65 @@ const SignUp = () => {
     validateInputOnBlur: true,
   });
 
+  // Show notifications
+  const showSuccessNotification = () => {
+    notifications.show({
+      id: "register-success",
+      title: t("notifications.success_title"),
+      message: t("notifications.success_message"),
+      color: "green",
+      icon: <IconCheck size={16} />,
+      autoClose: 3000,
+      withCloseButton: true,
+      withBorder: true,
+    });
+  };
+
+  const showErrorNotification = (errorMessage: string) => {
+    notifications.show({
+      id: "register-error",
+      title: t("notifications.error_title"),
+      message: errorMessage,
+      color: "red",
+      icon: <IconX size={16} />,
+      autoClose: 5000,
+      withCloseButton: true,
+      withBorder: true,
+    });
+  };
+
   const registerMutation = useMutation({
     mutationFn: authController.register,
+    onSuccess: (response) => {
+      showSuccessNotification();
+      // Short delay to allow notification to be seen before redirect
+      setTimeout(() => {
+        router.push(`/${currentLang}/login`);
+      }, 1500);
+    },
+    onError: (error: any) => {
+      console.error("Registration error:", error);
+
+      // Handle specific error cases based on the API response
+      let errorMessage = t("notifications.error_generic");
+
+      if (error?.response?.data) {
+        const responseData = error.response.data;
+
+        // Handle specific error cases like duplicate email/username
+        if (
+          responseData.code === "USER_EXISTS" ||
+          responseData.message?.includes("already exists")
+        ) {
+          errorMessage = t("notifications.error_user_exists");
+          form.setErrors({ email: errorMessage });
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+      }
+
+      showErrorNotification(errorMessage);
+    },
   });
 
   const handleSubmit = form.onSubmit((values) => {
@@ -133,8 +191,9 @@ const SignUp = () => {
         birthDate: values.birthDate as Date,
       };
       registerMutation.mutate(registerData);
-    } catch {
-      //handeld
+    } catch (error) {
+      const errorMessage = t("notifications.error_generic");
+      showErrorNotification(errorMessage);
     }
   });
 

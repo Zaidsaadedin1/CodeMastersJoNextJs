@@ -91,5 +91,12 @@
       "bio_max": "Bio cannot exceed 300 characters",
       "terms_required": "You must accept the terms and conditions",
       "passwords_match": "Passwords don't match"
+    },
+    "notifications": {
+      "success_title": "Registration Successful",
+      "success_message": "Your account has been created successfully. You can now log in.",
+      "error_title": "Registration Failed",
+      "error_generic": "Unable to create your account. Please try again later.",
+      "error_user_exists": "A user with this email or username already exists."
     }
   }

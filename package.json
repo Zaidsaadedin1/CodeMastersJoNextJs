@@ -15,6 +15,7 @@
     "@mantine/dates": "^7.17.1",
     "@mantine/form": "^7.17.1",
     "@mantine/hooks": "^7.17.1",
+    "@mantine/notifications": "^7.17.1",
     "@prisma/client": "^6.4.1",
     "@tabler/icons-react": "^3.30.0",
     "@tanstack/react-query": "^5.68.0",
@@ -24,6 +25,7 @@
     "express": "^4.21.2",
     "framer-motion": "^12.4.10",
     "i18next": "^24.2.2",
+    "js-cookie": "^3.0.5",
     "negotiator": "^1.0.0",
     "next": "^15.1.5",
     "next-globe-gen": "^1.3.7",
@@ -39,6 +41,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/negotiator": "^0.6.3",
     "@types/node": "^22.13.8",
     "@types/nookies": "^1.1.0",

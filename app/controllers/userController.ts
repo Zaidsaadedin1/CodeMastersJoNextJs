@@ -4,6 +4,10 @@ import axios from "../types/axios";
 
 export const userController = {
   getUserById: async (id: string | undefined) => {
+    if (!id) {
+      throw new Error("User ID is required.");
+    }
+
     const response = await axios.get<GenericResponse<GetUserDto>>(
       `/User/${id}`
     );

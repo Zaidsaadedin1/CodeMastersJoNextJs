@@ -19,5 +19,15 @@
       "email_invalid": "بريد إلكتروني غير صالح",
       "password_required": "كلمة المرور مطلوبة"
     },
-    "divider": "أو"
+    "divider": "أو",
+    "notifications": {
+        "success_title": "نجاح",
+        "success_message_login": "تم تسجيل الدخول بنجاح.",
+        "success_message_signup": "تم إنشاء حسابك بنجاح.",
+        "error_title": "خطأ",
+        "error_generic": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقاً.",
+        "error_invalid_credentials": "البريد الإلكتروني أو كلمة المرور غير صحيحة.",
+        "error_user_exists": "مستخدم بهذا البريد الإلكتروني أو اسم المستخدم موجود بالفعل.",
+        "error_server": "خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقاً."
+    }
   }

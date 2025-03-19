@@ -19,5 +19,11 @@
     "email_invalid": "Invalid email address",
     "password_required": "Password is required"
   },
-  "divider": "OR"
+  "divider": "OR", 
+  "notifications": {
+      "success_title": "Login Successful",
+      "success_message": "You have been logged in successfully.",
+      "error_title": "Login Failed",
+      "error_message": "Unable to log in. Please check your credentials."
+  }
 }

@@ -19,7 +19,6 @@ import {
 import { useTranslation } from "next-i18next";
 
 const HomePage = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [fadeState, setFadeState] = useState("in");
   const { t, i18n } = useTranslation("home");
@@ -48,18 +47,8 @@ const HomePage = () => {
     return () => clearInterval(phraseInterval);
   }, [inspiringPhrases]);
 
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.play().catch((error) => {
-        console.error("Error playing audio:", error);
-      });
-    }
-  }, []);
-
   return (
     <Stack dir={i18n.language === "ar" ? "rtl" : "ltr"}>
-      <audio ref={audioRef} src="/audio/hope.mp3" preload="auto" loop />
-
       <Box
         style={{
           height: "80px",

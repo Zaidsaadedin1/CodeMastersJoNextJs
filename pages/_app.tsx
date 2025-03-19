@@ -4,11 +4,13 @@ import { MantineProvider, Stack } from "@mantine/core";
 import MenuComponent from "../app/blocks/MenuComponent/MenuComponent";
 import Footer from "../app/blocks/Footer/Footer";
 import "@mantine/core/styles.css";
+import "@mantine/notifications/styles.css"; // Import notifications styles
 import { theme } from "../theme";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
+import { Notifications } from "@mantine/notifications"; // Import Notifications instead of NotificationsProvider
 
 function App({ Component, pageProps }: any) {
   const router = useRouter();
@@ -24,13 +26,15 @@ function App({ Component, pageProps }: any) {
   const queryClient = new QueryClient();
 
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <MantineProvider
-          theme={theme}
-          cssVariablesSelector="html"
-          getRootElement={() => document.documentElement}
-        >
+    <MantineProvider
+      theme={theme}
+      cssVariablesSelector="html"
+      getRootElement={() => document.documentElement}
+    >
+      <Notifications position="top-right" zIndex={1000} />{" "}
+      {/* Inside MantineProvider */}
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
           <Head>
             <title>Code Masters</title>
             <meta
@@ -45,9 +49,9 @@ function App({ Component, pageProps }: any) {
             <Component {...pageProps} />
             <Footer />
           </Stack>
-        </MantineProvider>
-      </QueryClientProvider>
-    </AuthProvider>
+        </QueryClientProvider>
+      </AuthProvider>
+    </MantineProvider>
   );
 }
 

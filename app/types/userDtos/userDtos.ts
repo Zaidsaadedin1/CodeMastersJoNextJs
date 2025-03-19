@@ -2,24 +2,27 @@
 
 export interface GetUserDto {
   id: string;
-  username: string;
+  userName: string;
   email: string;
   firstName: string;
   lastName: string;
-  birthDate: Date;
+  dateOfBirth: Date;
   phoneNumber: string;
-  bio: string;
-  occupation: string;
-  location: string;
-  interests: string[];
+  bio: string | null;
+  occupation: string | null;
+  location: string | null;
+  interests: string[] | null;
 }
 
 export interface UpdateUserDto {
+  userName: string;
+  email: string;
   firstName: string;
   lastName: string;
+  dateOfBirth: Date;
   phoneNumber: string;
-  bio: string;
-  occupation: string;
-  location: string;
-  interests: string[];
+  bio: string | null;
+  occupation: string | null;
+  location: string | null;
+  interests: string[] | null;
 }

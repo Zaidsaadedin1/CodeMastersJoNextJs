@@ -20,6 +20,7 @@ export const getServerSideProps: GetServerSideProps = async (
       },
     };
   }
+  console.log("Making request to /User/" + authCheck.user?.id); // Log request
 
   const res = await userController.getUserById(authCheck.user?.id);
   return {
@@ -29,7 +30,7 @@ export const getServerSideProps: GetServerSideProps = async (
         "footer",
         "profile",
       ])),
-      user: res,
+      user: res.data,
     },
   };
 };

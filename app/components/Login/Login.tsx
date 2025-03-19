@@ -14,9 +14,10 @@ import {
   Stack,
   LoadingOverlay,
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconMail, IconLock, IconX, IconCheck } from "@tabler/icons-react";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
-import { IconMail, IconLock } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
@@ -65,20 +66,52 @@ export default function Login() {
     },
     validateInputOnBlur: true,
   });
+
+  // Show notifications
+  const showSuccessNotification = () => {
+    notifications.show({
+      id: "login-success",
+      title: t("notifications.success_title"),
+      message: t("notifications.success_message"),
+      color: "green",
+      icon: <IconCheck size={16} />,
+      autoClose: 3000,
+      withCloseButton: true,
+      withBorder: true,
+    });
+  };
+
+  const showErrorNotification = (errorMessage: string) => {
+    notifications.show({
+      id: "login-error",
+      title: t("notifications.error_title"),
+      message: errorMessage,
+      color: "red",
+      icon: <IconX size={16} />,
+      autoClose: 5000,
+      withCloseButton: true,
+      withBorder: true,
+    });
+  };
+
   const loginMutation = useMutation({
     mutationFn: authController.login,
     onSuccess: (response) => {
       if (response && response.data) {
-        router.push(`/${currentLang}/dashboard`);
-        login(response.data);
+        showSuccessNotification();
+        setTimeout(() => {
+          router.push(`/${currentLang}/dashboard`);
+          login(response.data!);
+        }, 1000);
       } else {
-        console.error("Login response invalid:", response);
         form.setErrors({ email: t("errors.invalid_credentials") });
+        showErrorNotification(t("errors.invalid_credentials"));
       }
     },
-    onError: (error) => {
-      console.error("Login error:", error);
-      form.setErrors({ email: t("errors.server_error") });
+    onError: (error: any) => {
+      const errorMessage = error?.response?.data?.message;
+      form.setErrors({ email: errorMessage });
+      showErrorNotification(errorMessage);
     },
   });
 
