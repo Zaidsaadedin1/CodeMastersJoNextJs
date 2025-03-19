@@ -1,0 +1,40 @@
+{
+    "title": "معلومات الملف الشخصي",
+    "fields": {
+      "username": "اسم المستخدم",
+      "email": "البريد الإلكتروني",
+      "birthDate": "تاريخ الميلاد",
+      "firstName": "الاسم الأول",
+      "lastName": "الاسم الأخير",
+      "phoneNumber": "رقم الهاتف",
+      "bio": "السيرة الذاتية",
+      "occupation": "المهنة",
+      "location": "الموقع",
+      "interests": "الاهتمامات"
+    },
+    "placeholders": {
+      "interests": "أضف اهتمامًا"
+    },
+    "buttons": {
+      "save": "حفظ التغييرات",
+      "edit": "تعديل الملف"
+    },
+    "requests": {
+      "title": "الطلبات الأخيرة",
+      "headers": {
+        "id": "رقم الطلب",
+        "status": "الحالة",
+        "date": "التاريخ"
+      },
+      "status": {
+        "pending": "قيد الانتظار",
+        "approved": "مقبول",
+        "rejected": "مرفوض"
+      }
+    },
+    "validation": {
+      "firstName_required": "الاسم الأول مطلوب",
+      "lastName_required": "الاسم الأخير مطلوب",
+      "phone_invalid": "صيغة رقم الهاتف غير صالحة"
+    }
+  }
