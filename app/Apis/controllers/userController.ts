@@ -1,6 +1,6 @@
-import { GetUserDto, UpdateUserDto } from "../../types/userDtos/userDtos";
-import { GenericResponse } from "../../types/Shared/sharedDtos";
-import axios from "../../types/axios";
+import { GetUserDto, UpdateUserDto } from "../types/userDtos/userDtos";
+import { GenericResponse } from "../types/Shared/sharedDtos";
+import axios from "../types/axios";
 
 export const userController = {
   getUserById: async (id: string | undefined) => {
