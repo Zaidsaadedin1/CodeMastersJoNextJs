@@ -242,10 +242,10 @@ const MenuComponent = () => {
         <Image
           src="/images/logo.png"
           alt="Logo"
-          width={50}
-          height={50}
-          onClick={() => router.push("/", undefined, { locale: currentLang })}
+          w={50}
+          h={50}
           style={{ cursor: "pointer" }}
+          onClick={() => router.push("/", undefined, { locale: currentLang })}
         />
       </Flex>
 
