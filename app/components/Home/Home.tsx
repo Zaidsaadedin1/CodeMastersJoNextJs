@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   Title,
-  Text,
   Card,
   Box,
   Overlay,
   Container,
   SimpleGrid,
   Stack,
-  Textarea,
+  Text,
 } from "@mantine/core";
 import {
   IconBrain,
@@ -55,12 +54,15 @@ import {
   IconBrandSuperhuman,
   IconReceipt2,
 } from "@tabler/icons-react";
-import { useTranslation } from "next-i18next";
+
+import "swiper/css";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import "swiper/css";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
+import "swiper/css";
+
 // Make sure to place your video file (e.g., homepage.mp4) inside the public/videos directory
 const homePageVideo = "/videos/homepage.mp4";
 
@@ -69,8 +71,6 @@ const HomePage = () => {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [fadeState, setFadeState] = useState<"in" | "out">("in");
   const videoRef = useRef<HTMLVideoElement>(null);
-  const currentLang = i18n.language;
-  const router = useRouter();
 
   const inspiringPhrases: string[] = [
     t("inspiring_phrases.phrase1"),
@@ -389,34 +389,47 @@ const HomePage = () => {
       icon: <IconNews size={32} />,
     },
   ];
-
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.loop = true;
       videoRef.current.controls = false;
+
+      // Add error handling
+      videoRef.current.onerror = () => {
+        console.error("Video error:", videoRef.current?.error);
+      };
+
+      videoRef.current.oncanplay = () => {
+        console.log("Video can play");
+        videoRef.current?.play().catch((e) => console.error("Play error:", e));
+      };
     }
+  }, []);
 
-    const phraseInterval = setInterval(() => {
-      setFadeState("out");
-      setTimeout(() => {
-        setCurrentPhraseIndex((prevIndex) =>
-          prevIndex === inspiringPhrases.length - 1 ? 0 : prevIndex + 1
-        );
-        setFadeState("in");
-      }, 1000);
-    }, 5000);
-    return () => clearInterval(phraseInterval);
-  }, [t, inspiringPhrases.length]);
+  type Solution = {
+    key: string;
+    category: string;
+    description: string;
+    icon: React.ReactNode;
+    price: string;
+    discounted: string;
+  };
 
-  const AnimatedCard = ({ children }: any) => (
+  const AnimatedCard = ({ children, ...props }: any) => (
     <motion.div
       whileHover={{ scale: 1.05, y: -10 }}
       transition={{ type: "spring", stiffness: 300 }}
+      {...props}
     >
       {children}
     </motion.div>
   );
-  function HorizontalSection({ items }: { items: typeof solutions }) {
+
+  function HorizontalSection({ items }: { items: Solution[] }) {
+    const router = useRouter();
+    const { i18n } = useTranslation();
+    const currentLang = i18n.language;
+
     return (
       <Swiper
         spaceBetween={20}
@@ -426,26 +439,77 @@ const HomePage = () => {
         autoplay={{
           delay: 2000, // time between auto scroll moves (2 seconds)
         }}
-        loop={true} // enable continuous loop
-        style={{ marginBottom: 40 }}
+        loop={true}
+        style={{ height: 500 }} // enable continuous loop
       >
         {items.map((solution) => (
-          <SwiperSlide style={{ maxWidth: 300 }} key={solution.key}>
+          <SwiperSlide
+            key={solution.key}
+            style={{
+              maxWidth: 320,
+              minWidth: 220,
+              height: 450,
+              position: "relative",
+              padding: 30,
+              backgroundColor: "#f8f9fa",
+              borderRadius: 20,
+              margin: 50,
+            }}
+          >
+            <Box
+              style={{
+                position: "absolute",
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: 10,
+                backgroundColor: "rgba(0, 0, 0, 0.1)",
+                borderRadius: 20,
+                zIndex: 0,
+                padding: 30,
+              }}
+            />
             <AnimatedCard
-              style={{ cursor: "pointer", maxWidth: 300 }}
-              onClick={() => {
+              style={{
+                position: "relative",
+                zIndex: 1,
+                cursor: "pointer",
+                height: "100%",
+                borderRadius: 20,
+                padding: 24,
+                backgroundColor: "#fff",
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+              }}
+              onClick={() =>
                 router.push("/requestService", undefined, {
                   locale: currentLang,
-                });
-              }}
+                })
+              }
             >
-              <Text size="lg" mb={10}>
+              <Text size="lg" fw={600} mb={10}>
                 {solution.icon} {solution.category}
               </Text>
-              <Text size="m">{solution.description}</Text>
-              <Text size="m">
-                <strong>{solution.price}</strong>{" "}
-                <strong>{solution.discounted}</strong>
+
+              <Text size="sm" style={{ flexGrow: 1 }}>
+                {solution.description}
+              </Text>
+
+              <Text size="sm" mt={10}>
+                <span
+                  style={{
+                    textDecoration: "line-through",
+                    color: "#999",
+                    marginRight: 8,
+                  }}
+                >
+                  {solution.price}
+                </span>
+                <strong style={{ color: "#d32f2f", fontSize: 16 }}>
+                  {solution.discounted}
+                </strong>
               </Text>
             </AnimatedCard>
           </SwiperSlide>
@@ -457,6 +521,7 @@ const HomePage = () => {
   return (
     <Box dir={i18n.language === "ar" ? "rtl" : "ltr"}>
       {/* Full-screen looping video */}
+
       <Box style={{ position: "relative", height: "100vh", width: "100%" }}>
         <video
           ref={videoRef}
@@ -515,7 +580,7 @@ const HomePage = () => {
         </Container>
       </Box>
 
-      <Container py={80} size="xl">
+      <Container py={80} size="xl" mb="xl">
         <Title
           order={2}
           style={{
@@ -528,10 +593,7 @@ const HomePage = () => {
         </Title>
 
         <HorizontalSection
-          items={solutions.slice(0, Math.ceil(solutions.length / 2))}
-        />
-        <HorizontalSection
-          items={solutions.slice(Math.ceil(solutions.length / 2))}
+          items={solutions.slice(0, Math.ceil(solutions.length))}
         />
       </Container>
 
