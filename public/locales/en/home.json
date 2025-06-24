@@ -1,39 +1,199 @@
 {
-  "code_masters": "Code Masters",
-  "intelligent_solutions": "Intelligent Solutions",
-  "inspiring_phrases": [
-    "Transforming Visions into Digital Reality",
-    "Crafting Tomorrow's Technology Today",
-    "Where Innovation Meets Excellence",
-    "Building Digital Solutions That Matter",
-    "Engineering the Future, One Line of Code at a Time",
-    "Turning Complex Challenges into Elegant Solutions",
-    "Your Technology Partner in a Digital World",
-    "Pushing the Boundaries of What's Possible"
-  ],
-  "about_us": "We are more than just an IT company. We are visionaries, problem-solvers, and innovators dedicated to developing cutting-edge solutions that transform businesses and elevate experiences.",
-  "intelligent_solutions": {
-    "title": "Intelligent Solutions",
-    "description": "Harnessing AI and machine learning to solve complex problems"
+  "inspiring_phrases": {
+    "phrase1": "Innovative solutions for your digital needs",
+    "phrase2": "Turning ideas into digital reality",
+    "phrase3": "Connecting technology with creativity",
+    "phrase4": "Your partner in digital transformation",
+    "phrase5": "Cutting-edge tech solutions",
+    "phrase6": "Custom software tailored to your business",
+    "phrase7": "Boost your digital presence",
+    "phrase8": "Technology that drives success"
   },
-  "custom_development": {
-    "title": "Custom Development",
-    "description": "Tailored software built with precision and care"
+  "about_us": "We blend creativity and technology to craft solutions that move your business forward.",
+  "our_artistic_solutions": "Build your tech solutions and projects with us",
+  "our_services": "Our Services",
+  "starting_from": "Starting at",
+  "currency": "JOD",
+  "discount": "Discount",
+  "get_started": "Get Started",
+  "solutions": {
+    "ecommerce": {
+      "title": "E-commerce Solution",
+      "description": "A full-featured platform for selling products online with inventory management, secure payments, and delivery options."
+    },
+    "wedding_planners": {
+      "title": "Wedding Planner Solution",
+      "description": "A site to showcase service packages, connect with clients, and manage appointments."
+    },
+    "event_organizers": {
+      "title": "Event Organizer Solution",
+      "description": "An event management system for scheduling, ticketing, and event details."
+    },
+    "fashion_brands": {
+      "title": "Fashion Brand Solution",
+      "description": "A platform to display collections and clothing items with ordering and payment features."
+    },
+    "makeup_artists": {
+      "title": "Makeup Artist Solution",
+      "description": "A professional site to showcase previous work, pricing, and session bookings."
+    },
+    "delivery_services": {
+      "title": "Delivery Service Solution",
+      "description": "An order tracking and delivery system with a dashboard for managing drivers and orders."
+    },
+    "pet_care": {
+      "title": "Pet Care Solution",
+      "description": "A booking platform for pet grooming, clinics, and nutrition services."
+    },
+    "bookstores": {
+      "title": "Bookstore Solution",
+      "description": "An online store to sell books and stationery with inventory and payment management."
+    },
+    "handmade_crafts": {
+      "title": "Handmade Crafts Solution",
+      "description": "A platform to showcase and sell handmade items with order and delivery management."
+    },
+    "language_centers": {
+      "title": "Language Center Solution",
+      "description": "A website offering course info, schedules, and online registration."
+    },
+    "music_teachers": {
+      "title": "Music Teacher Solution",
+      "description": "A site to offer lessons, display skills, and manage class schedules."
+    },
+    "coffee_shops": {
+      "title": "Coffee Shop Solution",
+      "description": "An interactive website to showcase menus, handle bookings, and run loyalty programs."
+    },
+    "photobooths": {
+      "title": "Photo Booth Solution",
+      "description": "A booking site to display photo samples and available services."
+    },
+    "barbers": {
+      "title": "Barbershop Solution",
+      "description": "An online booking system with service details and pricing."
+    },
+    "recruiting_agencies": {
+      "title": "Recruitment Agency Solution",
+      "description": "A platform for posting jobs, managing CVs, and connecting with companies."
+    },
+    "travel_agencies": {
+      "title": "Travel Agency Solution",
+      "description": "A site to display travel packages, bookings, and trip planning."
+    },
+    "resume_builders": {
+      "title": "Resume Builder Solution",
+      "description": "A professional resume design tool with customizable templates and PDF export."
+    },
+    "mental_health": {
+      "title": "Mental Health Solution",
+      "description": "A platform for therapy bookings, specialist profiles, and awareness content."
+    },
+    "home_decor": {
+      "title": "Home Decor Solution",
+      "description": "A stylish platform to showcase home decor products with high-quality images and ordering options."
+    },
+    "baby_stores": {
+      "title": "Baby Store Solution",
+      "description": "An online shop for baby and toddler products with helpful filters for browsing."
+    },
+    "accountants": {
+      "title": "Accountant Solution",
+      "description": "A professional site to display services, manage appointments, and client communication."
+    },
+    "restaurant": {
+      "title": "Restaurant Solution",
+      "description": "A complete digital solution for restaurants including online ordering, reservations, and management tools."
+    },
+    "real_estate": {
+      "title": "Real Estate Solution",
+      "description": "A complete platform for real estate agencies with property listings, virtual tours, and CRM tools."
+    },
+    "car_rentals": {
+      "title": "Car Rental Solution",
+      "description": "A full-featured solution for car rental businesses with online booking, fleet management, and payments."
+    },
+    "gyms": {
+      "title": "Gym Solution",
+      "description": "A membership site with online classes, trainer profiles, and member registration."
+    },
+    "medical_clinics": {
+      "title": "Medical Clinic Solution",
+      "description": "A system for appointment booking, doctor profiles, and available medical services."
+    },
+    "law_firms": {
+      "title": "Law Firm Solution",
+      "description": "A professional site highlighting services, lawyer profiles, and contact options."
+    },
+    "freelancers": {
+      "title": "Freelancer Solution",
+      "description": "A sleek personal profile to showcase past work, skills, certifications, and contact forms."
+    },
+    "ngos": {
+      "title": "NGO Solution",
+      "description": "A site built for donations, showcasing campaigns, projects, and community impact."
+    },
+    "digital_agencies": {
+      "title": "Digital Agency Solution",
+      "description": "A professional template for agencies featuring case studies, team profiles, and services."
+    },
+    "local_shops": {
+      "title": "Local Shop Solution",
+      "description": "A simple and attractive website to display products and shop details."
+    },
+    "influencers": {
+      "title": "Influencer Solution",
+      "description": "A personal website or bio link page with social media links and contact form."
+    },
+    "photographers": {
+      "title": "Photographer Solution",
+      "description": "A visually stunning portfolio site with booking options for photo sessions."
+    },
+    "tutors": {
+      "title": "Tutor Solution",
+      "description": "An educational site to display available courses, class schedules, and student registration."
+    },
+    "game_stores": {
+      "title": "Game Store Solution",
+      "description": "A full-featured online store for selling games and accessories with filters and categories."
+    },
+    "tech_startups": {
+      "title": "Tech Startup Solution",
+      "description": "A modern landing page with a backend dashboard to promote apps and services."
+    },
+    "job_boards": {
+      "title": "Job Board Solution",
+      "description": "A dedicated platform for job listings by category, company pages, and application forms."
+    },
+    "blogs": {
+      "title": "Blog & News Website Solution",
+      "description": "A content-rich layout to showcase articles, categories, and featured posts."
+    }
   },
-  "digital_transformation": {
-    "title": "Digital Transformation",
-    "description": "Guiding your business into the digital future"
-  },
-  "digital_marketing": {
-    "title": "Digital Marketing",
-    "description": "Strategic campaigns that drive growth and boost visibility"
-  },
-  "tech_education": {
-    "title": "Tech Education",
-    "description": "Professional training and workshops led by industry experts"
-  },
-  "research_documentation": {
-    "title": "Research & Documentation",
-    "description": "Comprehensive studies and technical documentation services"
+  "services": {
+    "intelligent_solutions": {
+      "title": "Smart Solutions",
+      "description": "AI-powered solutions tailored to your business needs."
+    },
+    "custom_development": {
+      "title": "Custom Development",
+      "description": "Software development built around your specific business requirements."
+    },
+    "digital_transformation": {
+      "title": "Digital Transformation",
+      "description": "End-to-end strategies to digitize and modernize your business operations."
+    },
+    "digital_marketing": {
+      "title": "Digital Marketing",
+      "description": "Data-driven marketing strategies to grow your online presence."
+    },
+    "tech_education": {
+      "title": "Tech Education",
+      "description": "Training programs to upskill your team in modern technologies."
+    },
+    "research_documentation": {
+      "title": "Research & Documentation",
+      "description": "In-depth research and technical documentation services."
+    }
   }
 }
