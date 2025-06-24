@@ -62,6 +62,7 @@ import { Autoplay } from "swiper/modules";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import "swiper/css";
+import { useTimeout } from "@mantine/hooks";
 
 // Make sure to place your video file (e.g., homepage.mp4) inside the public/videos directory
 const homePageVideo = "/videos/homePageWebVideo.mp4";
@@ -71,64 +72,70 @@ const HomePage = () => {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [fadeState, setFadeState] = useState<"in" | "out">("in");
   const videoRef = useRef<HTMLVideoElement>(null);
+  const router = useRouter();
+  const currentLang = i18n.language;
+  const swiperRef = useRef<any>(null);
 
-  const [videoError, setVideoError] = useState(false);
-
-  // Update the video error handler
-  if (videoRef.current) {
-    videoRef.current.onerror = (e) => {
-      console.error("Video error:", e);
-      console.error("Video error details:", videoRef.current?.error);
-      setVideoError(true); // Set error state to show fallback
-    };
-  }
+  const timeout = useTimeout(() => {
+    setFadeState("out");
+    setTimeout(() => {
+      setCurrentPhraseIndex((prev) => (prev + 1) % inspiringPhrases.length);
+      setFadeState("in");
+      timeout.start();
+    }, 1000); // fade out duration
+  }, 3500);
 
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.loop = true;
-      videoRef.current.controls = false;
-      videoRef.current.muted = true; // Ensure muted for autoplay
+    timeout.start();
+    return timeout.clear;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-      // Add comprehensive error handling
-      videoRef.current.onerror = (e) => {
-        console.error("Video error:", e);
-        console.error("Video error details:", videoRef.current?.error);
-      };
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.loop = true;
+      video.controls = false;
+      video.muted = true;
 
-      videoRef.current.onloadstart = () => {
-        console.log("Video load started");
-      };
-
-      videoRef.current.onloadeddata = () => {
-        console.log("Video data loaded");
-      };
-
-      videoRef.current.oncanplay = () => {
-        console.log("Video can play");
-        videoRef.current?.play().catch((e) => {
+      const handlePlay = () => {
+        video.play().catch((e) => {
           console.error("Play error:", e);
-          // Fallback: try playing with user interaction
           document.addEventListener(
             "click",
             () => {
-              videoRef.current?.play().catch(console.error);
+              video.play().catch(console.error);
             },
             { once: true }
           );
         });
       };
 
-      // Add load event listener
-      videoRef.current.addEventListener("loadedmetadata", () => {
-        console.log("Video metadata loaded");
-        console.log("Duration:", videoRef.current?.duration);
+      video.addEventListener("error", (e) => {
+        console.error("Video error:", e);
+        console.error("Details:", video.error);
+      });
+      video.addEventListener("loadstart", () =>
+        console.log("Video load started")
+      );
+      video.addEventListener("loadeddata", () =>
+        console.log("Video data loaded")
+      );
+      video.addEventListener("canplay", handlePlay);
+      video.addEventListener("loadedmetadata", () => {
         console.log(
-          "Video dimensions:",
-          videoRef.current?.videoWidth,
-          "x",
-          videoRef.current?.videoHeight
+          "Metadata loaded",
+          video.duration,
+          video.videoWidth,
+          video.videoHeight
         );
       });
+
+      return () => {
+        video.removeEventListener("error", () => {});
+        video.removeEventListener("canplay", handlePlay);
+        // Remove other listeners if needed
+      };
     }
   }, []);
 
@@ -470,11 +477,6 @@ const HomePage = () => {
   );
 
   function HorizontalSection({ items }: { items: Solution[] }) {
-    const router = useRouter();
-    const { i18n } = useTranslation();
-    const currentLang = i18n.language;
-    const swiperRef = useRef<any>(null);
-
     // Ensure swiper always starts from the first slide
     useEffect(() => {
       if (swiperRef.current && swiperRef.current.swiper) {
@@ -576,8 +578,6 @@ const HomePage = () => {
 
   return (
     <Box dir={i18n.language === "ar" ? "rtl" : "ltr"}>
-      {/* Full-screen looping video */}
-
       <Box style={{ position: "relative", height: "100vh", width: "100%" }}>
         <video
           ref={videoRef}
@@ -623,14 +623,11 @@ const HomePage = () => {
 
         <Container
           style={{
-            position: "relative",
-            zIndex: 2,
+            position: "absolute",
             height: "100%",
             display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: i18n.language === "ar" ? "flex-end" : "flex-start",
-            textAlign: i18n.language === "ar" ? "right" : "left",
+            alignItems: "center",
+            justifyItems: "center",
           }}
         >
           <Title
@@ -647,7 +644,6 @@ const HomePage = () => {
               style={{
                 opacity: fadeState === "in" ? 1 : 0,
                 transition: "opacity 1s ease-in-out",
-                display: "block",
                 minHeight: "120px",
               }}
             >
@@ -696,7 +692,18 @@ const HomePage = () => {
               "tech_education",
               "research_documentation",
             ].map((key, index) => (
-              <Card key={key} shadow="sm" p="lg" radius="md">
+              <Card
+                style={{ cursor: "pointer" }}
+                key={key}
+                shadow="sm"
+                p="lg"
+                radius="md"
+                onClick={() => {
+                  router.push("/requestService", undefined, {
+                    locale: currentLang,
+                  });
+                }}
+              >
                 <Stack align="center" m="xs">
                   <Box style={{ marginBottom: 16, color: "#228be6" }}>
                     {index === 0 && <IconBrain size={48} />}
