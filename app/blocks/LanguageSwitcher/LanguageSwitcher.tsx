@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
     <Menu shadow="md" width={200}>
       <Menu.Target>
         <IconLanguage size={16}>
-          {languages.find((lang) => lang.code === locale)?.label || "Language"}
+          {languages.find((lang) => lang.code === locale)?.label ?? "Language"}
         </IconLanguage>
       </Menu.Target>
 

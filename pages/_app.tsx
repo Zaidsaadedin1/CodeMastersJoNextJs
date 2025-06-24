@@ -4,24 +4,22 @@ import { MantineProvider, Stack } from "@mantine/core";
 import MenuComponent from "../app/blocks/MenuComponent/MenuComponent";
 import Footer from "../app/blocks/Footer/Footer";
 import "@mantine/core/styles.css";
-import "@mantine/notifications/styles.css"; // Import notifications styles
+import "@mantine/notifications/styles.css";
 import { theme } from "../theme";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
-import { Notifications } from "@mantine/notifications"; // Import Notifications instead of NotificationsProvider
+import { Notifications } from "@mantine/notifications";
 
 function App({ Component, pageProps }: any) {
   const router = useRouter();
 
-  // Handle RTL/LTR direction
   const dir = router.locale === "ar" ? "rtl" : "ltr";
 
-  // Set document direction and language
   useEffect(() => {
     document.documentElement.dir = dir;
-    document.documentElement.lang = router.locale || "en";
+    document.documentElement.lang = router.locale ?? "en";
   }, [dir, router.locale]);
   const queryClient = new QueryClient();
 

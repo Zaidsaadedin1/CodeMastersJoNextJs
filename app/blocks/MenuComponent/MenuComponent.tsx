@@ -1,12 +1,11 @@
 import React from "react";
-import { Button, Group, Text, Image, Menu, Grid } from "@mantine/core";
+import { Button, Group, Text, Image, Menu, Flex } from "@mantine/core";
 import {
   IconHome,
   IconLogin,
   IconSettings,
   IconUser,
   IconUserScan,
-  IconMessageCircleQuestion,
   IconDashboard,
   IconLogout,
 } from "@tabler/icons-react";
@@ -212,29 +211,46 @@ const MenuComponent = () => {
     );
 
   return (
-    <Grid align="center" columns={3} mt={"xs"} justify="space-between">
-      <Image
-        src="/images/logo.png"
-        alt="Logo"
-        width={50}
-        height={50}
-        onClick={() => router.push("/")}
-        style={{ cursor: "pointer", order: isRTL ? 2 : 0 }}
-      />
-      <Group>
-        <Group wrap="nowrap" gap="md" style={{ order: isRTL ? 0 : 2 }}>
-          {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
-        </Group>
-        <Group
-          wrap="nowrap"
-          justify="space-between"
-          style={{ flex: 1, padding: "0 20px" }}
-        >
-          {renderMainMenu()}
-        </Group>
-      </Group>
-      <LanguageSwitcher />
-    </Grid>
+    <Flex
+      align="center"
+      justify="space-between"
+      mt="xs"
+      direction={isRTL ? "row-reverse" : "row"}
+    >
+      {/* Logo */}
+      <Flex
+        align="center"
+        gap="md"
+        flex={1}
+        justify={isRTL ? "flex-end" : "flex-start"}
+      >
+        <Image
+          src="/images/logo.png"
+          alt="Logo"
+          width={50}
+          height={50}
+          onClick={() => router.push("/")}
+          style={{ cursor: "pointer" }}
+        />
+      </Flex>
+
+      {/* Main Navigation */}
+      <Flex align="center" gap="md" flex={1} justify="center">
+        {renderMainMenu()}
+      </Flex>
+
+      {/* Right Side Actions */}
+      <Flex
+        flex={1}
+        align="center"
+        gap="sm"
+        direction={isRTL ? "row-reverse" : "row"}
+        justify="flex-end"
+      >
+        {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
+        <LanguageSwitcher />
+      </Flex>
+    </Flex>
   );
 };
 
