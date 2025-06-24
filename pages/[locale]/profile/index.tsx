@@ -4,7 +4,7 @@ import { i18nConfig } from "../../../i18n-config";
 import Profile from "../../../app/components/Profile/Profile";
 import { GetServerSidePropsContext } from "next";
 import { checkAuth } from "../../../checkIsAuthMiddleware";
-import userController from "../../../app/controllers/userController";
+import userController from "../../../app/Apis/controllers/userController";
 
 export const getServerSideProps: GetServerSideProps = async (
   context: GetServerSidePropsContext

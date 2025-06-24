@@ -23,8 +23,8 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
 import { useMutation } from "@tanstack/react-query";
-import { RegisterUserDto } from "../../types/authDtos/authDtos";
-import authController from "../../controllers/authController";
+import { RegisterUserDto } from "../../Apis/types/authDtos/authDtos";
+import authController from "../../Apis/controllers/authController";
 
 const fadeIn = keyframes({
   from: { opacity: 0, transform: "translateY(20px)" },

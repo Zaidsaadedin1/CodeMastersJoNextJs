@@ -477,13 +477,6 @@ const HomePage = () => {
   );
 
   function HorizontalSection({ items }: { items: Solution[] }) {
-    // Ensure swiper always starts from the first slide
-    useEffect(() => {
-      if (swiperRef.current && swiperRef.current.swiper) {
-        swiperRef.current.swiper.slideToLoop(0, 0); // go to first slide instantly
-      }
-    }, [items]);
-
     return (
       <Swiper
         ref={swiperRef}

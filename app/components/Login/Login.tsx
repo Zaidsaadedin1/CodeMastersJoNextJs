@@ -22,7 +22,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
 import { useMutation } from "@tanstack/react-query";
-import authController from "../../controllers/authController";
+import authController from "../../Apis/controllers/authController";
 import { useAuth } from "../../contexts/AuthContext";
 
 const fadeIn = keyframes({
