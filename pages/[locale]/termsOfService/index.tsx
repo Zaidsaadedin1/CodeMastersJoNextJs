@@ -22,6 +22,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         "siteMap",
         "menuComponent",
         "footer",
+        "termsOfService",
       ])),
     },
   };
