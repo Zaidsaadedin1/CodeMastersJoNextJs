@@ -327,7 +327,6 @@ const SignUp = () => {
                 >
                   {t("terms.termsOfService")}
                 </Anchor>{" "}
-                {t("terms.and")}{" "}
                 <Anchor
                   href={`/${currentLang}/privacyPolicy`}
                   target="_blank"
@@ -364,10 +363,7 @@ const SignUp = () => {
               router.push("/login", undefined, { locale: currentLang });
             }}
           >
-            {t("login.existingAccount")}{" "}
-            <Text span c="blue" inherit>
-              {t("login.signIn")}
-            </Text>
+            {t("login.existingAccount")}
           </Anchor>
         </Center>
       </Stack>
