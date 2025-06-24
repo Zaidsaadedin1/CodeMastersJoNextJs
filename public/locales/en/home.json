@@ -1,0 +1,39 @@
+{
+  "code_masters": "Code Masters",
+  "intelligent_solutions": "Intelligent Solutions",
+  "inspiring_phrases": [
+    "Transforming Visions into Digital Reality",
+    "Crafting Tomorrow's Technology Today",
+    "Where Innovation Meets Excellence",
+    "Building Digital Solutions That Matter",
+    "Engineering the Future, One Line of Code at a Time",
+    "Turning Complex Challenges into Elegant Solutions",
+    "Your Technology Partner in a Digital World",
+    "Pushing the Boundaries of What's Possible"
+  ],
+  "about_us": "We are more than just an IT company. We are visionaries, problem-solvers, and innovators dedicated to developing cutting-edge solutions that transform businesses and elevate experiences.",
+  "intelligent_solutions": {
+    "title": "Intelligent Solutions",
+    "description": "Harnessing AI and machine learning to solve complex problems"
+  },
+  "custom_development": {
+    "title": "Custom Development",
+    "description": "Tailored software built with precision and care"
+  },
+  "digital_transformation": {
+    "title": "Digital Transformation",
+    "description": "Guiding your business into the digital future"
+  },
+  "digital_marketing": {
+    "title": "Digital Marketing",
+    "description": "Strategic campaigns that drive growth and boost visibility"
+  },
+  "tech_education": {
+    "title": "Tech Education",
+    "description": "Professional training and workshops led by industry experts"
+  },
+  "research_documentation": {
+    "title": "Research & Documentation",
+    "description": "Comprehensive studies and technical documentation services"
+  }
+}
