@@ -139,7 +139,7 @@ const MenuComponent = () => {
             }
             style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
           >
-            <Group gap={2}>
+            <Group gap={2} wrap="nowrap">
               <item.icon size={12} />
               <Text size="sm">{item.text}</Text>
             </Group>
@@ -189,7 +189,9 @@ const MenuComponent = () => {
       >
         <Button
           variant="subtle"
-          onClick={() => router.push("/signUp")}
+          onClick={() =>
+            router.push("/signUp", undefined, { locale: currentLang })
+          }
           style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
         >
           <Group gap={2}>
@@ -199,10 +201,12 @@ const MenuComponent = () => {
         </Button>
         <Button
           variant="subtle"
-          onClick={() => router.push("/login")}
+          onClick={() =>
+            router.push("/login", undefined, { locale: currentLang })
+          }
           style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
         >
-          <Group gap={2}>
+          <Group gap={2} wrap="nowrap">
             <IconLogin size={12} />
             <Text size="sm">{t("login")}</Text>
           </Group>
