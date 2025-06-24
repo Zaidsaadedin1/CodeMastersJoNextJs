@@ -76,21 +76,6 @@ const HomePage = () => {
   const currentLang = i18n.language;
   const swiperRef = useRef<any>(null);
 
-  const timeout = useTimeout(() => {
-    setFadeState("out");
-    setTimeout(() => {
-      setCurrentPhraseIndex((prev) => (prev + 1) % inspiringPhrases.length);
-      setFadeState("in");
-      timeout.start();
-    }, 1000); // fade out duration
-  }, 3500);
-
-  useEffect(() => {
-    timeout.start();
-    return timeout.clear;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -481,16 +466,25 @@ const HomePage = () => {
       <Swiper
         ref={swiperRef}
         spaceBetween={20}
-        slidesPerView={"auto"}
+        slidesPerView="auto"
         freeMode={true}
+        loop={false}
         modules={[Autoplay]}
         autoplay={{
           delay: 2000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
         }}
-        loop={true}
-        style={{ height: 500, paddingLeft: 0, marginLeft: 0 }}
+        cssMode={true}
+        style={{ height: 500, paddingLeft: 0, marginLeft: 0, width: "100%" }}
         onSwiper={(swiper) => {
-          swiper.slideToLoop(0, 0); // ensure start from first slide
+          swiperRef.current = swiper;
+        }}
+        onAutoplay={() => {
+          // If at the end, scroll back to the start
+          if (swiperRef.current && swiperRef.current.isEnd) {
+            swiperRef.current.slideTo(0, 800);
+          }
         }}
       >
         {items.map((solution) => (
@@ -541,13 +535,14 @@ const HomePage = () => {
               }
             >
               <Text size="lg" fw={600} mb={10}>
-                {solution.icon} {solution.category}
+                {solution.icon}
               </Text>
-
+              <Text size="lg" fw={600} mb={10}>
+                {solution.category}
+              </Text>
               <Text size="sm" style={{ flexGrow: 1 }}>
                 {solution.description}
               </Text>
-
               <Text size="sm" mt={10}>
                 <span
                   style={{
