@@ -9,6 +9,7 @@ import {
   IconArticle,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const sectionIcons = {
   mainPages: IconHome,
@@ -23,6 +24,7 @@ export default function Sitemap() {
   const { t, i18n } = useTranslation("siteMap");
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
+  const router = useRouter();
 
   const sections: (keyof typeof sectionIcons)[] = [
     "mainPages",
@@ -59,7 +61,13 @@ export default function Sitemap() {
               <List spacing="sm" size="md" icon={<span>•</span>}>
                 {section.items.map((item: any, index: number) => (
                   <List.Item key={index}>
-                    <Anchor href={`/${currentLang}${item.path}`}>
+                    <Anchor
+                      onClick={() =>
+                        router.push(`/${currentLang}${item.path}`, undefined, {
+                          locale: currentLang,
+                        })
+                      }
+                    >
                       {item.title}
                     </Anchor>
                     {" - "}

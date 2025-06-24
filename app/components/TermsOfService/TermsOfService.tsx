@@ -6,24 +6,33 @@ export default function TermsOfService() {
   const { t, i18n } = useTranslation("termsOfService");
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
+  const dir = isRTL ? "rtl" : "ltr";
 
   const renderContent = (content: string | string[]) => {
     if (Array.isArray(content)) {
-      return content.map((paragraph, index) => (
-        <Text key={index} mb="md" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+      return content.map((paragraph) => (
+        <Text
+          key={
+            typeof paragraph === "string"
+              ? paragraph
+              : JSON.stringify(paragraph)
+          }
+          mb="md"
+          dir={dir}
+        >
           {paragraph}
         </Text>
       ));
     }
     return (
-      <Text mb="md" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+      <Text mb="md" dir={dir}>
         {content}
       </Text>
     );
   };
 
   return (
-    <Stack py="xl" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+    <Stack py="xl" dir={dir}>
       <Title order={1} mb="md">
         {t("title")}
       </Title>
@@ -49,9 +58,15 @@ export default function TermsOfService() {
           <Title order={3} mb="md">
             {t("sections.definitions.title")}
           </Title>
-          <Text mb="md">{t("sections.definitions.content.service")}</Text>
-          <Text mb="md">{t("sections.definitions.content.user")}</Text>
-          <Text mb="md">{t("sections.definitions.content.content")}</Text>
+          <Text mb="md" dir={dir}>
+            {t("sections.definitions.content.service")}
+          </Text>
+          <Text mb="md" dir={dir}>
+            {t("sections.definitions.content.user")}
+          </Text>
+          <Text mb="md" dir={dir}>
+            {t("sections.definitions.content.content")}
+          </Text>
         </Box>
 
         {/* User Accounts Section */}
@@ -133,8 +148,10 @@ export default function TermsOfService() {
           <Title order={3} mb="md">
             {t("sections.contact.title")}
           </Title>
-          <Text mb="md">
-            {t("sections.contact.content", { email: "legal@example.com" })}
+          <Text mb="md" dir={dir}>
+            {t("sections.contact.content", {
+              email: "contact@codemastersjo.site",
+            })}
           </Text>
         </Box>
       </Stack>

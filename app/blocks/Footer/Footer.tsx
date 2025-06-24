@@ -20,12 +20,13 @@ import {
   IconMapPin,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
   const { t, i18n } = useTranslation("footer");
+  const router = useRouter();
   const isRTL = i18n.language === "ar";
+  const currentLang = i18n.language;
 
   return (
     <Box mt={30} py="xl" dir={isRTL ? "rtl" : "ltr"}>
@@ -140,31 +141,36 @@ const Footer = () => {
       <Divider my="xl" opacity={0.1} />
 
       <Group gap="lg">
-        <Link
-          href="/privacyPolicy"
-          locale={i18n.language}
-          passHref
-          legacyBehavior
+        <Anchor
+          size="xs"
+          underline="never"
+          onClick={() =>
+            router.push("/privacyPolicy", undefined, { locale: currentLang })
+          }
+          style={{ cursor: "pointer" }}
         >
-          <Anchor size="xs" underline="never">
-            {t("privacy_policy")}
-          </Anchor>
-        </Link>
-        <Link
-          href="/termsOfService"
-          locale={i18n.language}
-          passHref
-          legacyBehavior
+          {t("privacy_policy")}
+        </Anchor>
+        <Anchor
+          size="xs"
+          underline="never"
+          onClick={() =>
+            router.push("/termsOfService", undefined, { locale: currentLang })
+          }
+          style={{ cursor: "pointer" }}
         >
-          <Anchor size="xs" underline="never">
-            {t("terms_of_service")}
-          </Anchor>
-        </Link>
-        <Link href="/sitemap" locale={i18n.language} passHref legacyBehavior>
-          <Anchor size="xs" underline="never">
-            {t("sitemap")}
-          </Anchor>
-        </Link>
+          {t("terms_of_service")}
+        </Anchor>
+        <Anchor
+          size="xs"
+          underline="never"
+          onClick={() =>
+            router.push("/sitemap", undefined, { locale: currentLang })
+          }
+          style={{ cursor: "pointer" }}
+        >
+          {t("sitemap")}
+        </Anchor>
       </Group>
     </Box>
   );

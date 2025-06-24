@@ -139,7 +139,11 @@ const MenuComponent = () => {
             }
             style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
           >
-            <Group gap={2} wrap="nowrap">
+            <Group
+              gap={2}
+              wrap="nowrap"
+              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+            >
               <item.icon size={12} />
               <Text size="sm">{item.text}</Text>
             </Group>
@@ -194,7 +198,10 @@ const MenuComponent = () => {
           }
           style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
         >
-          <Group gap={2}>
+          <Group
+            gap={2}
+            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+          >
             <IconUser size={12} />
             <Text size="sm">{t("sign_up")}</Text>
           </Group>
@@ -206,7 +213,11 @@ const MenuComponent = () => {
           }
           style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
         >
-          <Group gap={2} wrap="nowrap">
+          <Group
+            gap={2}
+            wrap="nowrap"
+            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+          >
             <IconLogin size={12} />
             <Text size="sm">{t("login")}</Text>
           </Group>
