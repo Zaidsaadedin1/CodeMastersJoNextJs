@@ -233,7 +233,7 @@ const MenuComponent = () => {
           alt="Logo"
           width={50}
           height={50}
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/", undefined, { locale: currentLang })}
           style={{ cursor: "pointer" }}
         />
       </Flex>
