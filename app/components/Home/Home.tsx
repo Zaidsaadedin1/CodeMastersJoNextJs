@@ -64,13 +64,73 @@ import { useTranslation } from "next-i18next";
 import "swiper/css";
 
 // Make sure to place your video file (e.g., homepage.mp4) inside the public/videos directory
-const homePageVideo = "/videos/homepage.mp4";
+const homePageVideo = "/videos/homePageWebVideo.mp4";
 
 const HomePage = () => {
   const { t, i18n } = useTranslation("home");
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [fadeState, setFadeState] = useState<"in" | "out">("in");
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const [videoError, setVideoError] = useState(false);
+
+  // Update the video error handler
+  if (videoRef.current) {
+    videoRef.current.onerror = (e) => {
+      console.error("Video error:", e);
+      console.error("Video error details:", videoRef.current?.error);
+      setVideoError(true); // Set error state to show fallback
+    };
+  }
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.loop = true;
+      videoRef.current.controls = false;
+      videoRef.current.muted = true; // Ensure muted for autoplay
+
+      // Add comprehensive error handling
+      videoRef.current.onerror = (e) => {
+        console.error("Video error:", e);
+        console.error("Video error details:", videoRef.current?.error);
+      };
+
+      videoRef.current.onloadstart = () => {
+        console.log("Video load started");
+      };
+
+      videoRef.current.onloadeddata = () => {
+        console.log("Video data loaded");
+      };
+
+      videoRef.current.oncanplay = () => {
+        console.log("Video can play");
+        videoRef.current?.play().catch((e) => {
+          console.error("Play error:", e);
+          // Fallback: try playing with user interaction
+          document.addEventListener(
+            "click",
+            () => {
+              videoRef.current?.play().catch(console.error);
+            },
+            { once: true }
+          );
+        });
+      };
+
+      // Add load event listener
+      videoRef.current.addEventListener("loadedmetadata", () => {
+        console.log("Video metadata loaded");
+        console.log("Duration:", videoRef.current?.duration);
+        console.log(
+          "Video dimensions:",
+          videoRef.current?.videoWidth,
+          "x",
+          videoRef.current?.videoHeight
+        );
+      });
+    }
+  }, []);
 
   const inspiringPhrases: string[] = [
     t("inspiring_phrases.phrase1"),
@@ -389,22 +449,6 @@ const HomePage = () => {
       icon: <IconNews size={32} />,
     },
   ];
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.loop = true;
-      videoRef.current.controls = false;
-
-      // Add error handling
-      videoRef.current.onerror = () => {
-        console.error("Video error:", videoRef.current?.error);
-      };
-
-      videoRef.current.oncanplay = () => {
-        console.log("Video can play");
-        videoRef.current?.play().catch((e) => console.error("Play error:", e));
-      };
-    }
-  }, []);
 
   type Solution = {
     key: string;
@@ -429,18 +473,30 @@ const HomePage = () => {
     const router = useRouter();
     const { i18n } = useTranslation();
     const currentLang = i18n.language;
+    const swiperRef = useRef<any>(null);
+
+    // Ensure swiper always starts from the first slide
+    useEffect(() => {
+      if (swiperRef.current && swiperRef.current.swiper) {
+        swiperRef.current.swiper.slideToLoop(0, 0); // go to first slide instantly
+      }
+    }, [items]);
 
     return (
       <Swiper
+        ref={swiperRef}
         spaceBetween={20}
         slidesPerView={"auto"}
         freeMode={true}
         modules={[Autoplay]}
         autoplay={{
-          delay: 2000, // time between auto scroll moves (2 seconds)
+          delay: 2000,
         }}
         loop={true}
-        style={{ height: 500 }} // enable continuous loop
+        style={{ height: 500, paddingLeft: 0, marginLeft: 0 }}
+        onSwiper={(swiper) => {
+          swiper.slideToLoop(0, 0); // ensure start from first slide
+        }}
       >
         {items.map((solution) => (
           <SwiperSlide
@@ -453,7 +509,7 @@ const HomePage = () => {
               padding: 30,
               backgroundColor: "#f8f9fa",
               borderRadius: 20,
-              margin: 50,
+              margin: 0, // Remove margin so slides start at the edge
             }}
           >
             <Box
@@ -528,6 +584,7 @@ const HomePage = () => {
           autoPlay
           muted
           playsInline
+          preload="auto"
           style={{
             position: "absolute",
             width: "100%",
@@ -537,6 +594,26 @@ const HomePage = () => {
           }}
         >
           <source src={homePageVideo} type="video/mp4" />
+          {/* Add multiple formats for better compatibility */}
+          <source src="/videos/homePageWebVideo.webm" type="video/webm" />
+          <source src="/videos/homePageWebVideo.ogv" type="video/ogg" />
+          {/* Fallback content */}
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "white",
+              textAlign: "center",
+              backgroundColor: "rgba(0,0,0,0.8)",
+              padding: "20px",
+              borderRadius: "10px",
+            }}
+          >
+            Your browser does not support the video tag or the video failed to
+            load.
+          </div>
         </video>
         <Overlay
           gradient="linear-gradient(145deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 100%)"
