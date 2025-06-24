@@ -13,7 +13,7 @@ import {
 import { useForm } from "@mantine/form";
 import { z } from "zod";
 import { useState, useEffect } from "react";
-import { GetUserDto, UpdateUserDto } from "../../types/userDtos/userDtos";
+import { GetUserDto, UpdateUserDto } from "../../Apis/types/userDtos/userDtos";
 import { DatePickerInput } from "@mantine/dates";
 import { IconUser, IconPhone, IconCalendar } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
