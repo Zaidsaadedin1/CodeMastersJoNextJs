@@ -30,7 +30,7 @@ export const authController = {
     resetPasswordDto: ResetPasswordDto
   ): Promise<GenericResponse<boolean>> => {
     const response = await axios.post<GenericResponse<boolean>>(
-      "/auth/reset-password",
+      "/Auth/reset-password",
       resetPasswordDto
     );
     return response.data;
