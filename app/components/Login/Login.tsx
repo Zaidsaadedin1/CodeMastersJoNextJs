@@ -203,7 +203,7 @@ export default function Login() {
               component="a"
               size="xs"
               onClick={() =>
-                router.push("/privacyPolicy", undefined, {
+                router.push("/signUp", undefined, {
                   locale: currentLang,
                 })
               }

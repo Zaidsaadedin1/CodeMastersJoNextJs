@@ -38,7 +38,9 @@ const MenuComponent = () => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
-          onClick={() => router.push("/dashboard")}
+          onClick={() =>
+            router.push("/dashboard", undefined, { locale: currentLang })
+          }
           style={{ direction: isRTL ? "rtl" : "ltr" }}
         >
           <Group gap={2}>
@@ -48,7 +50,9 @@ const MenuComponent = () => {
         </Menu.Item>
         {user?.Roles === "Admin" && (
           <Menu.Item
-            onClick={() => router.push("/admin")}
+            onClick={() =>
+              router.push("/admin", undefined, { locale: currentLang })
+            }
             style={{ direction: isRTL ? "rtl" : "ltr" }}
           >
             <Group gap={2}>
@@ -58,7 +62,9 @@ const MenuComponent = () => {
           </Menu.Item>
         )}
         <Menu.Item
-          onClick={() => router.push("/profile")}
+          onClick={() =>
+            router.push("/profile", undefined, { locale: currentLang })
+          }
           style={{ direction: isRTL ? "rtl" : "ltr" }}
         >
           <Group gap={2}>
@@ -165,7 +171,11 @@ const MenuComponent = () => {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item onClick={() => router.push("/signUp")}>
+          <Menu.Item
+            onClick={() =>
+              router.push("/signUp", undefined, { locale: currentLang })
+            }
+          >
             <Group
               gap={2}
               style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
@@ -174,7 +184,11 @@ const MenuComponent = () => {
               <Text size="sm">{t("sign_up")}</Text>
             </Group>
           </Menu.Item>
-          <Menu.Item onClick={() => router.push("/login")}>
+          <Menu.Item
+            onClick={() =>
+              router.push("/login", undefined, { locale: currentLang })
+            }
+          >
             <Group
               gap={2}
               style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
