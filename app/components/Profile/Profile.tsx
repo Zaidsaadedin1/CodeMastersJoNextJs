@@ -5,10 +5,12 @@ import {
   Title,
   Card,
   Table,
-  Badge,
   Textarea,
   TagsInput,
-  Skeleton,
+  Stack,
+  TableScrollContainer,
+  Select,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
@@ -21,35 +23,41 @@ import {
   IconCalendar,
   IconChevronLeft,
   IconChevronRight,
+  IconCheck,
+  IconX,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
+import orderController from "../../Apis/controllers/orderControllers";
+import { GetOrderDto } from "../../Apis/types/orderDtos/orderDtos";
+import { notifications } from "@mantine/notifications";
+import { useMutation } from "@tanstack/react-query";
+import userController from "../../Apis/controllers/userController";
 import { useRouter } from "next/router";
-import dynamic from "next/dynamic";
 
-// Dynamically load components that require client-side only features
-const ClientOnlyDatePicker = dynamic(
-  () => import("@mantine/dates").then((mod) => mod.DatePickerInput),
-  {
-    ssr: false,
-    loading: () => <Skeleton height={36} />,
-  }
-);
-
-function Profile({ user }: { user: GetUserDto }) {
+const Profile = ({ user }: { user: GetUserDto }) => {
   const { t, i18n } = useTranslation("profile");
-  const router = useRouter();
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
-  const [editable, setEditable] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  // Ensure translations are consistent between server and client
-  const title = t("title");
-  const createAccount = t("create_account");
+  const router = useRouter();
+  const [userOrders, setUserOrders] = useState<GetOrderDto[]>([]);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    const fetchUserOrders = async () => {
+      try {
+        const res = await orderController.GetAllUserOrdersAsync(user.id);
+        if (res) {
+          setUserOrders(res);
+        } else {
+          setUserOrders([]);
+        }
+      } catch (error) {
+        console.error("Error fetching user orders:", error);
+        setUserOrders([]);
+      }
+    };
+
+    fetchUserOrders();
+  }, [user.id]); // Added user.id as dependency
 
   const schema = z.object({
     userName: z
@@ -71,6 +79,7 @@ function Profile({ user }: { user: GetUserDto }) {
     occupation: z.string().optional(),
     location: z.string().optional(),
     interests: z.array(z.string()).optional(),
+    gender: z.string().min(1, { message: t("validation.gender_required") }),
     dateOfBirth: z
       .date({
         required_error: t("validation.birth_date_required"),
@@ -98,9 +107,10 @@ function Profile({ user }: { user: GetUserDto }) {
       firstName: user.firstName,
       lastName: user.lastName,
       phoneNumber: user.phoneNumber,
-      bio: user.bio || "",
-      occupation: user.occupation || "",
-      location: user.location || "",
+      gender: user.gender,
+      bio: user.bio ?? "",
+      occupation: user.occupation ?? "",
+      location: user.location ?? "",
       interests: user.interests || [],
       dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth) : null,
     },
@@ -117,173 +127,328 @@ function Profile({ user }: { user: GetUserDto }) {
     validateInputOnBlur: true,
   });
 
-  useEffect(() => {
-    if (mounted) {
-      form.setValues({
-        userName: user.userName,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        phoneNumber: user.phoneNumber,
-        bio: user.bio || "",
-        occupation: user.occupation || "",
-        location: user.location || "",
-        interests: user.interests || [],
-        dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth) : null,
-      });
-    }
-  }, [user, mounted]);
-
-  const handleSubmit = (values: UpdateUserDto) => {
-    console.log("Submitting:", values);
-    setEditable(false);
+  const showSuccessNotification = (message: string) => {
+    notifications.show({
+      id: "register-success",
+      title: t("notifications.success_title"),
+      message: t(message),
+      color: "green",
+      icon: <IconCheck size={16} />,
+      autoClose: 3000,
+      withCloseButton: true,
+      withBorder: true,
+    });
   };
 
-  if (!mounted) return <div style={{ visibility: "hidden" }}>{title}</div>;
+  const showErrorNotification = (message: string) => {
+    notifications.show({
+      id: "register-error",
+      title: t("notifications.error_title"),
+      message: t(message),
+      color: "red",
+      icon: <IconX size={16} />,
+      autoClose: 3000,
+      withCloseButton: true,
+      withBorder: true,
+    });
+  };
+
+  const updateUserDataMutation = useMutation({
+    mutationFn: ({
+      id,
+      updateUserDto,
+    }: {
+      id: string;
+      updateUserDto: UpdateUserDto;
+    }) => userController.updateUser(id, updateUserDto),
+    onSuccess: (response) => {
+      showSuccessNotification("notifications.profile_updated");
+
+      setTimeout(() => {
+        router.push(`/${currentLang}/profile`);
+      }, 1500);
+    },
+    onError: (error: any) => {
+      showErrorNotification("notifications.error_updating_profile");
+    },
+  });
+
+  const handleSubmit = (values: typeof form.values) => {
+    if (!values.dateOfBirth) {
+      form.setFieldError("dateOfBirth", t("validation.birth_date_required"));
+      return;
+    }
+
+    const registerUserDto: UpdateUserDto = {
+      userName: values.userName,
+      email: values.email,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      dateOfBirth: values.dateOfBirth,
+      phoneNumber: values.phoneNumber,
+      gender: values.gender,
+      bio: values.bio,
+      occupation: values.occupation,
+      location: values.location,
+      interests: values.interests,
+    };
+
+    updateUserDataMutation.mutate({
+      id: user.id,
+      updateUserDto: registerUserDto,
+    });
+  };
 
   return (
-    <Grid p="md" dir={isRTL ? "rtl" : "ltr"}>
-      <Grid.Col span={{ base: 12, md: 6 }}>
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Title order={2} mb="md">
-            {title}
-          </Title>
+    <>
+      {updateUserDataMutation.isPending ? (
+        <LoadingOverlay />
+      ) : (
+        <Stack p="md" dir={isRTL ? "rtl" : "ltr"}>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Title order={2} mb="md">
+              {t("title")}
+            </Title>
 
-          <form
-            onSubmit={form.onSubmit((values) => {
-              if (values.dateOfBirth === null) {
-                form.setFieldError(
-                  "dateOfBirth",
-                  t("validation.birth_date_required")
-                );
-                return;
-              }
+            <form onSubmit={form.onSubmit(handleSubmit)}>
+              <TextInput
+                label={t("fields.username")}
+                {...form.getInputProps("userName")}
+                leftSection={<IconUser size={16} />}
+                mb="md"
+              />
 
-              const updateUserDto: UpdateUserDto = {
-                ...values,
-                dateOfBirth: new Date(values.dateOfBirth.toISOString()),
-              };
+              <TextInput
+                label={t("fields.email")}
+                {...form.getInputProps("email")}
+                mb="md"
+              />
 
-              handleSubmit(updateUserDto);
-            })}
-          >
-            {/* Read-only Fields */}
-            <TextInput
-              label={t("fields.username")}
-              value={user.userName}
-              leftSection={<IconUser size={16} />}
-              mb="md"
-            />
+              <Grid gutter="md">
+                <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <TextInput
+                    label={t("fields.firstName")}
+                    {...form.getInputProps("firstName")}
+                    error={form.errors.firstName}
+                  />
+                </Grid.Col>
+                <Grid.Col span={{ base: 12, sm: 6 }}>
+                  <TextInput
+                    label={t("fields.lastName")}
+                    {...form.getInputProps("lastName")}
+                    error={form.errors.lastName}
+                  />
+                </Grid.Col>
+              </Grid>
 
-            <TextInput label={t("fields.email")} value={user.email} mb="md" />
+              <DatePickerInput
+                label={t("fields.birthDate")}
+                {...form.getInputProps("dateOfBirth")}
+                leftSection={<IconCalendar size={16} />}
+                mb="md"
+                error={form.errors.dateOfBirth}
+                valueFormat="YYYY-MM-DD"
+                nextIcon={<IconChevronRight size={16} />}
+                previousIcon={<IconChevronLeft size={16} />}
+              />
 
-            {/* Editable Fields */}
-            <Grid gutter="md">
-              <Grid.Col span={{ base: 12, sm: 6 }}>
-                <TextInput
-                  label={t("fields.firstName")}
-                  {...form.getInputProps("firstName")}
-                  error={form.errors.firstName}
-                />
-              </Grid.Col>
-              <Grid.Col span={{ base: 12, sm: 6 }}>
-                <TextInput
-                  label={t("fields.lastName")}
-                  {...form.getInputProps("lastName")}
-                  error={form.errors.lastName}
-                />
-              </Grid.Col>
-            </Grid>
+              <TextInput
+                label={t("fields.phoneNumber")}
+                leftSection={<IconPhone size={16} />}
+                {...form.getInputProps("phoneNumber")}
+                mt="md"
+                error={form.errors.phoneNumber}
+              />
 
-            <DatePickerInput
-              label={t("fields.birthDate")}
-              {...form.getInputProps("dateOfBirth")}
-              leftSection={<IconCalendar size={16} />}
-              mb="md"
-              error={form.errors.dateOfBirth}
-              valueFormat="YYYY-MM-DD"
-              nextIcon={<IconChevronRight size={16} />}
-              previousIcon={<IconChevronLeft size={16} />}
-            />
+              <Select
+                w="100%"
+                dir={isRTL ? "rtl" : "ltr"}
+                p="md"
+                label={t("genders.fields.gender")}
+                placeholder={t("genders.placeholders.gender")}
+                data={[
+                  { value: "male", label: t("genders.male") },
+                  { value: "female", label: t("genders.female") },
+                  { value: "nonbinary", label: t("genders.nonbinary") },
+                  { value: "transgender", label: t("genders.transgender") },
+                  { value: "genderqueer", label: t("genders.genderqueer") },
+                  { value: "agender", label: t("genders.agender") },
+                  { value: "other", label: t("genders.other") },
+                  {
+                    value: "prefer_not_to_say",
+                    label: t("genders.prefer_not_to_say"),
+                  },
+                ]}
+                {...form.getInputProps("gender")}
+                error={form.errors.gender}
+                mb="md"
+              />
 
-            <TextInput
-              label={t("fields.phoneNumber")}
-              leftSection={<IconPhone size={16} />}
-              {...form.getInputProps("phoneNumber")}
-              mt="md"
-              error={form.errors.phoneNumber}
-            />
+              <Textarea
+                label={t("fields.bio")}
+                {...form.getInputProps("bio")}
+                autosize
+                minRows={2}
+                mt="md"
+              />
 
-            <Textarea
-              label={t("fields.bio")}
-              {...form.getInputProps("bio")}
-              autosize
-              minRows={2}
-              mt="md"
-            />
+              <TextInput
+                label={t("fields.occupation")}
+                {...form.getInputProps("occupation")}
+                mt="md"
+              />
 
-            <TextInput
-              label={t("fields.occupation")}
-              {...form.getInputProps("occupation")}
-              mt="md"
-            />
+              <TextInput
+                label={t("fields.location")}
+                {...form.getInputProps("location")}
+                mt="md"
+              />
 
-            <TextInput
-              label={t("fields.location")}
-              {...form.getInputProps("location")}
-              mt="md"
-            />
+              <TagsInput
+                label={t("fields.interests")}
+                {...form.getInputProps("interests")}
+                mt="md"
+                placeholder={t("placeholders.interests")}
+              />
 
-            <TagsInput
-              label={t("fields.interests")}
-              {...form.getInputProps("interests")}
-              mt="md"
-              placeholder={editable ? t("placeholders.interests") : undefined}
-            />
-
-            {editable ? (
-              <Button type="submit" color="blue" mt="md">
-                {t("buttons.save")}
-              </Button>
-            ) : (
-              <Button color="gray" mt="md" onClick={() => setMounted(true)}>
+              <Button
+                disabled={updateUserDataMutation.isPending}
+                color="gray"
+                mt="md"
+                type="submit"
+              >
                 {t("buttons.edit")}
               </Button>
-            )}
-          </form>
-        </Card>
-      </Grid.Col>
+            </form>
+          </Card>
 
-      <Grid.Col span={{ base: 12, md: 6 }}>
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
-          <Title order={2} mb="md">
-            {t("requests.title")}
-          </Title>
-
-          <Table.ScrollContainer minWidth={500}>
-            <Table verticalSpacing="sm">
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>{t("requests.headers.id")}</Table.Th>
-                  <Table.Th>{t("requests.headers.status")}</Table.Th>
-                  <Table.Th>{t("requests.headers.date")}</Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                <Table.Tr>
-                  <Table.Td>#12345</Table.Td>
-                  <Table.Td>
-                    <Badge color="blue">{t("requests.status.pending")}</Badge>
-                  </Table.Td>
-                  <Table.Td>2024-03-15</Table.Td>
-                </Table.Tr>
-              </Table.Tbody>
-            </Table>
-          </Table.ScrollContainer>
-        </Card>
-      </Grid.Col>
-    </Grid>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Title order={2} mb="md">
+              {t("requests.title")}
+            </Title>
+            <TableScrollContainer minWidth={400}>
+              <Table verticalSpacing="xl" striped highlightOnHover>
+                <Table.Thead>
+                  <Table.Tr>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.id")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.firstName")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.lastName")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.email")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.phone")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.companyName")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.projectType")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.serviceType")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.budget")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.timeline")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.projectDescription")}
+                    </Table.Th>
+                    <Table.Th
+                      style={{ whiteSpace: "nowrap", paddingRight: 16 }}
+                    >
+                      {t("table.additionalRequirements")}
+                    </Table.Th>
+                  </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>
+                  {userOrders.length > 0 ? (
+                    userOrders.map((order) => (
+                      <Table.Tr key={order.id}>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.id}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.firstName}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.lastName}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.email}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.phone}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.companyName ?? "-"}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.projectType}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.serviceType}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.budget} JOD
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.timeline}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.projectDescription}
+                        </Table.Td>
+                        <Table.Td style={{ paddingRight: 16 }}>
+                          {order.additionalRequirements ?? "-"}
+                        </Table.Td>
+                      </Table.Tr>
+                    ))
+                  ) : (
+                    <Table.Tr>
+                      <Table.Td colSpan={14} style={{ textAlign: "center" }}>
+                        {t("table.no_orders")}
+                      </Table.Td>
+                    </Table.Tr>
+                  )}
+                </Table.Tbody>
+              </Table>
+            </TableScrollContainer>
+          </Card>
+        </Stack>
+      )}
+    </>
   );
-}
+};
 
 export default Profile;

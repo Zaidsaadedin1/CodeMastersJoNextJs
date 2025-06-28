@@ -8,7 +8,10 @@ export const orderController = {
       `/Orders`,
       createOrderDto
     );
-
+    return response.data;
+  },
+  GetAllUserOrdersAsync: async (userId: string) => {
+    const response = await axios.get(`/Orders/GetAllUserOrdersAsync/${userId}`);
     return response.data;
   },
 };

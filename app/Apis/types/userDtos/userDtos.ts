@@ -12,6 +12,7 @@ export interface GetUserDto {
   occupation: string | null;
   location: string | null;
   interests: string[] | null;
+  gender: string;
 }
 
 export interface UpdateUserDto {
@@ -22,6 +23,7 @@ export interface UpdateUserDto {
   dateOfBirth: Date;
   phoneNumber: string;
   bio: string | null;
+  gender: string;
   occupation: string | null;
   location: string | null;
   interests: string[] | null;
