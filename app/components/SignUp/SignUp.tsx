@@ -13,6 +13,7 @@ import {
   Center,
   Stack,
   LoadingOverlay,
+  Select,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconUser, IconPhone, IconCheck, IconX } from "@tabler/icons-react";
@@ -25,6 +26,7 @@ import { keyframes } from "@emotion/react";
 import { useMutation } from "@tanstack/react-query";
 import { RegisterUserDto } from "../../Apis/types/authDtos/authDtos";
 import authController from "../../Apis/controllers/authController";
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 
 const fadeIn = keyframes({
   from: { opacity: 0, transform: "translateY(20px)" },
@@ -73,7 +75,8 @@ const SignUp = () => {
         .regex(/^\+?[0-9]{10,15}$/, {
           message: t("validation.phone_invalid"),
         }),
-      birthDate: z
+      gender: z.string().min(1, { message: t("validation.gender_required") }),
+      dateOfBirth: z
         .date({
           required_error: t("validation.birth_date_required"),
           invalid_type_error: t("validation.birth_date_required"),
@@ -82,10 +85,15 @@ const SignUp = () => {
           (date) => {
             const today = new Date();
             const age = today.getFullYear() - date.getFullYear();
+            const m = today.getMonth() - date.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
+              return age - 1 >= 13;
+            }
             return age >= 13;
           },
           { message: t("validation.age_minimum") }
         ),
+
       termsAccepted: z.boolean().refine((value) => value === true, {
         message: t("validation.terms_required"),
       }),
@@ -104,7 +112,8 @@ const SignUp = () => {
       firstName: "",
       lastName: "",
       phoneNumber: "",
-      birthDate: null as Date | null,
+      dateOfBirth: null as Date | null,
+      gender: "male",
       termsAccepted: false,
     },
     validate: (values) => {
@@ -143,7 +152,7 @@ const SignUp = () => {
       message: errorMessage,
       color: "red",
       icon: <IconX size={16} />,
-      autoClose: 5000,
+      autoClose: 3000,
       withCloseButton: true,
       withBorder: true,
     });
@@ -159,21 +168,25 @@ const SignUp = () => {
       }, 1500);
     },
     onError: (error: any) => {
-      console.error("Registration error:", error);
-
       // Handle specific error cases based on the API response
       let errorMessage = t("notifications.error_generic");
 
       if (error?.response?.data) {
         const responseData = error.response.data;
-
-        // Handle specific error cases like duplicate email/username
         if (
-          responseData.code === "USER_EXISTS" ||
-          responseData.message?.includes("already exists")
+          responseData.message?.includes("Email or Phone is already taken.")
         ) {
           errorMessage = t("notifications.error_user_exists");
           form.setErrors({ email: errorMessage });
+        } else if (
+          responseData.message?.includes(
+            "Invalid registration details. Something is missing."
+          )
+        ) {
+          errorMessage = t(
+            "notifications.error_user_exists_invalid_registration_details_Something_is_missing"
+          );
+          form.setErrors({ username: errorMessage });
         } else if (responseData.message) {
           errorMessage = responseData.message;
         }
@@ -184,16 +197,23 @@ const SignUp = () => {
   });
 
   const handleSubmit = form.onSubmit((values) => {
+    console.log("Form values:", values);
     try {
-      const registerData: RegisterUserDto = {
-        ...values,
+      const registerUserDto: RegisterUserDto = {
         userName: values.username,
-        birthDate: values.birthDate as Date,
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        dateOfBirth: values.dateOfBirth as Date,
+        phoneNumber: values.phoneNumber,
+        gender: values.gender,
+        termsAccepted: values.termsAccepted,
       };
-      registerMutation.mutate(registerData);
-    } catch (error) {
-      const errorMessage = t("notifications.error_generic");
-      showErrorNotification(errorMessage);
+      registerMutation.mutate(registerUserDto);
+    } catch {
+      showErrorNotification("notifications.error_generic");
     }
   });
 
@@ -261,7 +281,7 @@ const SignUp = () => {
             </Grid.Col>
           </Grid>
 
-          <Grid gutter="md">
+          <Grid gutter="md" align="flex-start" mt="md">
             <Grid.Col span={{ base: 12, sm: 6 }}>
               <TextInput
                 label={t("fields.email")}
@@ -307,13 +327,41 @@ const SignUp = () => {
               <DatePickerInput
                 label={t("fields.birthDate")}
                 placeholder={t("placeholders.birthDate")}
-                value={form.values.birthDate}
-                onChange={(date) => form.setFieldValue("birthDate", date)}
+                value={form.values.dateOfBirth}
+                onChange={(date) =>
+                  form.setFieldValue("dateOfBirth", date ?? new Date())
+                }
                 error={form.errors.birthDate}
                 popoverProps={{ withinPortal: true }}
+                nextIcon={<IconChevronRight size={16} />}
+                previousIcon={<IconChevronLeft size={16} />}
               />
             </Grid.Col>
           </Grid>
+
+          <Select
+            dir={isRTL ? "rtl" : "ltr"}
+            p="md"
+            label={t("genders.fields.gender")}
+            placeholder={t("genders.placeholders.gender")}
+            data={[
+              { value: "male", label: t("genders.male") },
+              { value: "female", label: t("genders.female") },
+              { value: "nonbinary", label: t("genders.nonbinary") },
+              { value: "transgender", label: t("genders.transgender") },
+              { value: "genderqueer", label: t("genders.genderqueer") },
+              { value: "agender", label: t("genders.agender") },
+              { value: "other", label: t("genders.other") },
+              {
+                value: "prefer_not_to_say",
+                label: t("genders.prefer_not_to_say"),
+              },
+            ]}
+            value={form.values.gender}
+            onChange={(value) => form.setFieldValue("gender", value || "")}
+            error={form.errors.gender}
+            mb="md"
+          />
 
           <Checkbox
             mt="xl"

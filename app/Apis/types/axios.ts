@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie"; // Use js-cookie for client-side cookies
 
-const baseURL = "https://codemastersjoapi-production.up.railway.app/api";
-//const baseURL = "http://localhost:5202/api";
+//const baseURL = "https://codemastersjoapi-production.up.railway.app/api";
+const baseURL = "http://localhost:5202/api";
 
 const axiosInstance = axios.create({
   baseURL,

@@ -38,17 +38,23 @@ export default function Login() {
   const { login } = useAuth();
 
   const schema = z.object({
-    email: z
+    loginIdentifier: z
       .string()
-      .min(1, { message: t("validation.email_required") })
-      .email({ message: t("validation.email_invalid") }),
+      .min(1, { message: t("validation.identifier_required") })
+      .refine(
+        (val) =>
+          /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || // email
+          /^\+?\d{7,15}$/.test(val) || // phone (simple international)
+          /^[a-zA-Z0-9_.-]{3,}$/.test(val), // username (at least 3 chars)
+        { message: t("validation.identifier_invalid") }
+      ),
     password: z.string().min(1, { message: t("validation.password_required") }),
     rememberMe: z.boolean().optional(),
   });
 
   const form = useForm({
     initialValues: {
-      email: "",
+      loginIdentifier: "",
       password: "",
       rememberMe: false,
     },
@@ -103,14 +109,25 @@ export default function Login() {
           router.push(`/${currentLang}/dashboard`);
           login(response.data!);
         }, 1000);
-      } else {
-        form.setErrors({ email: t("errors.invalid_credentials") });
-        showErrorNotification(t("errors.invalid_credentials"));
       }
     },
     onError: (error: any) => {
-      const errorMessage = error?.response?.data?.message;
-      form.setErrors({ email: errorMessage });
+      // Handle specific error cases based on the API response
+      let errorMessage = t("notifications.error_generic");
+
+      if (error?.response?.data) {
+        const responseData = error.response.data;
+        if (
+          responseData.message?.includes("Email or Phone is already taken.")
+        ) {
+          errorMessage = t("notifications.error_user_exists");
+          form.setErrors({ loginIdentifier: errorMessage });
+          form.setErrors({ password: errorMessage });
+        } else if (responseData.message) {
+          errorMessage = responseData.message;
+        }
+      }
+
       showErrorNotification(errorMessage);
     },
   });
@@ -158,7 +175,7 @@ export default function Login() {
             leftSection={<IconMail size={16} />}
             mb="md"
             error={form.errors.email}
-            {...form.getInputProps("email")}
+            {...form.getInputProps("loginIdentifier")}
           />
 
           <PasswordInput

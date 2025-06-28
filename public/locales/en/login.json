@@ -2,7 +2,7 @@
   "title": "Welcome Back",
   "subtitle": "Log in to continue your journey with us",
   "fields": {
-    "email": "Email",
+    "email": "Email or Username or Phone Number",
     "password": "Password",
     "remember_me": "Remember me"
   },
@@ -15,15 +15,20 @@
     "no_account": "Don't have an account yet?"
   },
   "validation": {
-    "email_required": "Email is required",
-    "email_invalid": "Invalid email address",
+    "identifier_invalid": "Email, username, or phone number is invalid",
+    "identifier_required": "Email, username, or phone number is required",
     "password_required": "Password is required"
   },
-  "divider": "OR", 
+  "divider": "OR",
   "notifications": {
-      "success_title": "Login Successful",
-      "success_message": "You have been logged in successfully.",
-      "error_title": "Login Failed",
-      "error_message": "Unable to log in. Please check your credentials."
+    "success_title": "Login Successful",
+    "success_message": "You have been logged in successfully.",
+    "error_title": "Login Failed",
+    "error_message": "Unable to log in. Please check your credentials."
+  },
+  "error": {
+    "invalid_credentials": "Invalid email or password.",
+    "user_exists": "A user with this email or username already exists.",
+    "server_error": "Server error. Please try again later."
   }
 }

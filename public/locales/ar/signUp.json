@@ -97,6 +97,24 @@
     "success_message": "تم إنشاء حسابك بنجاح. يمكنك الآن تسجيل الدخول.",
     "error_title": "فشل التسجيل",
     "error_generic": "تعذر إنشاء حسابك. يرجى المحاولة لاحقًا.",
-    "error_user_exists": "يوجد مستخدم بهذا البريد الإلكتروني أو اسم المستخدم بالفعل."
+    "error_user_exists": "يوجد مستخدم بهذا البريد الإلكتروني أو اسم المستخدم بالفعل.",
+    "notifications.error_generic": "حدث خطأ. يرجى المحاولة مرة أخرى لاحقًا.",
+    "error_user_exists_invalid_registration_details_Something_is_missing": "تفاصيل التسجيل غير مكتملة  ."
+  },
+  "genders": {
+    "male": "ذكر",
+    "female": "أنثى",
+    "nonbinary": "غير ثنائي",
+    "transgender": "عابر جنسياً",
+    "genderqueer": "جندر كوير",
+    "agender": "عديم النوع",
+    "other": "أخرى",
+    "prefer_not_to_say": "أفضل عدم الإفصاح",
+    "fields": {
+      "gender": "الجنس"
+    },
+    "placeholders": {
+      "gender": "اختر جنسك"
+    }
   }
 }

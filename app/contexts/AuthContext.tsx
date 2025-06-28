@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { DecodedToken, decodeToken } from "../utils/authDecode";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 type AuthContextType = {
   user: DecodedToken | null;
@@ -19,6 +20,8 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<DecodedToken | null>(null);
   const router = useRouter();
+  const { t, i18n } = useTranslation("menuComponent");
+  const currentLang = i18n.language;
 
   useEffect(() => {
     // Get token from cookies
@@ -55,7 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     // Remove cookie
     document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
-    router.push("/");
+    router.push("/", undefined, { locale: currentLang });
     setUser(null);
   };
 

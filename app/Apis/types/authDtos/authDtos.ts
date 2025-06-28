@@ -7,13 +7,14 @@ export interface RegisterUserDto {
   confirmPassword: string;
   firstName: string;
   lastName: string;
-  birthDate: Date;
+  dateOfBirth: Date;
   phoneNumber: string;
+  gender: string;
   termsAccepted: boolean;
 }
 
 export interface LoginUserDto {
-  email: string;
+  loginIdentifier: string;
   password: string;
 }
 

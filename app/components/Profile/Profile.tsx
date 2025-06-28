@@ -15,7 +15,13 @@ import { z } from "zod";
 import { useState, useEffect } from "react";
 import { GetUserDto, UpdateUserDto } from "../../Apis/types/userDtos/userDtos";
 import { DatePickerInput } from "@mantine/dates";
-import { IconUser, IconPhone, IconCalendar } from "@tabler/icons-react";
+import {
+  IconUser,
+  IconPhone,
+  IconCalendar,
+  IconChevronLeft,
+  IconChevronRight,
+} from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
@@ -189,13 +195,15 @@ function Profile({ user }: { user: GetUserDto }) {
               </Grid.Col>
             </Grid>
 
-            <ClientOnlyDatePicker
+            <DatePickerInput
               label={t("fields.birthDate")}
               {...form.getInputProps("dateOfBirth")}
               leftSection={<IconCalendar size={16} />}
               mb="md"
               error={form.errors.dateOfBirth}
               valueFormat="YYYY-MM-DD"
+              nextIcon={<IconChevronRight size={16} />}
+              previousIcon={<IconChevronLeft size={16} />}
             />
 
             <TextInput
