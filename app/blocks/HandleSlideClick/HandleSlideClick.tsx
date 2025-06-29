@@ -24,11 +24,21 @@ const HorizontalSection = () => {
   const router = useRouter();
   const { t, i18n } = useTranslation("home");
   const [isMounted, setIsMounted] = useState(false);
+  const [key, setKey] = useState(0); // Add a key to force re-render
   const items = getSolutions(t);
+  const isRTL = i18n.language === "ar";
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  // Reset Swiper when language changes
+  useEffect(() => {
+    setKey((prev) => prev + 1); // Change key to force re-render
+    if (swiperRef.current) {
+      swiperRef.current.update();
+    }
+  }, [i18n.language]);
 
   const handleSlideClick = () => {
     router.push("/requestService", undefined, {
@@ -38,9 +48,11 @@ const HorizontalSection = () => {
 
   if (!isMounted) {
     return (
-      <Box style={{ position: "relative", height: 500 }}>
-        {/* Loading placeholder */}
-        <div style={{ display: "flex", gap: 24, padding: "0 16px" }}>
+      <Box
+        dir={isRTL ? "rtl" : "ltr"}
+        style={{ position: "relative", height: 500 }}
+      >
+        <Box style={{ display: "flex", gap: 24, padding: "0 16px" }}>
           {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
@@ -52,17 +64,24 @@ const HorizontalSection = () => {
               }}
             />
           ))}
-        </div>
+        </Box>
       </Box>
     );
   }
 
-  const isRTL = i18n.language === "ar";
-
   return (
-    <Box style={{ position: "relative", padding: "0 16px" }}>
+    <Box
+      key={`swiper-container-${key}`} // Add key to force re-render
+      dir={isRTL ? "rtl" : "ltr"}
+      style={{ position: "relative", padding: "0 16px" }}
+    >
       <SwiperReact
-        onSwiper={(swiper: SwiperClass) => (swiperRef.current = swiper)}
+        key={`swiper-${key}`} // Add key to force re-render
+        dir={isRTL ? "rtl" : "ltr"}
+        onSwiper={(swiper: SwiperClass) => {
+          swiperRef.current = swiper;
+          swiper.update(); // Update swiper on initialization
+        }}
         spaceBetween={24}
         slidesPerView="auto"
         freeMode={{
@@ -83,12 +102,17 @@ const HorizontalSection = () => {
           overflow: "visible",
           direction: isRTL ? "rtl" : "ltr",
         }}
+        onResize={() => {
+          if (swiperRef.current) {
+            swiperRef.current.update();
+          }
+        }}
       >
         {items.map((solution) => (
           <SwiperSlide
             key={solution.key}
             style={{
-              width: 300, // Fixed width for each slide
+              width: 300,
               height: 450,
             }}
             onClick={handleSlideClick}

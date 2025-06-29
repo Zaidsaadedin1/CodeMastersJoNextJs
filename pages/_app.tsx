@@ -1,3 +1,4 @@
+import React from "react";
 import { appWithTranslation } from "next-i18next";
 import Head from "next/head";
 import { MantineProvider, Stack } from "@mantine/core";

@@ -1,3 +1,4 @@
+import React from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { DecodedToken, decodeToken } from "../utils/authDecode";
 import { useRouter } from "next/router";
@@ -20,7 +21,7 @@ const AuthContext = createContext<AuthContextType>({
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<DecodedToken | null>(null);
   const router = useRouter();
-  const { t, i18n } = useTranslation("menuComponent");
+  const { i18n } = useTranslation("menuComponent");
   const currentLang = i18n.language;
 
   useEffect(() => {

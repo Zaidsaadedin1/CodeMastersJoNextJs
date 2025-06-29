@@ -1,4 +1,7 @@
+import React from "react";
+import { Text } from "@mantine/core";
+
 function Dashboard() {
-  return <div>Dashboard</div>;
+  return <Text>Under Development</Text>;
 }
 export default Dashboard;

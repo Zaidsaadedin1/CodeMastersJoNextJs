@@ -21,7 +21,6 @@ import {
   IconNetwork,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 
 const DiscoverMore: React.FC = () => {
   const { t, i18n } = useTranslation("discoverMore");

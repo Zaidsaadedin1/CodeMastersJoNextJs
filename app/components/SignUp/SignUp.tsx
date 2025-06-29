@@ -160,7 +160,7 @@ const SignUp = () => {
 
   const registerMutation = useMutation({
     mutationFn: authController.register,
-    onSuccess: (response) => {
+    onSuccess: () => {
       showSuccessNotification();
       // Short delay to allow notification to be seen before redirect
       setTimeout(() => {

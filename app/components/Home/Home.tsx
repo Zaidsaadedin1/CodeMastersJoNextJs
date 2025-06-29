@@ -21,17 +21,14 @@ import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import HorizontalSection from "../../blocks/HandleSlideClick/HandleSlideClick";
 
-// Make sure to place your video file (e.g., homepage.mp4) inside the public/videos directory
 const homePageVideo = "/videos/homePageWebVideo.mp4";
 
 const HomePage = () => {
   const { t, i18n } = useTranslation("home");
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [fadeState, setFadeState] = useState<"in" | "out">("in");
   const videoRef = useRef<HTMLVideoElement>(null);
   const router = useRouter();
   const currentLang = i18n.language;
-  const swiperRef = useRef<any>(null);
   const inspiringPhrases: string[] = [
     t("inspiring_phrases.phrase1"),
     t("inspiring_phrases.phrase2"),
@@ -118,10 +115,8 @@ const HomePage = () => {
           }}
         >
           <source src={homePageVideo} type="video/mp4" />
-          {/* Add multiple formats for better compatibility */}
           <source src="/videos/homePageWebVideo.webm" type="video/webm" />
           <source src="/videos/homePageWebVideo.ogv" type="video/ogg" />
-          {/* Fallback content */}
           <div
             style={{
               position: "absolute",

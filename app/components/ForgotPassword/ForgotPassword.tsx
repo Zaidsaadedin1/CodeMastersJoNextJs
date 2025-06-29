@@ -8,12 +8,10 @@ import {
   Box,
   Alert,
   Anchor,
-  Flex,
 } from "@mantine/core";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { IconMail, IconAlertCircle, IconCheck } from "@tabler/icons-react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
 
@@ -24,7 +22,6 @@ const fadeIn = keyframes({
 
 export default function ForgotPassword() {
   const [submitted, setSubmitted] = useState(false);
-  const router = useRouter();
   const { t, i18n } = useTranslation("forgotPassword");
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";

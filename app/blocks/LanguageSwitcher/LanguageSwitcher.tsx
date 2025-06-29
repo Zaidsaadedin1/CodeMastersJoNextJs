@@ -1,4 +1,5 @@
-import { Menu, Button } from "@mantine/core";
+import React from "react";
+import { Menu } from "@mantine/core";
 import { IconLanguage } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 

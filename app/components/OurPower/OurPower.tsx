@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   Title,
   Text,
   Button,
@@ -12,7 +11,6 @@ import {
   MantineTheme,
   SimpleGrid,
   Card,
-  Center,
 } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import {

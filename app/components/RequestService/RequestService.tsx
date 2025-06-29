@@ -13,7 +13,6 @@ import {
   Divider,
   Anchor,
   Input,
-  useMantineTheme,
 } from "@mantine/core";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
@@ -25,7 +24,6 @@ import orderController from "../../Apis/controllers/orderControllers";
 import { CreateOrderDto } from "../../Apis/types/orderDtos/orderDtos";
 import { showNotification } from "@mantine/notifications";
 import { useAuth } from "../../contexts/AuthContext";
-import PhoneInput from "react-phone-number-input";
 
 const fadeIn = keyframes({
   from: { opacity: 0, transform: "translateY(20px)" },
@@ -38,7 +36,6 @@ export default function RequestService() {
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
   const { user } = useAuth();
-  const theme = useMantineTheme();
 
   const schema = z.object({
     firstName: z

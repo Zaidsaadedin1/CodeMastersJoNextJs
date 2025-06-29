@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Grid,
   TextInput,
@@ -161,14 +162,14 @@ const Profile = ({ user }: { user: GetUserDto }) => {
       id: string;
       updateUserDto: UpdateUserDto;
     }) => userController.updateUser(id, updateUserDto),
-    onSuccess: (response) => {
+    onSuccess: () => {
       showSuccessNotification("notifications.profile_updated");
 
       setTimeout(() => {
         router.push(`/${currentLang}/profile`);
       }, 1500);
     },
-    onError: (error: any) => {
+    onError: () => {
       showErrorNotification("notifications.error_updating_profile");
     },
   });
