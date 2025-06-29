@@ -1,7 +1,7 @@
-module.exports = {
-  i18n: {
-    locales: ["en", "ar"],
-    defaultLocale: "en",
-  },
-  localePath: "./public/locales", // relative to root
-};
+// src/i18n-config.ts
+export const i18nConfig = {
+  locales: ["en", "ar"],
+  defaultLocale: "en",
+} as const;
+
+export type Locale = (typeof i18nConfig)["locales"][number];
