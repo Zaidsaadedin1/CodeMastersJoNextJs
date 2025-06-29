@@ -32,7 +32,7 @@ const MenuComponent = () => {
             style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
           >
             <IconUser size={12} />
-            <Text size="sm">{user?.name}</Text>
+            <Text size="sm">{`${user?.firstName} ${" "} ${user?.lastName}`}</Text>
           </Group>
         </Button>
       </Menu.Target>
