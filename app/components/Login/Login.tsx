@@ -62,18 +62,22 @@ export default function Login() {
       try {
         schema.parse(values);
         return {};
-      } catch (error: any) {
-        const formattedErrors: Record<string, string> = {};
-        error.errors?.forEach((err: any) => {
-          formattedErrors[err.path[0]] = err.message;
-        });
-        return formattedErrors;
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          const formattedErrors: Record<string, string> = {};
+          error.errors.forEach((err) => {
+            if (err.path.length > 0 && typeof err.path[0] === "string") {
+              formattedErrors[err.path[0]] = err.message;
+            }
+          });
+          return formattedErrors;
+        }
+        return {};
       }
     },
     validateInputOnBlur: true,
   });
 
-  // Show notifications
   const showSuccessNotification = () => {
     notifications.show({
       id: "login-success",
@@ -103,27 +107,53 @@ export default function Login() {
   const loginMutation = useMutation({
     mutationFn: authController.login,
     onSuccess: (response) => {
-      if (response && response.data) {
+      if (response?.data) {
         showSuccessNotification();
         setTimeout(() => {
           router.push(`/${currentLang}/dashboard`);
-          login(response.data!);
+          if (response.data !== undefined && response.data !== null) {
+            login(response.data as string);
+          }
         }, 1000);
       }
     },
-    onError: (error: any) => {
-      // Handle specific error cases based on the API response
-      let errorMessage = t("notifications.error_generic");
+    onError: (error: unknown) => {
+      let errorMessage = t(
+        "notifications.error_generic",
+        "An error occurred. Please try again."
+      );
 
-      if (error?.response?.data) {
-        const responseData = error.response.data;
+      // Define a type for the expected error response
+      type ErrorResponse = {
+        response?: {
+          data?: {
+            message?: string;
+          };
+        };
+      };
+
+      const err = error as ErrorResponse;
+      if (err?.response?.data) {
+        const responseData = err.response.data;
         if (
-          responseData.message?.includes("Email or Phone is already taken.")
+          typeof responseData === "object" &&
+          responseData !== null &&
+          "message" in responseData &&
+          typeof responseData.message === "string" &&
+          responseData.message.includes("Email or Phone is already taken.")
         ) {
-          errorMessage = t("notifications.error_user_exists");
+          errorMessage = t(
+            "notifications.error_user_exists",
+            "User already exists."
+          );
           form.setErrors({ loginIdentifier: errorMessage });
           form.setErrors({ password: errorMessage });
-        } else if (responseData.message) {
+        } else if (
+          typeof responseData === "object" &&
+          responseData !== null &&
+          "message" in responseData &&
+          typeof responseData.message === "string"
+        ) {
           errorMessage = responseData.message;
         }
       }

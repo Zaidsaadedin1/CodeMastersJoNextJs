@@ -96,15 +96,19 @@ export default function RequestService() {
       try {
         schema.parse(values);
         return {};
-      } catch (error: any) {
+      } catch (error) {
         const formattedErrors: Record<string, string> = {};
-        error.errors?.forEach((err: any) => {
-          formattedErrors[err.path[0]] = err.message;
-        });
+        if (error instanceof z.ZodError) {
+          error.errors.forEach((err) => {
+            if (err.path.length > 0) {
+              formattedErrors[err.path[0]] = err.message;
+            }
+          });
+        }
         return formattedErrors;
       }
     },
-    validateInputOnChange: true, // Add this for real-time validation
+    validateInputOnChange: true,
     validateInputOnBlur: true,
   });
 

@@ -13,7 +13,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
 
-function App({ Component, pageProps }: any) {
+function App({
+  Component,
+  pageProps,
+}: {
+  readonly Component: React.ElementType;
+  readonly pageProps: Readonly<Record<string, unknown>>;
+}) {
   const router = useRouter();
 
   const dir = router.locale === "ar" ? "rtl" : "ltr";
@@ -30,8 +36,7 @@ function App({ Component, pageProps }: any) {
       cssVariablesSelector="html"
       getRootElement={() => document.documentElement}
     >
-      <Notifications position="top-right" zIndex={1000} />{" "}
-      {/* Inside MantineProvider */}
+      <Notifications position="top-right" zIndex={1000} />
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
           <Head>

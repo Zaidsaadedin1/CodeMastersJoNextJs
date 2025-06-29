@@ -59,8 +59,8 @@ export default function Sitemap() {
                 <Title order={3}>{section.title}</Title>
               </Group>
               <List spacing="sm" size="md" icon={<span>•</span>}>
-                {section.items.map((item: any, index: number) => (
-                  <List.Item key={index}>
+                {section.items.map((item) => (
+                  <List.Item key={item.path}>
                     <Anchor
                       onClick={() =>
                         router.push(`/${currentLang}${item.path}`, undefined, {

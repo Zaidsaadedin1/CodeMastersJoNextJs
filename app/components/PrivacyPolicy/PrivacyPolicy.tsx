@@ -10,15 +10,15 @@ export default function PrivacyPolicy() {
 
   interface Section {
     title: string;
-    content?: string[] | string;
-    items?: { title?: string; content?: string }[];
-    contact?: string;
+    content: string[] | string;
+    items: { title?: string; content?: string }[];
+    contact: string;
   }
 
   const renderSection = (sectionKey: string) => {
-    const section: Section = (t(`sections.${sectionKey}`, {
+    const section: Section = t(`sections.${sectionKey}`, {
       returnObjects: true,
-    }) as Section) || { title: "", content: "", items: [], contact: "" };
+    }) as Section;
 
     return (
       <Box key={sectionKey} mb="xl">
@@ -53,17 +53,19 @@ export default function PrivacyPolicy() {
               </span>
             }
           >
-            {section.items.map((item: any, index: number) => (
-              <List.Item key={index}>
-                {item.title ? (
-                  <>
-                    <strong>{item.title}:</strong> {item.content}
-                  </>
-                ) : (
-                  item
-                )}
-              </List.Item>
-            ))}
+            {section.items.map(
+              (item: { title?: string; content?: string }, index: number) => (
+                <List.Item key={index}>
+                  {item.title ? (
+                    <>
+                      <strong>{item.title}:</strong> {item.content}
+                    </>
+                  ) : (
+                    item.content || ""
+                  )}
+                </List.Item>
+              )
+            )}
           </List>
         )}
 

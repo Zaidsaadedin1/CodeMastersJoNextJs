@@ -120,12 +120,17 @@ const SignUp = () => {
       try {
         schema.parse(values);
         return {};
-      } catch (error: any) {
-        const formattedErrors: Record<string, string> = {};
-        error.errors?.forEach((err: any) => {
-          formattedErrors[err.path[0]] = err.message;
-        });
-        return formattedErrors;
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          const formattedErrors: Record<string, string> = {};
+          error.errors.forEach((err) => {
+            if (err.path.length > 0 && typeof err.path[0] === "string") {
+              formattedErrors[err.path[0]] = err.message;
+            }
+          });
+          return formattedErrors;
+        }
+        return {};
       }
     },
     validateInputOnBlur: true,
@@ -158,20 +163,35 @@ const SignUp = () => {
     });
   };
 
+  type ErrorWithResponse = {
+    response?: {
+      data?: {
+        message?: string;
+      };
+    };
+  };
+
   const registerMutation = useMutation({
     mutationFn: authController.register,
     onSuccess: () => {
       showSuccessNotification();
-      // Short delay to allow notification to be seen before redirect
       setTimeout(() => {
         router.push(`/${currentLang}/login`);
       }, 1500);
     },
-    onError: (error: any) => {
-      // Handle specific error cases based on the API response
+    onError: (error: unknown) => {
       let errorMessage = t("notifications.error_generic");
 
-      if (error?.response?.data) {
+      function hasResponse(obj: unknown): obj is ErrorWithResponse {
+        return (
+          typeof obj === "object" &&
+          obj !== null &&
+          "response" in obj &&
+          typeof (obj as { response?: unknown }).response === "object"
+        );
+      }
+
+      if (hasResponse(error) && error.response?.data) {
         const responseData = error.response.data;
         if (
           responseData.message?.includes("Email or Phone is already taken.")

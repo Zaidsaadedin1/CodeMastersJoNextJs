@@ -120,8 +120,17 @@ const Profile = ({ user }: { user: GetUserDto }) => {
       try {
         schema.parse(values);
         return {};
-      } catch (error: any) {
-        return error.formErrors.fieldErrors;
+      } catch (e) {
+        const errors: Record<string, string> = {};
+        if (typeof e === "object" && e !== null && "errors" in e) {
+          const zodError = e as z.ZodError;
+          zodError.errors.forEach((err) => {
+            if (err.path && err.path.length > 0) {
+              errors[err.path[0] as string] = err.message;
+            }
+          });
+        }
+        return errors;
       }
     },
 
