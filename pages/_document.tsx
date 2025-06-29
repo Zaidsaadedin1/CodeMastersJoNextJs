@@ -8,11 +8,7 @@ class MyDocument extends Document {
     return (
       <Html lang={currentLocale} {...mantineHtmlProps}>
         <Head>
-          <ColorSchemeScript />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
-            rel="stylesheet"
-          />
+          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
         </Head>
         <body>
           <Main />

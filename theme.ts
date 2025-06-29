@@ -20,9 +20,6 @@ export const theme = createTheme({
     ],
   },
 
-  /** Override font settings */
-  fontFamily: "Roboto, sans-serif", // Clean, modern sans-serif font
-
   fontSizes: {
     xs: "12px",
     sm: "14px",
@@ -63,17 +60,10 @@ export const theme = createTheme({
   },
 
   /** Additional elegant styling */
+  fontFamily: "Oswald, sans-serif",
   headings: {
-    fontFamily: "Playfair Display, serif", // Elegant serif font for headings
+    fontFamily: "Oswald, sans-serif",
     fontWeight: "700",
-    sizes: {
-      h1: { fontSize: "36px", lineHeight: "1.2" },
-      h2: { fontSize: "30px", lineHeight: "1.3" },
-      h3: { fontSize: "24px", lineHeight: "1.4" },
-      h4: { fontSize: "18px", lineHeight: "1.5" },
-      h5: { fontSize: "16px", lineHeight: "1.5" },
-      h6: { fontSize: "14px", lineHeight: "1.6" },
-    },
   },
 
   /** Input settings */

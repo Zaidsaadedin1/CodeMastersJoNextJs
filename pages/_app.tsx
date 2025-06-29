@@ -12,7 +12,19 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
+import { Open_Sans, Oswald } from "next/font/google"; // correct import path in Next.js 13+
 
+const oswaldFont = Oswald({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--oswald-font",
+});
+
+const openSansFont = Open_Sans({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--open-sans-font",
+});
 function App({
   Component,
   pageProps,
@@ -33,6 +45,7 @@ function App({
   return (
     <MantineProvider
       theme={theme}
+      withCssVariables
       cssVariablesSelector="html"
       getRootElement={() => document.documentElement}
     >
@@ -48,7 +61,12 @@ function App({
             <link rel="shortcut icon" href="/favicon.svg" />
           </Head>
 
-          <Stack mr="10%" ml="10%" style={{ direction: dir }}>
+          <Stack
+            className={openSansFont.className}
+            mr="10%"
+            ml="10%"
+            style={{ direction: dir }}
+          >
             <MenuComponent />
             <Component {...pageProps} />
             <Footer />

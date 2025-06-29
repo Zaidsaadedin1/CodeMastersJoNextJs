@@ -139,6 +139,7 @@ const AnimatedCard = React.memo(({ solution }: { solution: Solution }) => {
         flexDirection: "column",
         justifyContent: "space-between",
         cursor: "pointer",
+        fontFamily: "Oswald, sans-serif",
       }}
     >
       <Text size="lg" fw={600} mb={10}>

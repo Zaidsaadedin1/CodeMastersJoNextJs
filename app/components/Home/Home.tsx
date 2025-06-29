@@ -130,8 +130,9 @@ const HomePage = () => {
               borderRadius: "10px",
             }}
           >
-            Your browser does not support the video tag or the video failed to
-            load.
+            <Text size="xl" color="white">
+              {t("video_not_supported")}
+            </Text>
           </div>
         </video>
         <Overlay
@@ -154,7 +155,7 @@ const HomePage = () => {
             style={{
               fontSize: "4rem",
               lineHeight: 1.2,
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "Oswald, sans-serif",
               color: "white",
             }}
           >
@@ -182,7 +183,7 @@ const HomePage = () => {
           style={{
             textAlign: "center",
             marginBottom: 60,
-            fontFamily: "'Playfair Display', serif",
+            fontFamily: "Oswald, sans-serif",
           }}
         >
           {t("our_artistic_solutions")}
@@ -198,7 +199,7 @@ const HomePage = () => {
             style={{
               textAlign: "center",
               marginBottom: 60,
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "Oswald, sans-serif",
             }}
           >
             {t("our_services")}
@@ -230,7 +231,13 @@ const HomePage = () => {
                     {index === 4 && <IconSchool size={48} />}
                     {index === 5 && <IconClipboardList size={48} />}
                   </Box>
-                  <Title order={3} style={{ textAlign: "center" }}>
+                  <Title
+                    order={3}
+                    style={{
+                      textAlign: "center",
+                      fontFamily: "Oswald, sans-serif",
+                    }}
+                  >
                     {t(`services.${key}.title`)}
                   </Title>
                   <Text style={{ textAlign: "center" }}>

@@ -26,7 +26,7 @@ const MenuComponent = () => {
   const renderAuthMenu = () => (
     <Menu>
       <Menu.Target>
-        <Button variant="subtle">
+        <Button variant="subtle" ff="Oswald, sans-serif">
           <Group
             gap={2}
             wrap="nowrap"
@@ -43,6 +43,7 @@ const MenuComponent = () => {
         <Menu.Item
           onClick={() => router.push(`/${currentLang}/dashboard`)}
           style={{ direction: isRTL ? "rtl" : "ltr" }}
+          ff="Oswald, sans-serif"
         >
           <Group gap={2}>
             <IconDashboard size={14} />
@@ -53,6 +54,7 @@ const MenuComponent = () => {
           <Menu.Item
             onClick={() => router.push(`/${currentLang}/admin`)}
             style={{ direction: isRTL ? "rtl" : "ltr" }}
+            ff="Oswald, sans-serif"
           >
             <Group gap={2}>
               <IconDashboard size={14} />
@@ -63,6 +65,7 @@ const MenuComponent = () => {
         <Menu.Item
           onClick={() => router.push(`/${currentLang}/profile`)}
           style={{ direction: isRTL ? "rtl" : "ltr" }}
+          ff="Oswald, sans-serif"
         >
           <Group gap={2} wrap="nowrap">
             <IconUser size={14} />
@@ -72,6 +75,7 @@ const MenuComponent = () => {
         <Menu.Item
           onClick={logout}
           style={{ direction: isRTL ? "rtl" : "ltr" }}
+          ff="Oswald, sans-serif"
         >
           <Group gap={2}>
             <IconLogout size={14} />
@@ -90,11 +94,12 @@ const MenuComponent = () => {
             size="12"
             variant="subtle"
             style={{ direction: isRTL ? "rtl" : "ltr" }}
+            ff="Oswald, sans-serif"
           >
             {t("menu")}
           </Button>
         </Menu.Target>
-        <Menu.Dropdown>
+        <Menu.Dropdown ff="Oswald, sans-serif">
           {[
             { path: "/discoverMore", icon: IconHome, text: t("discover_more") },
             {
@@ -121,7 +126,10 @@ const MenuComponent = () => {
       <Group
         wrap="nowrap"
         gap={5}
-        style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+        style={{
+          fontFamily: "Oswald, sans-serif",
+          flexDirection: isRTL ? "row-reverse" : "row",
+        }}
       >
         {[
           { path: "/discoverMore", icon: IconHome, text: t("discover_more") },
@@ -167,7 +175,10 @@ const MenuComponent = () => {
           <Menu.Item onClick={() => router.push(`/${currentLang}/signUp`)}>
             <Group
               gap={2}
-              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                flexDirection: isRTL ? "row-reverse" : "row",
+              }}
             >
               <IconUser size={12} />
               <Text size="sm">{t("sign_up")}</Text>
@@ -176,7 +187,10 @@ const MenuComponent = () => {
           <Menu.Item onClick={() => router.push(`/${currentLang}/login`)}>
             <Group
               gap={2}
-              style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+              style={{
+                fontFamily: "Oswald, sans-serif",
+                flexDirection: isRTL ? "row-reverse" : "row",
+              }}
             >
               <IconLogin size={12} />
               <Text size="sm">{t("login")}</Text>
@@ -188,16 +202,25 @@ const MenuComponent = () => {
       <Group
         wrap="nowrap"
         gap={5}
-        style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+        style={{
+          fontFamily: "Oswald, sans-serif",
+          flexDirection: isRTL ? "row-reverse" : "row",
+        }}
       >
         <Button
           variant="subtle"
           onClick={() => router.push(`/${currentLang}/signUp`)}
-          style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+          style={{
+            fontFamily: "Oswald, sans-serif",
+            flexDirection: isRTL ? "row-reverse" : "row",
+          }}
         >
           <Group
             gap={2}
-            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+            style={{
+              fontFamily: "Oswald, sans-serif",
+              flexDirection: isRTL ? "row-reverse" : "row",
+            }}
           >
             <IconUser size={12} />
             <Text size="sm">{t("sign_up")}</Text>
@@ -206,12 +229,18 @@ const MenuComponent = () => {
         <Button
           variant="subtle"
           onClick={() => router.push(`/${currentLang}/login`)}
-          style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+          style={{
+            fontFamily: "Oswald, sans-serif",
+            flexDirection: isRTL ? "row-reverse" : "row",
+          }}
         >
           <Group
             gap={2}
             wrap="nowrap"
-            style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
+            style={{
+              fontFamily: "Oswald, sans-serif",
+              flexDirection: isRTL ? "row-reverse" : "row",
+            }}
           >
             <IconLogin size={12} />
             <Text size="sm">{t("login")}</Text>
