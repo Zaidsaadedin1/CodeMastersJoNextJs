@@ -12,13 +12,7 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
-import { Open_Sans, Oswald } from "next/font/google"; // correct import path in Next.js 13+
-
-const oswaldFont = Oswald({
-  subsets: ["latin"],
-  weight: ["700"],
-  variable: "--oswald-font",
-});
+import { Open_Sans } from "next/font/google"; // correct import path in Next.js 13+
 
 const openSansFont = Open_Sans({
   subsets: ["latin"],

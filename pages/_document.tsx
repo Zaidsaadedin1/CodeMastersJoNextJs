@@ -1,5 +1,5 @@
 import React from "react";
-import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
+import { mantineHtmlProps } from "@mantine/core";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 class MyDocument extends Document {
   render() {
