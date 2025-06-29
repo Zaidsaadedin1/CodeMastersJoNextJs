@@ -29,10 +29,13 @@ const MenuComponent = () => {
         <Button variant="subtle">
           <Group
             gap={2}
+            wrap="nowrap"
             style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
           >
             <IconUser size={12} />
-            <Text size="sm">{`${user?.firstName} ${" "} ${user?.lastName}`}</Text>
+            <Text size="sm">{`${user?.firstName} ${" "} ${
+              user?.lastName
+            }`}</Text>
           </Group>
         </Button>
       </Menu.Target>
@@ -67,7 +70,7 @@ const MenuComponent = () => {
           }
           style={{ direction: isRTL ? "rtl" : "ltr" }}
         >
-          <Group gap={2}>
+          <Group gap={2} wrap="nowrap">
             <IconUser size={14} />
             <Text size="sm">{t("profile")}</Text>
           </Group>
