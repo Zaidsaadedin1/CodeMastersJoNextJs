@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   TextInput,
@@ -12,10 +12,10 @@ import {
   TableScrollContainer,
   Select,
   LoadingOverlay,
+  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
-import { useState, useEffect } from "react";
 import { GetUserDto, UpdateUserDto } from "../../Apis/types/userDtos/userDtos";
 import { DatePickerInput } from "@mantine/dates";
 import {
@@ -27,16 +27,17 @@ import {
   IconCheck,
   IconX,
 } from "@tabler/icons-react";
-import { useTranslation } from "next-i18next";
 import orderController from "../../Apis/controllers/orderControllers";
 import { GetOrderDto } from "../../Apis/types/orderDtos/orderDtos";
 import { notifications } from "@mantine/notifications";
 import { useMutation } from "@tanstack/react-query";
 import userController from "../../Apis/controllers/userController";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 const Profile = ({ user }: { user: GetUserDto }) => {
   const { t, i18n } = useTranslation("profile");
+  console.log("Current Language:", i18n.language);
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
   const router = useRouter();
@@ -211,6 +212,7 @@ const Profile = ({ user }: { user: GetUserDto }) => {
 
   return (
     <>
+      <Text>{t("form.submit")}</Text>
       {updateUserDataMutation.isPending ? (
         <LoadingOverlay />
       ) : (

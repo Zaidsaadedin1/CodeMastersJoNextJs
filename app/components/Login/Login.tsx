@@ -249,11 +249,7 @@ export default function Login() {
             <Anchor
               component="a"
               size="xs"
-              onClick={() =>
-                router.push("/signUp", undefined, {
-                  locale: currentLang,
-                })
-              }
+              onClick={() => router.push(`/${currentLang}/signUp`)}
               ml="xs"
             >
               {t("links.signup")}

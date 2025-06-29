@@ -62,11 +62,7 @@ export default function Sitemap() {
                 {section.items.map((item) => (
                   <List.Item key={item.path}>
                     <Anchor
-                      onClick={() =>
-                        router.push(`/${currentLang}${item.path}`, undefined, {
-                          locale: currentLang,
-                        })
-                      }
+                      onClick={() => router.push(`/${currentLang}${item.path}`)}
                     >
                       {item.title}
                     </Anchor>

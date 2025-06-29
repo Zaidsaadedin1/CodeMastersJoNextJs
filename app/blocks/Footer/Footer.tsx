@@ -94,9 +94,7 @@ const Footer = () => {
         <Anchor
           size="xs"
           underline="never"
-          onClick={() =>
-            router.push("/privacyPolicy", undefined, { locale: currentLang })
-          }
+          onClick={() => router.push(`/${currentLang}/privacyPolicy`)}
           style={{ cursor: "pointer" }}
         >
           {t("privacy_policy")}
@@ -104,9 +102,7 @@ const Footer = () => {
         <Anchor
           size="xs"
           underline="never"
-          onClick={() =>
-            router.push("/termsOfService", undefined, { locale: currentLang })
-          }
+          onClick={() => router.push(`/${currentLang}/termsOfService`)}
           style={{ cursor: "pointer" }}
         >
           {t("terms_of_service")}
@@ -114,9 +110,7 @@ const Footer = () => {
         <Anchor
           size="xs"
           underline="never"
-          onClick={() =>
-            router.push("/sitemap", undefined, { locale: currentLang })
-          }
+          onClick={() => router.push(`/${currentLang}/sitemap`)}
           style={{ cursor: "pointer" }}
         >
           {t("sitemap")}

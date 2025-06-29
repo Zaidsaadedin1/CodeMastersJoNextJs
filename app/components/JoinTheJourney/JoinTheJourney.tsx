@@ -28,9 +28,10 @@ const pulse = keyframes({
 });
 
 const JoinTheJourney: React.FC = () => {
-  const route = useRouter();
+  const router = useRouter();
   const { t, i18n } = useTranslation("joinTheJourney");
   const isRTL = i18n.language === "ar";
+  const currentLang = i18n.language;
   const inspiringPhrases = [
     {
       icon: IconRocket,
@@ -117,7 +118,7 @@ const JoinTheJourney: React.FC = () => {
               animation: `${pulse} 2s infinite ease-in-out`,
               animationDelay: "2s",
             }}
-            onClick={() => route.push("/requestService")}
+            onClick={() => router.push(`/${currentLang}/requestService`)}
           >
             {t("begin_transformation")}
           </Button>

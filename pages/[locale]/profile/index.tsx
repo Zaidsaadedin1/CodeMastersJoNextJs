@@ -6,23 +6,25 @@ import userController from "../../../app/Apis/controllers/userController";
 import { GetServerSideProps } from "next";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { params } = context;
-  const locale = (params?.locale as string) || i18nConfig.defaultLocale;
+  const locale = context.locale ?? i18nConfig.defaultLocale;
+  console.log("Locale:", locale);
+
   const authCheck = await checkAuth(context);
 
   if (!authCheck.authenticated) {
     return {
       redirect: {
-        destination: `/${locale || i18nConfig.defaultLocale}/unAuthorized`,
+        destination: `/${locale}/unAuthorized`,
         permanent: false,
       },
     };
   }
+
   const res = await userController.getUserById(authCheck.user?.id);
 
   return {
     props: {
-      ...(await serverSideTranslations(locale || i18nConfig.defaultLocale, [
+      ...(await serverSideTranslations(locale, [
         "profile",
         "menuComponent",
         "footer",

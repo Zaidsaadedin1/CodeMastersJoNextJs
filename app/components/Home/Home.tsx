@@ -219,11 +219,7 @@ const HomePage = () => {
                 shadow="sm"
                 p="lg"
                 radius="md"
-                onClick={() => {
-                  router.push("/requestService", undefined, {
-                    locale: currentLang,
-                  });
-                }}
+                onClick={() => router.push(`/${currentLang}/requestService`)}
               >
                 <Stack align="center" m="xs">
                   <Box style={{ marginBottom: 16, color: "#228be6" }}>

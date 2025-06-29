@@ -27,7 +27,7 @@ const HorizontalSection = () => {
   const [key, setKey] = useState(0); // Add a key to force re-render
   const items = getSolutions(t);
   const isRTL = i18n.language === "ar";
-
+  const currentLang = i18n.language;
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -41,9 +41,7 @@ const HorizontalSection = () => {
   }, [i18n.language]);
 
   const handleSlideClick = () => {
-    router.push("/requestService", undefined, {
-      locale: i18n.language,
-    });
+    router.push(`/${currentLang}/requestService`);
   };
 
   if (!isMounted) {

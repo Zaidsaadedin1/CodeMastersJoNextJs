@@ -37,10 +37,10 @@ const pulse = keyframes({
 });
 
 const OurPower: React.FC = () => {
-  const route = useRouter();
+  const router = useRouter();
   const { t, i18n } = useTranslation("ourPower");
   const isRTL = i18n.language === "ar";
-
+  const currentLang = i18n.language;
   const capabilities = [
     { name: t("cloud_infrastructure"), value: 95 },
     { name: t("cybersecurity"), value: 92 },
@@ -132,7 +132,7 @@ const OurPower: React.FC = () => {
               animation: `${pulse} 2s infinite ease-in-out`,
               animationDelay: "2s",
             }}
-            onClick={() => route.push("/requestService")}
+            onClick={() => router.push(`/${currentLang}/requestService`)}
           >
             {t("explore_capabilities")}
           </Button>

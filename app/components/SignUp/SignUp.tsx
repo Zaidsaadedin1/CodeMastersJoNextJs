@@ -426,10 +426,7 @@ const SignUp = () => {
           <Anchor
             size="sm"
             href="/login"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push("/login", undefined, { locale: currentLang });
-            }}
+            onClick={() => router.push(`/${currentLang}/login`)}
           >
             {t("login.existingAccount")}
           </Anchor>

@@ -41,9 +41,7 @@ const MenuComponent = () => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
-          onClick={() =>
-            router.push("/dashboard", undefined, { locale: currentLang })
-          }
+          onClick={() => router.push(`/${currentLang}/dashboard`)}
           style={{ direction: isRTL ? "rtl" : "ltr" }}
         >
           <Group gap={2}>
@@ -53,9 +51,7 @@ const MenuComponent = () => {
         </Menu.Item>
         {user?.Roles === "Admin" && (
           <Menu.Item
-            onClick={() =>
-              router.push("/admin", undefined, { locale: currentLang })
-            }
+            onClick={() => router.push(`/${currentLang}/admin`)}
             style={{ direction: isRTL ? "rtl" : "ltr" }}
           >
             <Group gap={2}>
@@ -65,9 +61,7 @@ const MenuComponent = () => {
           </Menu.Item>
         )}
         <Menu.Item
-          onClick={() =>
-            router.push("/profile", undefined, { locale: currentLang })
-          }
+          onClick={() => router.push(`/${currentLang}/profile`)}
           style={{ direction: isRTL ? "rtl" : "ltr" }}
         >
           <Group gap={2} wrap="nowrap">
@@ -112,9 +106,7 @@ const MenuComponent = () => {
           ].map((item) => (
             <Menu.Item
               key={item.path}
-              onClick={() =>
-                router.push(item.path, undefined, { locale: currentLang })
-              }
+              onClick={() => router.push(`/${currentLang}/${item.path}`)}
               style={{ direction: isRTL ? "rtl" : "ltr" }}
             >
               <Group>
@@ -143,9 +135,7 @@ const MenuComponent = () => {
           <Button
             key={item.path}
             variant="subtle"
-            onClick={() =>
-              router.push(item.path, undefined, { locale: currentLang })
-            }
+            onClick={() => router.push(`/${currentLang}/${item.path}`)}
             style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
           >
             <Group
@@ -174,11 +164,7 @@ const MenuComponent = () => {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item
-            onClick={() =>
-              router.push("/signUp", undefined, { locale: currentLang })
-            }
-          >
+          <Menu.Item onClick={() => router.push(`/${currentLang}/signUp`)}>
             <Group
               gap={2}
               style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
@@ -187,11 +173,7 @@ const MenuComponent = () => {
               <Text size="sm">{t("sign_up")}</Text>
             </Group>
           </Menu.Item>
-          <Menu.Item
-            onClick={() =>
-              router.push("/login", undefined, { locale: currentLang })
-            }
-          >
+          <Menu.Item onClick={() => router.push(`/${currentLang}/login`)}>
             <Group
               gap={2}
               style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
@@ -210,9 +192,7 @@ const MenuComponent = () => {
       >
         <Button
           variant="subtle"
-          onClick={() =>
-            router.push("/signUp", undefined, { locale: currentLang })
-          }
+          onClick={() => router.push(`/${currentLang}/signUp`)}
           style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
         >
           <Group
@@ -225,9 +205,7 @@ const MenuComponent = () => {
         </Button>
         <Button
           variant="subtle"
-          onClick={() =>
-            router.push("/login", undefined, { locale: currentLang })
-          }
+          onClick={() => router.push(`/${currentLang}/login`)}
           style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
         >
           <Group
@@ -262,7 +240,7 @@ const MenuComponent = () => {
           w={50}
           h={50}
           style={{ cursor: "pointer" }}
-          onClick={() => router.push("/", undefined, { locale: currentLang })}
+          onClick={() => router.push(`/${currentLang}/`)}
         />
       </Flex>
 
