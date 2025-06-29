@@ -39,11 +39,20 @@ export default function ForgotPassword() {
       try {
         schema.parse(values);
         return {};
-      } catch (error: any) {
+      } catch (error: unknown) {
         const formattedErrors: Record<string, string> = {};
-        error.errors?.forEach((err: any) => {
-          formattedErrors[err.path[0]] = err.message;
-        });
+        if (
+          typeof error === "object" &&
+          error !== null &&
+          "errors" in error &&
+          Array.isArray((error as { errors: unknown }).errors)
+        ) {
+          (
+            error as { errors: Array<{ path: [string]; message: string }> }
+          ).errors.forEach((err) => {
+            formattedErrors[err.path[0]] = err.message;
+          });
+        }
         return formattedErrors;
       }
     },

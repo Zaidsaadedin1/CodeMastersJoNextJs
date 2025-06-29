@@ -169,5 +169,6 @@ const AnimatedCard = React.memo(({ solution }: { solution: Solution }) => {
     </motion.div>
   );
 });
+AnimatedCard.displayName = "AnimatedCard";
 
 export default HorizontalSection;
