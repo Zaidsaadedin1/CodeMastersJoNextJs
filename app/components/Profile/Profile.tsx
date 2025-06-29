@@ -12,7 +12,6 @@ import {
   TableScrollContainer,
   Select,
   LoadingOverlay,
-  Text,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { z } from "zod";
@@ -37,7 +36,6 @@ import { useTranslation } from "next-i18next";
 
 const Profile = ({ user }: { user: GetUserDto }) => {
   const { t, i18n } = useTranslation("profile");
-  console.log("Current Language:", i18n.language);
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
   const router = useRouter();
@@ -212,7 +210,6 @@ const Profile = ({ user }: { user: GetUserDto }) => {
 
   return (
     <>
-      <Text>{t("form.submit")}</Text>
       {updateUserDataMutation.isPending ? (
         <LoadingOverlay />
       ) : (
