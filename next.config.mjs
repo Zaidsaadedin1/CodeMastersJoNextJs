@@ -2,6 +2,6 @@
 /**
  * @type {import('next').NextConfig}
  */
-const nextConfig = { i18n, trailingSlash: true };
+const nextConfig = { trailingSlash: true };
 
 export default nextConfig;
