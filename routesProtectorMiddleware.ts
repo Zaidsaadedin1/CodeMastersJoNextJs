@@ -21,7 +21,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Admin route protection
-  if (path.startsWith("/admin") && decoded?.Roles !== "Admin") {
+  if (path.startsWith("/admin") && decoded?.Roles?.includes("Admin")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
