@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = (token: string) => {
     // Set cookie that will be sent with requests
-    document.cookie = `token=${token}; path=/; max-age=${
+    document.cookie = `codeMastersToken=${token}; path=/; max-age=${
       30 * 24 * 60 * 60
     }; SameSite=Strict`;
 
@@ -58,7 +58,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     // Remove cookie
-    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
+    document.cookie =
+      "codeMastersToken=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
     router.push("/", undefined, { locale: currentLang });
     setUser(null);
   };
