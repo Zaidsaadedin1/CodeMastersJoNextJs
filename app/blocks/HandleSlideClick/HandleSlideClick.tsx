@@ -24,17 +24,17 @@ const HorizontalSection = () => {
   const router = useRouter();
   const { t, i18n } = useTranslation("home");
   const [isMounted, setIsMounted] = useState(false);
-  const [key, setKey] = useState(0); // Add a key to force re-render
+  const [key, setKey] = useState(0);
   const items = getSolutions(t);
   const isRTL = i18n.language === "ar";
   const currentLang = i18n.language;
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  // Reset Swiper when language changes
   useEffect(() => {
-    setKey((prev) => prev + 1); // Change key to force re-render
+    setKey((prev) => prev + 1);
     if (swiperRef.current) {
       swiperRef.current.update();
     }
@@ -48,7 +48,12 @@ const HorizontalSection = () => {
     return (
       <Box
         dir={isRTL ? "rtl" : "ltr"}
-        style={{ position: "relative", height: 500 }}
+        style={{
+          position: "relative",
+          height: 500,
+          width: "100%",
+          overflow: "hidden",
+        }}
       >
         <Box style={{ display: "flex", gap: 24, padding: "0 16px" }}>
           {[1, 2, 3, 4].map((i) => (
@@ -59,6 +64,7 @@ const HorizontalSection = () => {
                 height: 450,
                 borderRadius: 20,
                 backgroundColor: "#f5f5f5",
+                flexShrink: 0,
               }}
             />
           ))}
@@ -69,16 +75,21 @@ const HorizontalSection = () => {
 
   return (
     <Box
-      key={`swiper-container-${key}`} // Add key to force re-render
+      key={`swiper-container-${key}`}
       dir={isRTL ? "rtl" : "ltr"}
-      style={{ position: "relative", padding: "0 16px" }}
+      style={{
+        position: "relative",
+        padding: "0 16px",
+        width: "100%",
+        overflow: "hidden",
+      }}
     >
       <SwiperReact
-        key={`swiper-${key}`} // Add key to force re-render
+        key={`swiper-${key}`}
         dir={isRTL ? "rtl" : "ltr"}
         onSwiper={(swiper: SwiperClass) => {
           swiperRef.current = swiper;
-          swiper.update(); // Update swiper on initialization
+          swiper.update();
         }}
         spaceBetween={24}
         slidesPerView="auto"

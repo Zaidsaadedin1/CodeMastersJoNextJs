@@ -11,6 +11,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
         "menuComponent",
         "footer",
         "common",
+        "websitesIdeas",
       ])),
     },
   };

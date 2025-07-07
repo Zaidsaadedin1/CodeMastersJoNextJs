@@ -20,6 +20,8 @@ import {
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import HorizontalSection from "../../blocks/HandleSlideClick/HandleSlideClick";
+import WebsitesIdeas from "../../blocks/WebsitesIdeas/WebsitesIdeas";
+import ScrollVelocity from "../Ui/ScrollVelocity/ScrollVelocity";
 
 const homePageVideo = "/videos/homePageWebVideo.mp4";
 
@@ -39,6 +41,7 @@ const HomePage = () => {
     t("inspiring_phrases.phrase7"),
     t("inspiring_phrases.phrase8"),
   ];
+
   useEffect(() => {
     const video = videoRef.current;
     if (video) {
@@ -177,6 +180,7 @@ const HomePage = () => {
         </Container>
       </Box>
 
+      <WebsitesIdeas />
       <Container py={80} size="xl" mb="xl">
         <Title
           order={2}
@@ -223,7 +227,7 @@ const HomePage = () => {
                 onClick={() => router.push(`/${currentLang}/requestService`)}
               >
                 <Stack align="center" m="xs">
-                  <Box style={{ marginBottom: 16, color: "#228be6" }}>
+                  <Box style={{ marginBottom: 16, color: "gray" }}>
                     {index === 0 && <IconBrain size={48} />}
                     {index === 1 && <IconCode size={48} />}
                     {index === 2 && <IconRocket size={48} />}
@@ -249,6 +253,23 @@ const HomePage = () => {
           </SimpleGrid>
         </Container>
       </Box>
+      <ScrollVelocity
+        texts={[
+          t("inspiring_phrases.phrase1"),
+          t("inspiring_phrases.phrase2"),
+          t("inspiring_phrases.phrase3"),
+          t("inspiring_phrases.phrase4"),
+          t("inspiring_phrases.phrase5"),
+        ]}
+        velocity={500}
+        className="custom-scroll-text"
+        scrollerStyle={{
+          fontSize: "50px",
+          padding: "0px",
+          margin: "0px",
+          color: "gray",
+        }}
+      />
     </Box>
   );
 };

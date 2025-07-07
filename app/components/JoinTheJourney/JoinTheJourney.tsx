@@ -8,17 +8,48 @@ import {
   Badge,
   ThemeIcon,
   Box,
-  MantineTheme,
+  Container,
+  useMantineTheme,
 } from "@mantine/core";
 import { keyframes } from "@emotion/react";
-import { IconRocket, IconStars, IconBulb } from "@tabler/icons-react";
+import {
+  IconRocket,
+  IconStars,
+  IconBulb,
+  IconUsers,
+  IconCode,
+  IconTrophy,
+  IconArrowRight,
+} from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 
-// Animation keyframes
-const fadeIn = keyframes({
-  from: { opacity: 0, transform: "translateY(20px)" },
-  to: { opacity: 1, transform: "translateY(0)" },
+// React Bits Animations
+const zoomIn = keyframes({
+  "0%": { opacity: 0, transform: "scale(0.5)" },
+  "100%": { opacity: 1, transform: "scale(1)" },
+});
+
+const slideUp = keyframes({
+  "0%": { opacity: 0, transform: "translateY(60px)" },
+  "100%": { opacity: 1, transform: "translateY(0)" },
+});
+
+const fadeInLeft = keyframes({
+  "0%": { opacity: 0, transform: "translateX(-40px)" },
+  "100%": { opacity: 1, transform: "translateX(0)" },
+});
+
+const fadeInRight = keyframes({
+  "0%": { opacity: 0, transform: "translateX(40px)" },
+  "100%": { opacity: 1, transform: "translateX(0)" },
+});
+
+const bounceIn = keyframes({
+  "0%": { opacity: 0, transform: "scale(0.3)" },
+  "50%": { opacity: 1, transform: "scale(1.05)" },
+  "70%": { transform: "scale(0.9)" },
+  "100%": { transform: "scale(1)" },
 });
 
 const pulse = keyframes({
@@ -30,135 +61,246 @@ const pulse = keyframes({
 const JoinTheJourney: React.FC = () => {
   const router = useRouter();
   const { t, i18n } = useTranslation("joinTheJourney");
-  const isRTL = i18n.language === "ar";
   const currentLang = i18n.language;
-  const inspiringPhrases = [
+  const theme = useMantineTheme();
+
+  const milestones = [
+    {
+      icon: IconUsers,
+      title: t("humble_beginnings"),
+      description: t("humble_beginnings_desc"),
+      animation: fadeInLeft,
+    },
+    {
+      icon: IconCode,
+      title: t("expanding_services"),
+      description: t("expanding_services_desc"),
+      animation: fadeInRight,
+    },
+    {
+      icon: IconTrophy,
+      title: t("future_vision"),
+      description: t("future_vision_desc"),
+      animation: fadeInLeft,
+    },
+  ];
+
+  const services = [
     {
       icon: IconRocket,
-      title: t("pioneering_digital_excellence"),
-      description: t("pioneering_digital_excellence_desc"),
+      title: t("portfolio_websites"),
+      description: t("portfolio_websites_desc"),
+      color: "blue",
     },
     {
       icon: IconStars,
-      title: t("crafting_tomorrows_solutions"),
-      description: t("crafting_tomorrows_solutions_desc"),
+      title: t("entertainment_websites"),
+      description: t("entertainment_websites_desc"),
+      color: "violet",
     },
     {
       icon: IconBulb,
-      title: t("illuminating_digital_pathways"),
-      description: t("illuminating_digital_pathways_desc"),
+      title: t("blog_websites"),
+      description: t("blog_websites_desc"),
+      color: "teal",
     },
   ];
 
   return (
-    <Stack>
-      <Stack align="center" gap="xl" py={80} dir={isRTL ? "rtl" : "ltr"}>
-        <Box
-          component="div"
-          style={{
-            animation: `${fadeIn} 1s ease-out`,
-          }}
-        >
-          <Badge
-            variant="gradient"
-            gradient={{ from: "indigo", to: "cyan" }}
-            size="lg"
-            radius="sm"
-            px="lg"
-            py="xs"
-          >
-            {t("transform-Innovate-Excel")}
+    <Container size="lg" py={80}>
+      {/* Hero Section with ZoomIn animation */}
+      <Box
+        py={80}
+        style={{
+          animation: `${zoomIn} 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)`,
+        }}
+      >
+        <Stack align="center" gap="xl">
+          <Badge variant="light" size="xl" radius="sm">
+            {t("our_journey")}
           </Badge>
-        </Box>
 
-        <Box
-          component="div"
-          style={{
-            animation: `${fadeIn} 1.2s ease-out`,
-          }}
-        >
           <Title
-            size={52}
+            size={60}
             fw={900}
-            style={(theme: MantineTheme) => ({
-              background: `linear-gradient(45deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            })}
+            ta="center"
+            style={{
+              lineHeight: 1.2,
+              fontSize: "clamp(2.5rem, 5vw, 3.75rem)",
+            }}
           >
-            {t("join_the_digital_revolution")}
+            {t("from_mentorship_to_innovation")}
           </Title>
-        </Box>
 
-        <Box
-          component="div"
-          style={{
-            animation: `${fadeIn} 1.4s ease-out`,
-            maxWidth: 700,
-          }}
-        >
-          <Text size="xl" c="dimmed" lh={1.6}>
-            {t("digital_revolution_description")}
+          <Text size="xl" c="dimmed" ta="center" style={{ maxWidth: 800 }}>
+            {t("journey_description")}
           </Text>
-        </Box>
 
-        <Box
-          component="div"
-          style={{
-            animation: `${fadeIn} 1.6s ease-out`,
-          }}
-        >
           <Button
+            rightSection={<IconArrowRight size={18} />}
             size="xl"
-            variant="gradient"
-            gradient={{ from: "blue", to: "cyan" }}
-            radius="md"
-            px={40}
+            radius="xl"
             style={{
               animation: `${pulse} 2s infinite ease-in-out`,
-              animationDelay: "2s",
+              animationDelay: "1s",
             }}
             onClick={() => router.push(`/${currentLang}/requestService`)}
           >
-            {t("begin_transformation")}
+            {t("join_us")}
           </Button>
-        </Box>
-      </Stack>
+        </Stack>
+      </Box>
 
-      <Stack mt={100} gap={50} dir={isRTL ? "rtl" : "ltr"}>
-        {inspiringPhrases.map((phrase, index) => (
-          <Box
-            key={phrase.title}
-            component="div"
-            style={{
-              animation: `${fadeIn} ${1.8 + index * 0.2}s ease-out`,
-            }}
-          >
-            <Group align="flex-start" gap="xl">
-              <ThemeIcon
-                size={80}
-                radius="md"
-                variant="gradient"
-                gradient={{ from: "blue", to: "cyan" }}
+      {/* Milestones Section with SlideUp animation */}
+      <Box py={80}>
+        <Title
+          order={2}
+          ta="center"
+          mb={60}
+          style={{
+            animation: `${slideUp} 0.8s ease-out`,
+          }}
+        >
+          {t("our_story")}
+        </Title>
+
+        <Stack gap={80}>
+          {milestones.map((milestone, index) => (
+            <Box
+              key={milestone.title}
+              style={{
+                animation: `${milestone.animation} 0.8s ease-out`,
+                animationDelay: `${index * 0.2}s`,
+                animationFillMode: "both",
+              }}
+            >
+              <Group
+                wrap="nowrap"
+                align="flex-start"
+                gap="xl"
                 style={{
-                  animation: `${pulse} 3s infinite ease-in-out`,
-                  animationDelay: `${index * 0.5}s`,
+                  flexDirection: "column",
+                  [`@media (min-width: ${theme.breakpoints.sm})`]: {
+                    flexDirection: "row",
+                  },
                 }}
               >
-                <phrase.icon size={40} stroke={1.5} />
-              </ThemeIcon>
+                <ThemeIcon
+                  size={80}
+                  radius="md"
+                  variant="light"
+                  style={{
+                    animation: `${bounceIn} 1s ease-out`,
+                    flexShrink: 0,
+                  }}
+                >
+                  <milestone.icon size={40} stroke={1.5} />
+                </ThemeIcon>
 
-              <Stack gap="xs">
-                <Title order={2}>{phrase.title}</Title>
-                <Text size="lg" c="dimmed" maw={600}>
-                  {phrase.description}
+                <Box>
+                  <Title order={3} mb="sm">
+                    {milestone.title}
+                  </Title>
+                  <Text size="lg" c="dimmed">
+                    {milestone.description}
+                  </Text>
+                </Box>
+              </Group>
+            </Box>
+          ))}
+        </Stack>
+      </Box>
+
+      {/* Services Section with staggered animations */}
+      <Box py={80}>
+        <Title
+          order={2}
+          ta="center"
+          mb={60}
+          style={{
+            animation: `${slideUp} 0.8s ease-out`,
+          }}
+        >
+          {t("our_services")}
+        </Title>
+
+        <Group
+          justify="center"
+          gap="xl"
+          grow
+          style={{
+            [`@media (min-width: ${theme.breakpoints.md})`]: {
+              flexDirection: "row",
+            },
+          }}
+        >
+          {services.map((service, index) => (
+            <Box
+              key={service.title}
+              p="xl"
+              style={{
+                borderRadius: theme.radius.md,
+                border: `1px solid ${theme.colors.gray[3]}`,
+                animation: `${zoomIn} 0.5s ease-out`,
+                animationDelay: `${index * 0.2}s`,
+                animationFillMode: "both",
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  borderColor: theme.colors[service.color][5],
+                },
+              }}
+            >
+              <Stack align="center" gap="md">
+                <ThemeIcon
+                  size={80}
+                  radius="md"
+                  variant="light"
+                  color={service.color}
+                  style={{
+                    animation: `${bounceIn} 1s ease-out`,
+                  }}
+                >
+                  <service.icon size={40} stroke={1.5} />
+                </ThemeIcon>
+
+                <Title order={3} ta="center">
+                  {service.title}
+                </Title>
+                <Text size="lg" c="dimmed" ta="center">
+                  {service.description}
                 </Text>
               </Stack>
-            </Group>
-          </Box>
-        ))}
-      </Stack>
-    </Stack>
+            </Box>
+          ))}
+        </Group>
+      </Box>
+
+      {/* Final CTA with SlideUp animation */}
+      <Box
+        py={80}
+        style={{
+          animation: `${slideUp} 0.8s ease-out`,
+        }}
+      >
+        <Stack align="center" gap="xl">
+          <Title order={2} ta="center">
+            {t("ready_to_start")}
+          </Title>
+          <Text size="xl" c="dimmed" ta="center" style={{ maxWidth: 700 }}>
+            {t("cta_description")}
+          </Text>
+          <Button
+            rightSection={<IconArrowRight size={18} />}
+            size="xl"
+            radius="xl"
+            onClick={() => router.push(`/${currentLang}/requestService`)}
+          >
+            {t("get_started")}
+          </Button>
+        </Stack>
+      </Box>
+    </Container>
   );
 };
 

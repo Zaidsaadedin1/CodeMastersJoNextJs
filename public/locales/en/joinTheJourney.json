@@ -1,13 +1,26 @@
 {
-    "transform-Innovate-Excel": "Transform • Innovate • Excel",
-    "join_the_digital_revolution": "Join the Digital Revolution",
-    "digital_revolution_description": "Be part of an extraordinary ecosystem where visionaries, innovators, and technologists converge to shape the future. Your journey with us is more than a partnership—it's a statement of commitment to excellence.",
-    "begin_transformation": "Begin Your Transformation",
-    "pioneering_digital_excellence": "Pioneering Digital Excellence",
-    "pioneering_digital_excellence_desc": "Embark on a transformative journey where innovation meets vision. Together, we'll redefine the boundaries of technological possibility.",
-    "crafting_tomorrows_solutions": "Crafting Tomorrow's Solutions",
-    "crafting_tomorrows_solutions_desc": "Join an ecosystem where creativity flourishes and cutting-edge solutions emerge. Your ideas will shape the digital landscape of the future.",
-    "illuminating_digital_pathways": "Illuminating Digital Pathways",
-    "illuminating_digital_pathways_desc": "Discover the convergence of expertise and innovation. Our collaborative journey unlocks new dimensions of technological advancement."
+  "our_journey": "Our Journey",
+  "from_mentorship_to_innovation": "From Mentorship to Digital Innovation",
+  "journey_description": "Our journey began in March 2024, helping students with their graduation projects through mentorship and guidance. We've helped over 300 students achieve their academic goals. Now in 2025, we're expanding our services to create professional websites for individuals and businesses, with a vision to become the leading provider of portfolio, entertainment, and blog websites.",
+  "join_us": "Join Our Journey",
+
+  "our_story": "Our Story",
+  "humble_beginnings": "Humble Beginnings",
+  "humble_beginnings_desc": "Started in March 2024 with a mission to help students complete their graduation projects. We provided mentorship, technical guidance, and support to help them succeed.",
+  "expanding_services": "Expanding Our Services",
+  "expanding_services_desc": "In January 2025, we began offering professional website development services, focusing on creating beautiful, functional websites for individuals and businesses.",
+  "future_vision": "Our Vision",
+  "future_vision_desc": "To become the leading provider of portfolio websites, entertainment platforms, and blog sites while continuing to support students in their academic journey.",
+
+  "our_services": "Our Services",
+  "portfolio_websites": "Portfolio Websites",
+  "portfolio_websites_desc": "Showcase your work and skills with our custom portfolio websites designed to make you stand out.",
+  "entertainment_websites": "Entertainment Websites",
+  "entertainment_websites_desc": "Engage your audience with dynamic entertainment platforms tailored to your content.",
+  "blog_websites": "Blog Websites",
+  "blog_websites_desc": "Share your thoughts and expertise with our easy-to-use blog platforms designed for writers.",
+
+  "ready_to_start": "Ready to Start Your Project?",
+  "cta_description": "Whether you need a portfolio to showcase your work, an entertainment platform, or a blog to share your ideas, we're here to bring your vision to life.",
+  "get_started": "Get Started Today"
 }
-  

@@ -4,22 +4,24 @@ import {
   Text,
   Button,
   Stack,
-  Group,
   Badge,
   ThemeIcon,
   Box,
-  MantineTheme,
   SimpleGrid,
   Card,
+  Container,
 } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import {
-  IconServer,
-  IconShieldLock,
-  IconCpu2,
-  IconCloudComputing,
-  IconDeviceAnalytics,
-  IconWorldSearch,
+  IconSchool,
+  IconUsersGroup,
+  IconCode,
+  IconDeviceLaptop,
+  IconBook,
+  IconMovie,
+  IconBrandBlogger,
+  IconRocket,
+  IconChartGridDots,
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
@@ -30,227 +32,197 @@ const fadeIn = keyframes({
   to: { opacity: 1, transform: "translateY(0)" },
 });
 
-const pulse = keyframes({
-  "0%": { transform: "scale(1)" },
-  "50%": { transform: "scale(1.05)" },
-  "100%": { transform: "scale(1)" },
+const float = keyframes({
+  "0%": { transform: "translateY(0px)" },
+  "50%": { transform: "translateY(-10px)" },
+  "100%": { transform: "translateY(0px)" },
 });
 
-const OurPower: React.FC = () => {
+const scaleIn = keyframes({
+  from: { transform: "scale(0.9)", opacity: 0 },
+  to: { transform: "scale(1)", opacity: 1 },
+});
+
+const OurJourney: React.FC = () => {
   const router = useRouter();
   const { t, i18n } = useTranslation("ourPower");
-  const isRTL = i18n.language === "ar";
-  const currentLang = i18n.language;
-  const capabilities = [
-    { name: t("cloud_infrastructure"), value: 95 },
-    { name: t("cybersecurity"), value: 92 },
-    { name: t("ai_machine_learning"), value: 88 },
-    { name: t("data_analytics"), value: 90 },
-    { name: t("software_development"), value: 94 },
+
+  const milestones = [
+    {
+      icon: IconSchool,
+      title: t("milestones.0.title"),
+      description: t("milestones.0.description"),
+    },
+    {
+      icon: IconUsersGroup,
+      title: t("milestones.1.title"),
+      description: t("milestones.1.description"),
+    },
+    {
+      icon: IconCode,
+      title: t("milestones.2.title"),
+      description: t("milestones.2.description"),
+    },
   ];
 
-  const coreServices = [
+  const services = [
     {
-      icon: IconServer,
-      title: t("enterprise_architecture"),
-      description: t("enterprise_architecture_desc"),
+      icon: IconDeviceLaptop,
+      title: t("services.0.title"),
+      description: t("services.0.description"),
     },
     {
-      icon: IconShieldLock,
-      title: t("advanced_security"),
-      description: t("advanced_security_desc"),
+      icon: IconBook,
+      title: t("services.1.title"),
+      description: t("services.1.description"),
     },
     {
-      icon: IconCpu2,
-      title: t("intelligent_solutions"),
-      description: t("intelligent_solutions_desc"),
+      icon: IconMovie,
+      title: t("services.2.title"),
+      description: t("services.2.description"),
     },
     {
-      icon: IconCloudComputing,
-      title: t("cloud_optimization"),
-      description: t("cloud_optimization_desc"),
-    },
-    {
-      icon: IconDeviceAnalytics,
-      title: t("performance_analytics"),
-      description: t("performance_analytics_desc"),
-    },
-    {
-      icon: IconWorldSearch,
-      title: t("global_connectivity"),
-      description: t("global_connectivity_desc"),
+      icon: IconBrandBlogger,
+      title: t("services.3.title"),
+      description: t("services.3.description"),
     },
   ];
 
   return (
-    <Stack dir={isRTL ? "rtl" : "ltr"}>
-      <Stack align="center" gap="xl" py={80}>
-        <Box component="div" style={{ animation: `${fadeIn} 1s ease-out` }}>
-          <Badge
-            variant="gradient"
-            gradient={{ from: "indigo", to: "cyan" }}
-            size="xl"
-            radius="sm"
-            px="lg"
-            py="xs"
-          >
-            {t("transform_innovate_excel")}
-          </Badge>
-        </Box>
-
-        <Box component="div" style={{ animation: `${fadeIn} 1.2s ease-out` }}>
-          <Title
-            size={52}
-            fw={900}
-            style={(theme: MantineTheme) => ({
-              background: `linear-gradient(45deg, ${theme.colors.blue[6]}, ${theme.colors.cyan[6]})`,
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            })}
-          >
-            {t("empowering_innovation")}
-          </Title>
-        </Box>
-
-        <Box
-          component="div"
-          style={{ animation: `${fadeIn} 1.4s ease-out`, maxWidth: 700 }}
-        >
-          <Text size="xl" c="dimmed" lh={1.6}>
-            {t("technological_description")}
-          </Text>
-        </Box>
-
-        <Box component="div" style={{ animation: `${fadeIn} 1.6s ease-out` }}>
-          <Button
-            size="xl"
-            variant="gradient"
-            gradient={{ from: "blue", to: "cyan" }}
-            radius="md"
-            px={40}
-            style={{
-              animation: `${pulse} 2s infinite ease-in-out`,
-              animationDelay: "2s",
-            }}
-            onClick={() => router.push(`/${currentLang}/requestService`)}
-          >
-            {t("explore_capabilities")}
-          </Button>
-        </Box>
-      </Stack>
-
-      {/* Capabilities Section */}
-      <Title order={2} mb="xl">
-        {t("technical_capabilities")}
-      </Title>
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl" mb={80}>
-        {capabilities.map((capability, index) => (
-          <Box
-            key={capability.name}
-            component="div"
-            style={{ animation: `${fadeIn} ${1.8 + index * 0.2}s ease-out` }}
-          >
-            <Group justify="apart" mb={5}>
-              <Text fw={500}>{capability.name}</Text>
-              <Text fw={500} c="dimmed">
-                {capability.value}%
-              </Text>
-            </Group>
-            <Box
-              style={{
-                animation: `${fadeIn} 0.8s ease-out`,
-              }}
-            >
-              <progress
-                value={capability.value}
-                max={100}
-                style={{
-                  width: "100%",
-                  height: "8px",
-                  borderRadius: "5px",
-                  backgroundColor: "#e0e0e0",
-                }}
-              />
-            </Box>
+    <Container size="lg" py={80}>
+      <Stack gap="xl">
+        {/* Hero Section */}
+        <Stack align="center" gap="xl" mb={60}>
+          <Box style={{ animation: `${fadeIn} 1s ease-out` }}>
+            <Badge size="xl" radius="sm" px="lg" py="xs" variant="light">
+              {t("hero.subtitle")}
+            </Badge>
           </Box>
-        ))}
-      </SimpleGrid>
 
-      {/* Core Services */}
-      <Title order={2} mb="xl">
-        {t("technology_services")}
-      </Title>
-      <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
-        {coreServices.map((service, index) => (
-          <Card
-            key={service.title}
-            withBorder
-            shadow="sm"
-            padding="xl"
-            radius="md"
-            style={{
-              animation: `${fadeIn} ${1.8 + index * 0.2}s ease-out`,
-              transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            }}
-          >
-            <ThemeIcon
-              size={80}
-              radius="md"
-              variant="gradient"
-              gradient={{ from: "blue", to: "cyan" }}
-              mb="md"
-            >
-              <service.icon size={40} stroke={1.5} />
-            </ThemeIcon>
-            <Title order={3} mb="sm">
-              {service.title}
+          <Box style={{ animation: `${fadeIn} 1.2s ease-out` }}>
+            <Title size={52} fw={900} ta="center">
+              {t("hero.title")}
             </Title>
-            <Text c="dimmed">{service.description}</Text>
-          </Card>
-        ))}
-      </SimpleGrid>
+          </Box>
 
-      {/* Call to Action */}
-      <Box
-        component="div"
-        style={{
-          background: "linear-gradient(45deg, #1a1b1e, #25262b)",
-          color: "white",
-          padding: "40px",
-          marginTop: "80px",
-          borderRadius: "10px",
-        }}
-      >
-        <Stack
-          align="center"
-          dir={isRTL ? "row-reverse" : "row"}
-          justify="center"
-        >
-          <Box
-            ta="center"
-            component="div"
-            style={{ animation: `${fadeIn} 1.6s ease-out` }}
-          >
-            <Title order={2} c="white" mb="md">
-              {t("ready_to_harness")}
-            </Title>
-            <Text c="gray.3" mb="xl">
-              {t("partner_with_us")}
+          <Box style={{ animation: `${fadeIn} 1.4s ease-out`, maxWidth: 700 }}>
+            <Text size="xl" c="dimmed" lh={1.6} ta="center">
+              {t("hero.description")}
             </Text>
           </Box>
-          <Button
-            variant="gradient"
-            gradient={{ from: "blue", to: "cyan" }}
-            size="lg"
-            radius="md"
-            style={{ animation: `${pulse} 3s infinite ease-in-out` }}
-          >
-            {t("schedule_consultation")}
-          </Button>
+
+          <Box style={{ animation: `${fadeIn} 1.6s ease-out` }}>
+            <Button
+              size="xl"
+              radius="md"
+              px={40}
+              rightSection={<IconRocket size={24} />}
+              onClick={() => router.push(`/${i18n.language}/contact`)}
+            >
+              {t("hero.cta")}
+            </Button>
+          </Box>
         </Stack>
-      </Box>
-    </Stack>
+
+        {/* Our Journey Section */}
+        <Box mb={80}>
+          <Title order={2} mb="xl" ta="center">
+            {t("journeyTitle")}
+          </Title>
+          <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
+            {milestones.map((milestone, index) => (
+              <Card
+                key={index}
+                withBorder
+                padding="xl"
+                radius="md"
+                style={{
+                  animation: `${fadeIn} ${0.8 + index * 0.2}s ease-out`,
+                }}
+              >
+                <ThemeIcon size={80} radius="md" mb="md" variant="light">
+                  <milestone.icon size={40} stroke={1.5} />
+                </ThemeIcon>
+                <Title order={3} mb="sm">
+                  {milestone.title}
+                </Title>
+                <Text c="dimmed">{milestone.description}</Text>
+              </Card>
+            ))}
+          </SimpleGrid>
+        </Box>
+
+        {/* Services Section */}
+        <Box mb={80}>
+          <Title order={2} mb="xl" ta="center">
+            {t("servicesTitle")}
+          </Title>
+          <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }} spacing="xl">
+            {services.map((service, index) => (
+              <Card
+                key={index}
+                withBorder
+                padding="xl"
+                radius="md"
+                style={{
+                  animation: `${scaleIn} ${0.8 + index * 0.2}s ease-out`,
+                }}
+              >
+                <ThemeIcon size={80} radius="md" mb="md" variant="light">
+                  <service.icon size={40} stroke={1.5} />
+                </ThemeIcon>
+                <Title order={3} mb="sm">
+                  {service.title}
+                </Title>
+                <Text c="dimmed">{service.description}</Text>
+              </Card>
+            ))}
+          </SimpleGrid>
+        </Box>
+
+        {/* Future Goals */}
+        <Box
+          p={40}
+          mb={80}
+          style={{
+            borderRadius: "var(--mantine-radius-lg)",
+          }}
+        >
+          <Stack align="center" gap="xl">
+            <Box style={{ animation: `${fadeIn} 1s ease-out` }}>
+              <ThemeIcon
+                size={100}
+                radius="md"
+                mb="md"
+                mx="auto"
+                variant="light"
+              >
+                <IconChartGridDots size={50} stroke={1.5} />
+              </ThemeIcon>
+              <Title order={2} ta="center">
+                {t("future.title")}
+              </Title>
+            </Box>
+            <Box style={{ animation: `${fadeIn} 1.2s ease-out` }}>
+              <Text size="xl" ta="center" maw={800}>
+                {t("future.description")}
+              </Text>
+            </Box>
+            <Box style={{ animation: `${float} 4s ease-in-out infinite` }}>
+              <Button
+                size="xl"
+                radius="md"
+                px={40}
+                onClick={() => router.push(`/${i18n.language}/contact`)}
+              >
+                {t("future.cta")}
+              </Button>
+            </Box>
+          </Stack>
+        </Box>
+      </Stack>
+    </Container>
   );
 };
 
-export default OurPower;
+export default OurJourney;

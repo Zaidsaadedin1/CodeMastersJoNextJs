@@ -91,30 +91,27 @@ const Footer = () => {
       </Group>
       <Divider my="xl" opacity={1} />
       <Group gap="lg">
-        <Anchor
+        <Text
           size="xs"
-          underline="never"
           onClick={() => router.push(`/${currentLang}/privacyPolicy`)}
           style={{ cursor: "pointer" }}
         >
           {t("privacy_policy")}
-        </Anchor>
-        <Anchor
+        </Text>
+        <Text
           size="xs"
-          underline="never"
           onClick={() => router.push(`/${currentLang}/termsOfService`)}
           style={{ cursor: "pointer" }}
         >
           {t("terms_of_service")}
-        </Anchor>
-        <Anchor
+        </Text>
+        <Text
           size="xs"
-          underline="never"
           onClick={() => router.push(`/${currentLang}/sitemap`)}
           style={{ cursor: "pointer" }}
         >
           {t("sitemap")}
-        </Anchor>
+        </Text>
       </Group>
     </Box>
   );
