@@ -139,43 +139,53 @@ const AnimatedCard = React.memo(({ solution }: { solution: Solution }) => {
     <motion.div
       whileHover={{ scale: 1.05, y: -10 }}
       transition={{ type: "spring", stiffness: 300 }}
-      style={{
-        height: "100%",
-        width: "100%",
-        borderRadius: 20,
-        padding: 24,
-        backgroundColor: "#fff",
-        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        cursor: "pointer",
-        fontFamily: "Oswald, sans-serif",
-      }}
     >
-      <Text size="lg" fw={600} mb={10}>
-        {solution.icon}
-      </Text>
-      <Text size="lg" fw={600} mb={10}>
-        {solution.category}
-      </Text>
-      <Text size="sm" style={{ flexGrow: 1 }}>
-        {solution.description}
-      </Text>
-      <Text size="sm" mt={10}>
-        <span
-          style={{
-            textDecoration: "line-through",
-            color: "#999",
-            marginRight: 8,
-          }}
-        >
-          {solution.price}
-        </span>
-        <strong style={{ color: "#d32f2f", fontSize: 16 }}>
-          {solution.discounted}
-        </strong>
-      </Text>
+      <Box
+        style={{
+          height: "300px",
+          width: "100%",
+          borderRadius: 20,
+          padding: 24,
+          boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          cursor: "pointer",
+          fontFamily: "Oswald, sans-serif",
+          background:
+            "linear-gradient(135deg, rgba(40, 40, 40, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%)",
+          borderColor: "rgba(255, 255, 255, 0.2)",
+          color: "white",
+          "&:hover": {
+            background:
+              "linear-gradient(135deg, rgba(60, 60, 60, 0.8) 0%, rgba(40, 40, 40, 0.9) 100%)",
+          },
+        }}
+      >
+        <Text size="lg" fw={600} mb={10}>
+          {solution.icon}
+        </Text>
+        <Text size="lg" fw={600} mb={10}>
+          {solution.category}
+        </Text>
+        <Text size="sm" style={{ flexGrow: 1 }}>
+          {solution.description}
+        </Text>
+        <Text size="sm" mt={10}>
+          <span
+            style={{
+              textDecoration: "line-through",
+              color: "#999",
+              marginRight: 8,
+            }}
+          >
+            {solution.price}
+          </span>
+          <strong style={{ color: "#d32f2f", fontSize: 16 }}>
+            {solution.discounted}
+          </strong>
+        </Text>
+      </Box>
     </motion.div>
   );
 });

@@ -11,7 +11,7 @@ export default function LanguageSwitcher() {
 
   const languages = [
     { code: "en", label: t("common:English") },
-    { code: "ar", label: t("Arabic") },
+    { code: "ar", label: t("common:Arabic") },
   ];
 
   const changeLocale = (newLocale: string) => {

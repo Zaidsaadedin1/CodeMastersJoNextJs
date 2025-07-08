@@ -1,4 +1,9 @@
-{ "unauthorized": {
+{
+  "unauthorized": {
     "title": "Unauthorized | 401",
     "login_button": "Login"
-  }}
+  },
+  "Arabic": "Arabic",
+  "English": "English",
+  "select_language": "Select Language"
+}

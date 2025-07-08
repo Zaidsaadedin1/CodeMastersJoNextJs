@@ -261,37 +261,49 @@ const CategorySection: React.FC<CategorySectionProps> = ({
 };
 
 const WebsitesIdeas: React.FC = () => {
-  const { t } = useTranslation("websitesIdeas");
+  const { t, i18n } = useTranslation("websitesIdeas");
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [autoScroll, setAutoScroll] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Auto-scroll effect
-  useEffect(() => {
-    setAutoScroll(true);
-    if (!autoScroll || !scrollContainerRef.current) return;
-
-    const container = scrollContainerRef.current;
-    const totalSlides = 3; // portfolio, entertainment, blog
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % totalSlides);
-      container.scrollTo({
-        left: container.clientWidth * ((currentSlide + 1) % totalSlides),
-        behavior: "smooth",
-      });
-    }, 5000); // Change slide every 5 seconds
-
-    return () => clearInterval(interval);
-  }, [autoScroll, currentSlide]);
+  const isRTL = i18n.dir() === "rtl";
 
   const scrollToSlide = (index: number) => {
     if (!scrollContainerRef.current) return;
     setCurrentSlide(index);
+    setAutoScroll(false);
+
+    const scrollAmount = isRTL
+      ? -scrollContainerRef.current.clientWidth * index
+      : scrollContainerRef.current.clientWidth * index;
+
     scrollContainerRef.current.scrollTo({
-      left: scrollContainerRef.current.clientWidth * index,
+      left: scrollAmount,
       behavior: "smooth",
     });
+
+    setTimeout(() => setAutoScroll(true), 10000);
   };
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (!autoScroll || !scrollContainerRef.current) return;
+
+    const container = scrollContainerRef.current;
+    const totalSlides = 3;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+      const scrollAmount = isRTL
+        ? -container.clientWidth * ((currentSlide + 1) % totalSlides)
+        : container.clientWidth * ((currentSlide + 1) % totalSlides);
+
+      container.scrollTo({
+        left: scrollAmount,
+        behavior: "smooth",
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [autoScroll, currentSlide, isRTL]);
 
   return (
     <Container py={60} size="xl">
@@ -311,18 +323,27 @@ const WebsitesIdeas: React.FC = () => {
       {/* Horizontal Scrolling Container */}
       <Paper
         ref={scrollContainerRef}
+        dir={i18n.dir()}
         style={(theme) => ({
           display: "flex",
-          overflowX: "hidden", // Changed to hidden to prevent manual scroll
+          overflowX: "hidden",
           scrollSnapType: "x mandatory",
           position: "relative",
+          direction: i18n.dir(),
           "&:hover": {
             boxShadow: theme.shadows.xl,
           },
         })}
       >
         {/* Portfolio Section */}
-        <Box style={{ minWidth: "100%", scrollSnapAlign: "start" }} p="md">
+        <Box
+          style={{
+            minWidth: "100%",
+            scrollSnapAlign: "start",
+            transform: isRTL ? "translateX(0)" : undefined,
+          }}
+          p="md"
+        >
           <CategorySection
             titleKey="portfolioTitle"
             categories={portfolioCategories}
@@ -330,7 +351,14 @@ const WebsitesIdeas: React.FC = () => {
         </Box>
 
         {/* Entertainment Section */}
-        <Box style={{ minWidth: "100%", scrollSnapAlign: "start" }} p="md">
+        <Box
+          style={{
+            minWidth: "100%",
+            scrollSnapAlign: "start",
+            transform: isRTL ? "translateX(0)" : undefined,
+          }}
+          p="md"
+        >
           <CategorySection
             titleKey="entertainmentTitle"
             categories={entertainmentCategories}
@@ -338,10 +366,18 @@ const WebsitesIdeas: React.FC = () => {
         </Box>
 
         {/* Blog Section */}
-        <Box style={{ minWidth: "100%", scrollSnapAlign: "start" }} p="md">
+        <Box
+          style={{
+            minWidth: "100%",
+            scrollSnapAlign: "start",
+            transform: isRTL ? "translateX(0)" : undefined,
+          }}
+          p="md"
+        >
           <CategorySection titleKey="blogTitle" categories={blogCategories} />
         </Box>
-      </Paper>{" "}
+      </Paper>
+
       {/* Navigation Dots */}
       <Center mt={"md"}>
         <Group align="center" mb="md">
