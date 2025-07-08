@@ -10,6 +10,7 @@ import {
   Box,
   Container,
   useMantineTheme,
+  Center,
 } from "@mantine/core";
 import { keyframes } from "@emotion/react";
 import {
@@ -116,7 +117,7 @@ const JoinTheJourney: React.FC = () => {
         }}
       >
         <Stack align="center" gap="xl">
-          <Badge variant="light" size="xl" radius="sm">
+          <Badge variant="blue" size="xl" radius="sm">
             {t("our_journey")}
           </Badge>
 
@@ -152,19 +153,11 @@ const JoinTheJourney: React.FC = () => {
       </Box>
 
       {/* Milestones Section with SlideUp animation */}
-      <Box py={80}>
-        <Title
-          order={2}
-          ta="center"
-          mb={60}
-          style={{
-            animation: `${slideUp} 0.8s ease-out`,
-          }}
-        >
-          {t("our_story")}
-        </Title>
-
+      <Center py={80}>
         <Stack gap={80}>
+          <Badge variant="blue" size="xl" radius="sm">
+            {t("our_journey")}
+          </Badge>
           {milestones.map((milestone, index) => (
             <Box
               key={milestone.title}
@@ -209,7 +202,7 @@ const JoinTheJourney: React.FC = () => {
             </Box>
           ))}
         </Stack>
-      </Box>
+      </Center>
 
       {/* Services Section with staggered animations */}
       <Box py={80}>

@@ -1,41 +1,53 @@
 {
-    "sections": {
-      "tagline": "Future-Ready Solutions",
-      "mainTitle": "Explore Technological Frontiers",
-      "mainDescription": "Uncover innovative solutions that drive digital transformation, empowering businesses to thrive in the ever-evolving technological landscape.",
-      "servicesTitle": "Our Technology Services"
+  "sections": {
+    "tagline": "Web Development Experts",
+    "mainTitle": "Our Mission: 10,000 Websites",
+    "mainDescription": "We're committed to building 10,000 high-quality websites across diverse industries with a focus on creative, functional, and engaging digital experiences.",
+    "servicesTitle": "Our Website Specializations"
+  },
+  "buttons": {
+    "discover": "View Portfolio",
+    "consultation": "Free Consultation",
+    "learnMore": "See Examples"
+  },
+  "features": {
+    "fast_delivery": {
+      "title": "Rapid Deployment",
+      "description": "Launch your website in as little as 7 days with our streamlined development process"
     },
-    "buttons": {
-      "discover": "Discover Our Solutions",
-      "consultation": "Schedule Consultation",
-      "learnMore": "Learn More"
+    "innovative_design": {
+      "title": "Creative Solutions",
+      "description": "Custom designs that showcase your unique brand identity and captivate your audience"
     },
-    "features": {
-      "digital_acceleration": {
-        "title": "Digital Acceleration",
-        "description": "Propel your business forward with cutting-edge technological solutions."
-      },
-      "innovative_strategies": {
-        "title": "Innovative Strategies",
-        "description": "Transform challenges into opportunities through intelligent design."
-      },
-      "secure_ecosystems": {
-        "title": "Secure Ecosystems",
-        "description": "Comprehensive cybersecurity solutions protecting your digital assets."
-      }
+    "secure_hosting": {
+      "title": "Reliable Infrastructure",
+      "description": "Enterprise-grade security with 99.99% uptime guarantee and daily backups"
+    }
+  },
+  "services": {
+    "portfolio": {
+      "title": "Portfolio Websites",
+      "description": "Stunning showcase websites for creatives, artists, and professionals to highlight their work with elegant galleries and smooth animations."
     },
-    "services": {
-      "cloud": {
-        "title": "Cloud Solutions",
-        "description": "Scalable and flexible cloud infrastructure tailored to your needs."
-      },
-      "transformation": {
-        "title": "Digital Transformation",
-        "description": "Seamless integration of advanced technologies into your business model."
-      },
-      "networking": {
-        "title": "Enterprise Networking",
-        "description": "Robust and intelligent network architectures for modern enterprises."
-      }
+    "blog": {
+      "title": "Blog Platforms",
+      "description": "Content-rich websites with advanced CMS, SEO optimization, and engagement tools to grow your audience and monetize your content."
+    },
+    "entertainment": {
+      "title": "Entertainment Sites",
+      "description": "Immersive multimedia experiences for musicians, filmmakers, and performers with video integration and event management."
+    },
+    "ecommerce": {
+      "title": "E-Commerce Stores",
+      "description": "Complete online shopping solutions with payment gateways, inventory management, and marketing tools."
+    },
+    "education": {
+      "title": "Educational Platforms",
+      "description": "Interactive learning management systems with course builders, student dashboards, and certification features."
+    },
+    "business": {
+      "title": "Corporate Websites",
+      "description": "Professional business websites with lead generation, contact management, and service presentation."
     }
   }
+}

@@ -28,7 +28,7 @@ const Footer = () => {
   const currentLang = i18n.language;
 
   return (
-    <Box mt={30} py="xl" dir={isRTL ? "rtl" : "ltr"}>
+    <Box dir={isRTL ? "rtl" : "ltr"} m={"md"}>
       <Divider my="xl" opacity={1} />
       <Group gap="lg" justify="space-between">
         <Stack gap="md">

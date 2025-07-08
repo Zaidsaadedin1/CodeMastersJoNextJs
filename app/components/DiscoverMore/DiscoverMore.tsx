@@ -16,52 +16,69 @@ import {
   IconRocket,
   IconBulb,
   IconShield,
-  IconCloudComputing,
-  IconTransform,
-  IconNetwork,
+  IconBriefcase,
+  IconNews,
+  IconMovie,
+  IconBuildingStore,
+  IconSchool,
+  IconChartLine,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
+import { useRouter } from "next/router";
 
 const DiscoverMore: React.FC = () => {
   const { t, i18n } = useTranslation("discoverMore");
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
+  const router = useRouter();
 
   const keyFeatures = [
     {
       icon: IconRocket,
-      key: "digital_acceleration",
+      key: "fast_delivery",
       color: "blue",
     },
     {
       icon: IconBulb,
-      key: "innovative_strategies",
+      key: "innovative_design",
       color: "green",
     },
     {
       icon: IconShield,
-      key: "secure_ecosystems",
+      key: "secure_hosting",
       color: "red",
     },
   ];
 
-  const technologyServices = [
+  const websiteServices = [
     {
-      icon: IconCloudComputing,
-      key: "cloud",
+      icon: IconBriefcase,
+      key: "portfolio",
     },
     {
-      icon: IconTransform,
-      key: "transformation",
+      icon: IconNews,
+      key: "blog",
     },
     {
-      icon: IconNetwork,
-      key: "networking",
+      icon: IconMovie,
+      key: "entertainment",
+    },
+    {
+      icon: IconBuildingStore,
+      key: "ecommerce",
+    },
+    {
+      icon: IconSchool,
+      key: "education",
+    },
+    {
+      icon: IconChartLine,
+      key: "business",
     },
   ];
 
   return (
-    <Stack dir={i18n.language === "ar" ? "rtl" : "ltr"} py={50}>
+    <Stack dir={isRTL ? "rtl" : "ltr"} py={50}>
       <Grid align="center" gutter="xl">
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Stack dir={isRTL ? "rtl" : "ltr"} gap="lg">
@@ -88,10 +105,16 @@ const DiscoverMore: React.FC = () => {
                 size="lg"
                 variant="gradient"
                 gradient={{ from: "blue", to: "cyan", deg: 45 }}
+                onClick={() => router.push(`/${currentLang}/`)}
               >
                 {t("buttons.discover")}
               </Button>
-              <Button size="lg" variant="outline" color="blue">
+              <Button
+                onClick={() => router.push(`/${currentLang}/requestService`)}
+                size="lg"
+                variant="outline"
+                color="blue"
+              >
                 {t("buttons.consultation")}
               </Button>
             </Group>
@@ -137,13 +160,15 @@ const DiscoverMore: React.FC = () => {
           {t("sections.servicesTitle")}
         </Title>
         <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
-          {technologyServices.map((service) => (
+          {websiteServices.map((service) => (
             <Card
               key={service.key}
               shadow="sm"
               padding="lg"
               radius="md"
               withBorder
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push(`/${currentLang}/requestService`)}
             >
               <ThemeIcon
                 size={60}
@@ -157,12 +182,9 @@ const DiscoverMore: React.FC = () => {
               <Text fz="xl" fw={700} mb="md">
                 {t(`services.${service.key}.title`)}
               </Text>
-              <Text fz="md" c="dimmed">
+              <Text fz="md" c="dimmed" mb="md">
                 {t(`services.${service.key}.description`)}
               </Text>
-              <Button variant="light" color="blue" mt="md">
-                {t("buttons.learnMore")}
-              </Button>
             </Card>
           ))}
         </SimpleGrid>

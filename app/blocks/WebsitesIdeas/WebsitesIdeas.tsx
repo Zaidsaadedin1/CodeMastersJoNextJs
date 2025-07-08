@@ -1,4 +1,4 @@
-import { Text, Stack, Title, SimpleGrid, Container, Box } from "@mantine/core";
+import React, { useEffect, useRef, useState } from "react";
 import {
   IconBrush,
   IconCamera,
@@ -19,7 +19,19 @@ import {
   IconClipboardList,
 } from "@tabler/icons-react";
 import { useAnimation, useInView, motion } from "framer-motion";
-import React, { useEffect, useRef } from "react";
+import {
+  Text,
+  Stack,
+  Title,
+  SimpleGrid,
+  Container,
+  Box,
+  Group,
+  ActionIcon,
+  Center,
+  Paper,
+} from "@mantine/core";
+
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import SpotlightCard from "@/app/components/Ui/SpotlightCard/SpotlightCard";
@@ -46,76 +58,75 @@ const portfolioCategories: Category[] = [
     name: "Graphic Designers",
     icon: <IconBrush size={32} color="white" />,
     translationKey: "categories.graphicDesigners",
-    bgColor: "rgba(102, 126, 234, 0.25)",
+    bgColor: "rgba(91, 143, 249, 0.3)", // Vibrant blue
   },
   {
     name: "Photographers",
     icon: <IconCamera size={32} color="white" />,
     translationKey: "categories.photographers",
-    bgColor: "rgba(240, 147, 251, 0.25)",
+    bgColor: "rgba(94, 231, 223, 0.2)", // Mint teal
   },
   {
     name: "Architects",
     icon: <IconBuilding size={32} color="white" />,
     translationKey: "categories.architects",
-    bgColor: "rgba(94, 231, 223, 0.25)",
+    bgColor: "rgba(161, 196, 253, 0.2)", // Sky blue
   },
   {
     name: "Freelancers",
     icon: <IconDeviceLaptop size={32} color="white" />,
     translationKey: "categories.freelancers",
-    bgColor: "rgba(195, 207, 226, 0.25)",
+    bgColor: "rgba(195, 207, 226, 0.2)", // Cool gray
   },
   {
     name: "Developers & Programmers",
     icon: <IconCode size={32} color="white" />,
     translationKey: "categories.developers",
-    bgColor: "rgba(161, 196, 253, 0.25)",
+    bgColor: "rgba(86, 204, 242, 0.2)", // Electric blue
   },
   {
     name: "Makeup Artists / Stylists",
     icon: <IconUser size={32} color="white" />,
     translationKey: "categories.makeupArtists",
-    bgColor: "rgba(246, 211, 101, 0.25)",
+    bgColor: "rgba(246, 211, 101, 0.2)", // Warm gold
   },
 ];
-
 const entertainmentCategories: Category[] = [
   {
     name: "Online Magazines",
     icon: <IconBook size={32} color="white" />,
     translationKey: "categories.onlineMagazines",
-    bgColor: "rgba(255, 154, 158, 0.25)",
+    bgColor: "rgba(255, 154, 158, 0.2)", // Soft coral
   },
   {
     name: "Music Platforms",
     icon: <IconMusic size={32} color="white" />,
     translationKey: "categories.musicPlatforms",
-    bgColor: "rgba(161, 140, 209, 0.25)",
+    bgColor: "rgba(161, 140, 209, 0.2)", // Lavender
   },
   {
     name: "Film & TV News",
     icon: <IconMovie size={32} color="white" />,
     translationKey: "categories.filmNews",
-    bgColor: "rgba(255, 195, 160, 0.25)",
+    bgColor: "rgba(255, 195, 160, 0.2)", // Peach
   },
   {
     name: "Event & Festival Pages",
     icon: <IconCalendarEvent size={32} color="white" />,
     translationKey: "categories.eventPages",
-    bgColor: "rgba(255, 236, 210, 0.25)",
+    bgColor: "rgba(132, 250, 176, 0.2)", // Mint green
   },
   {
     name: "Meme or Humor Blogs",
     icon: <IconMoodSmile size={32} color="white" />,
     translationKey: "categories.memeBlogs",
-    bgColor: "rgba(132, 250, 176, 0.25)",
+    bgColor: "rgba(255, 236, 210, 0.2)", // Cream
   },
   {
     name: "Game or Anime Fan Sites",
     icon: <IconDeviceGamepad size={32} color="white" />,
     translationKey: "categories.fanSites",
-    bgColor: "rgba(166, 193, 238, 0.25)",
+    bgColor: "rgba(166, 193, 238, 0.2)", // Powder blue
   },
 ];
 
@@ -124,37 +135,37 @@ const blogCategories: Category[] = [
     name: "Personal Lifestyle Blogs",
     icon: <IconUser size={32} color="white" />,
     translationKey: "categories.lifestyleBlogs",
-    bgColor: "rgba(212, 252, 121, 0.25)",
+    bgColor: "rgba(212, 252, 121, 0.2)", // Lime
   },
   {
     name: "Food & Recipes",
     icon: <IconCooker size={32} color="white" />,
     translationKey: "categories.foodRecipes",
-    bgColor: "rgba(253, 203, 241, 0.25)",
+    bgColor: "rgba(253, 203, 241, 0.2)", // Blush pink
   },
   {
     name: "Travel Diaries",
     icon: <IconPlane size={32} color="white" />,
     translationKey: "categories.travelDiaries",
-    bgColor: "rgba(168, 237, 234, 0.25)",
+    bgColor: "rgba(168, 237, 234, 0.2)", // Aqua
   },
   {
     name: "Tech News or Reviews",
     icon: <IconDeviceMobile size={32} color="white" />,
     translationKey: "categories.techReviews",
-    bgColor: "rgba(224, 195, 252, 0.25)",
+    bgColor: "rgba(224, 195, 252, 0.2)", // Pale purple
   },
   {
     name: "Education & Student Blogs",
     icon: <IconSchool size={32} color="white" />,
     translationKey: "categories.educationBlogs",
-    bgColor: "rgba(245, 247, 250, 0.25)",
+    bgColor: "rgba(245, 247, 250, 0.2)", // Lightest gray
   },
   {
     name: "Opinion & Journalism",
     icon: <IconClipboardList size={32} color="white" />,
     translationKey: "categories.opinionJournalism",
-    bgColor: "rgba(233, 222, 250, 0.25)",
+    bgColor: "rgba(233, 222, 250, 0.2)", // Lilac
   },
 ];
 
@@ -184,20 +195,28 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({ category, index }) => {
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={controls}
-      whileHover={{ scale: 1.03 }}
+      whileHover={{
+        scale: 1.05,
+        transition: { duration: 0.2 },
+      }}
       style={{ height: "100%" }}
       onClick={() => router.push(`${currentLang}/requestService`)}
     >
-      <SpotlightCard
-        spotlightColor={
-          category.bgColor as `rgba(${number}, ${number}, ${number}, ${number})`
-        }
-        className="category-card"
-      >
-        <Box className="card-content" style={{}}>
-          <Stack align="center" justify="center" style={{ height: "100%" }}>
-            <Box className="card-icon">{category.icon}</Box>
-            <Text size="lg" fw={500} ta="center" c="white">
+      <SpotlightCard className="category-card">
+        <Box className="card-content">
+          <Stack align="center" justify="center" h="100%">
+            <Box
+              p={12}
+              mb={12}
+              style={{
+                background: "rgba(255, 255, 255, 0.1)",
+                borderRadius: "50%",
+                display: "inline-flex",
+              }}
+            >
+              {category.icon}
+            </Box>
+            <Text size="lg" fw={600} ta="center" c="white">
               {t(category.translationKey)}
             </Text>
           </Stack>
@@ -243,6 +262,37 @@ const CategorySection: React.FC<CategorySectionProps> = ({
 
 const WebsitesIdeas: React.FC = () => {
   const { t } = useTranslation("websitesIdeas");
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [autoScroll, setAutoScroll] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    setAutoScroll(true);
+    if (!autoScroll || !scrollContainerRef.current) return;
+
+    const container = scrollContainerRef.current;
+    const totalSlides = 3; // portfolio, entertainment, blog
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % totalSlides);
+      container.scrollTo({
+        left: container.clientWidth * ((currentSlide + 1) % totalSlides),
+        behavior: "smooth",
+      });
+    }, 5000); // Change slide every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [autoScroll, currentSlide]);
+
+  const scrollToSlide = (index: number) => {
+    if (!scrollContainerRef.current) return;
+    setCurrentSlide(index);
+    scrollContainerRef.current.scrollTo({
+      left: scrollContainerRef.current.clientWidth * index,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <Container py={60} size="xl">
       <Title
@@ -258,18 +308,65 @@ const WebsitesIdeas: React.FC = () => {
       <Text size="xl" ta="center" mb={40} color="dimmed">
         {t("missionDescription")}
       </Text>
+      {/* Horizontal Scrolling Container */}
+      <Paper
+        ref={scrollContainerRef}
+        style={(theme) => ({
+          display: "flex",
+          overflowX: "hidden", // Changed to hidden to prevent manual scroll
+          scrollSnapType: "x mandatory",
+          position: "relative",
+          "&:hover": {
+            boxShadow: theme.shadows.xl,
+          },
+        })}
+      >
+        {/* Portfolio Section */}
+        <Box style={{ minWidth: "100%", scrollSnapAlign: "start" }} p="md">
+          <CategorySection
+            titleKey="portfolioTitle"
+            categories={portfolioCategories}
+          />
+        </Box>
 
-      <CategorySection
-        titleKey="portfolioTitle"
-        categories={portfolioCategories}
-      />
+        {/* Entertainment Section */}
+        <Box style={{ minWidth: "100%", scrollSnapAlign: "start" }} p="md">
+          <CategorySection
+            titleKey="entertainmentTitle"
+            categories={entertainmentCategories}
+          />
+        </Box>
 
-      <CategorySection
-        titleKey="entertainmentTitle"
-        categories={entertainmentCategories}
-      />
-
-      <CategorySection titleKey="blogTitle" categories={blogCategories} />
+        {/* Blog Section */}
+        <Box style={{ minWidth: "100%", scrollSnapAlign: "start" }} p="md">
+          <CategorySection titleKey="blogTitle" categories={blogCategories} />
+        </Box>
+      </Paper>{" "}
+      {/* Navigation Dots */}
+      <Center mt={"md"}>
+        <Group align="center" mb="md">
+          {[0, 1, 2].map((index) => (
+            <ActionIcon
+              key={index}
+              size="sm"
+              variant={currentSlide === index ? "filled" : "outline"}
+              style={{
+                background:
+                  currentSlide === index
+                    ? "linear-gradient(135deg, rgba(40, 40, 40, 0.8) 0%, rgba(20, 20, 20, 0.9) 100%)"
+                    : "gray",
+                borderColor: "rgba(255, 255, 255, 0.2)",
+                color: "gray",
+                "&:hover": {
+                  background:
+                    "linear-gradient(135deg, rgba(60, 60, 60, 0.8) 0%, rgba(40, 40, 40, 0.9) 100%)",
+                },
+              }}
+              onClick={() => scrollToSlide(index)}
+            />
+          ))}
+        </Group>
+      </Center>
     </Container>
   );
 };

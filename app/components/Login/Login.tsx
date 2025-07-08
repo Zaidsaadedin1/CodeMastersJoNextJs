@@ -222,13 +222,13 @@ export default function Login() {
               label={t("fields.remember_me")}
               {...form.getInputProps("rememberMe", { type: "checkbox" })}
             />
-            <Anchor
+            {/* <Anchor
               component="a"
               size="sm"
               href={`/${currentLang}/forgotPassword`}
             >
               {t("links.forgot_password")}
-            </Anchor>
+            </Anchor> */}
           </Group>
 
           <Button
