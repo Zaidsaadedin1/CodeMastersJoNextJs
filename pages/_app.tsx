@@ -12,13 +12,14 @@ import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
-import { Open_Sans } from "next/font/google"; // correct import path in Next.js 13+
+import { Open_Sans } from "next/font/google";
 
 const openSansFont = Open_Sans({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--open-sans-font",
 });
+
 function App({
   Component,
   pageProps,
@@ -27,14 +28,20 @@ function App({
   readonly pageProps: Readonly<Record<string, unknown>>;
 }) {
   const router = useRouter();
-
   const dir = router.locale === "ar" ? "rtl" : "ltr";
 
   useEffect(() => {
     document.documentElement.dir = dir;
     document.documentElement.lang = router.locale ?? "en";
   }, [dir, router.locale]);
+
   const queryClient = new QueryClient();
+
+  // Check if the current page is an error page
+  const isErrorPage =
+    router.pathname === "/404" ||
+    router.pathname === "/500" ||
+    router.pathname === "/400";
 
   return (
     <MantineProvider
@@ -57,13 +64,13 @@ function App({
 
           <Stack
             className={openSansFont.className}
-            mr="10%"
-            ml="10%"
+            mr={isErrorPage ? "0" : "10%"}
+            ml={isErrorPage ? "0" : "10%"}
             style={{ direction: dir }}
           >
-            <MenuComponent />
+            {!isErrorPage && <MenuComponent />}
             <Component {...pageProps} />
-            <Footer />
+            {!isErrorPage && <Footer />}
           </Stack>
         </QueryClientProvider>
       </AuthProvider>
