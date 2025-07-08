@@ -1,0 +1,115 @@
+.full-width-carousel-container {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.carousel-track {
+  display: flex;
+  cursor: grab;
+  will-change: transform;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.carousel-item {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.carousel-item:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+.carousel-item-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.carousel-item-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.carousel-item-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.visit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+  align-self: flex-start;
+}
+
+.visit-button:hover {
+  transform: translateY(-2px);
+  background: var(--accent-hover);
+}
+
+.visit-button svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.carousel-indicators-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.carousel-indicators {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+:root {
+  --accent-color: #4f46e5;
+  --accent-hover: #4338ca;
+  --indicator-inactive: #d1d5db;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+}
+
+[data-theme="dark"] {
+  --accent-color: #6366f1;
+  --accent-hover: #818cf8;
+  --indicator-inactive: #4b5563;
+  --text-primary: #f3f4f6;
+  --text-secondary: #d1d5db;
+}

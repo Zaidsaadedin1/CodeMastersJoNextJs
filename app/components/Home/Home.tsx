@@ -33,6 +33,7 @@ import {
   useTrail,
 } from "@react-spring/web";
 import { useIntersection } from "@mantine/hooks";
+import PortfolioCarousel from "@/app/blocks/PortfolioCarousel/PortfolioCarousel";
 
 const homePageVideo = "/videos/homePageWebVideo.mp4";
 
@@ -246,6 +247,7 @@ const HomePage = () => {
           </Box>
         </Box>
 
+        <PortfolioCarousel />
         {/* Websites Ideas Section */}
         <animated.div
           style={{
