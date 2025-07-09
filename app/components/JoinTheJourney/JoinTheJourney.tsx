@@ -219,31 +219,17 @@ const JoinTheJourney: React.FC = () => {
 
         <Group
           justify="center"
-          gap="xl"
+          gap="100"
           grow
           style={{
             [`@media (min-width: ${theme.breakpoints.md})`]: {
               flexDirection: "row",
             },
           }}
+          wrap="wrap"
         >
-          {services.map((service, index) => (
-            <Box
-              key={service.title}
-              p="xl"
-              style={{
-                borderRadius: theme.radius.md,
-                border: `1px solid ${theme.colors.gray[3]}`,
-                animation: `${zoomIn} 0.5s ease-out`,
-                animationDelay: `${index * 0.2}s`,
-                animationFillMode: "both",
-                transition: "transform 0.3s ease",
-                "&:hover": {
-                  transform: "translateY(-5px)",
-                  borderColor: theme.colors[service.color][5],
-                },
-              }}
-            >
+          {services.map((service) => (
+            <Box key={service.title}>
               <Stack align="center" gap="md">
                 <ThemeIcon
                   size={80}
