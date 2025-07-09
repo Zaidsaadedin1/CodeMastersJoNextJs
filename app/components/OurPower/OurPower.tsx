@@ -117,7 +117,7 @@ const OurJourney: React.FC = () => {
               radius="md"
               px={40}
               rightSection={<IconRocket size={24} />}
-              onClick={() => router.push(`/${i18n.language}/contact`)}
+              onClick={() => router.push(`/${i18n.language}/requestService`)}
             >
               {t("hero.cta")}
             </Button>
@@ -213,7 +213,7 @@ const OurJourney: React.FC = () => {
                 size="xl"
                 radius="md"
                 px={40}
-                onClick={() => router.push(`/${i18n.language}/contact`)}
+                onClick={() => router.push(`/${i18n.language}/requestService`)}
               >
                 {t("future.cta")}
               </Button>
