@@ -254,34 +254,7 @@ const HomePage = () => {
         >
           <WebsitesIdeas />
         </animated.div>
-        {/* Artistic Solutions Section */}
-        <Container py={80} size="xl">
-          <AnimatedTitle
-            order={2}
-            style={{
-              textAlign: "center",
-              marginBottom: 60,
-              fontFamily: "Oswald, sans-serif",
-              opacity: scrollYProgress.to([0.3, 0.4], [0, 1]),
-              transform: scrollYProgress.to(
-                (val) => `scale(${val < 0.4 ? 0.9 + val * 0.25 : 1})`
-              ),
-            }}
-          >
-            {t("our_artistic_solutions")}
-          </AnimatedTitle>
 
-          <animated.div
-            style={{
-              opacity: scrollYProgress.to([0.3, 0.5], [0, 1]),
-              transform: scrollYProgress.to(
-                (val) => `translateY(${val < 0.5 ? (1 - val) * 50 : 0}px)`
-              ),
-            }}
-          >
-            <HorizontalSection />
-          </animated.div>
-        </Container>
         {/* Services Section */}
         <Box
           ref={servicesRef}
@@ -379,6 +352,34 @@ const HomePage = () => {
             </SimpleGrid>
           </Container>
         </Box>
+        {/* Artistic Solutions Section */}
+        <Container py={80} size="xl">
+          <AnimatedTitle
+            order={2}
+            style={{
+              textAlign: "center",
+              marginBottom: 60,
+              fontFamily: "Oswald, sans-serif",
+              opacity: scrollYProgress.to([0.3, 0.4], [0, 1]),
+              transform: scrollYProgress.to(
+                (val) => `scale(${val < 0.4 ? 0.9 + val * 0.25 : 1})`
+              ),
+            }}
+          >
+            {t("our_artistic_solutions")}
+          </AnimatedTitle>
+
+          <animated.div
+            style={{
+              opacity: scrollYProgress.to([0.3, 0.5], [0, 1]),
+              transform: scrollYProgress.to(
+                (val) => `translateY(${val < 0.5 ? (1 - val) * 50 : 0}px)`
+              ),
+            }}
+          >
+            <HorizontalSection />
+          </animated.div>
+        </Container>
         {/* Scrolling Text Effect */}
         <Box
           style={{
