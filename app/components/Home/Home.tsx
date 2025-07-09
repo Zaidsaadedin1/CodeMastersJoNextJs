@@ -33,7 +33,6 @@ import {
   useTrail,
 } from "@react-spring/web";
 import { useIntersection } from "@mantine/hooks";
-import PortfolioCarousel from "@/app/blocks/PortfolioCarousel/PortfolioCarousel";
 
 const homePageVideo = "/videos/homePageWebVideo.mp4";
 
@@ -246,8 +245,6 @@ const HomePage = () => {
             </Box>
           </Box>
         </Box>
-
-        <PortfolioCarousel />
         {/* Websites Ideas Section */}
         <animated.div
           style={{
@@ -257,9 +254,8 @@ const HomePage = () => {
         >
           <WebsitesIdeas />
         </animated.div>
-
         {/* Artistic Solutions Section */}
-        <Container py={80} size="xl" mb="xl">
+        <Container py={80} size="xl">
           <AnimatedTitle
             order={2}
             style={{
@@ -286,7 +282,6 @@ const HomePage = () => {
             <HorizontalSection />
           </animated.div>
         </Container>
-
         {/* Services Section */}
         <Box
           ref={servicesRef}
@@ -384,7 +379,6 @@ const HomePage = () => {
             </SimpleGrid>
           </Container>
         </Box>
-
         {/* Scrolling Text Effect */}
         <Box
           style={{

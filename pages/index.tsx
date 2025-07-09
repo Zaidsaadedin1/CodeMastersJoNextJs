@@ -12,6 +12,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
         "footer",
         "common",
         "websitesIdeas",
+        "portfolio",
       ])),
     },
   };

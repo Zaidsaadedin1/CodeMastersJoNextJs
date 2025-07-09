@@ -3,24 +3,28 @@
     "title": "MBNakom",
     "description": "A platform for creative digital solutions and web development.",
     "id": 1,
-    "url": "https://www.mbnakom.site/"
+    "url": "https://www.mbnakom.site/",
+    "backgroundImage": "/images/mbnakom-bg.jpg"
   },
   {
     "title": "Majdoline",
     "description": "Showcasing beautiful designs and artistic creations.",
     "id": 2,
-    "url": "https://www.majdoline.site/"
+    "url": "https://www.majdoline.site/",
+    "backgroundImage": "/images/majdoline-bg.jpg"
   },
   {
     "title": "Dromarasad",
     "description": "Innovative web experiences and digital solutions.",
     "id": 3,
-    "url": "https://dromarasad.site/"
+    "url": "https://dromarasad.site/",
+    "backgroundImage": "/images/dromarasad-bg.jpg"
   },
   {
     "title": "Data Driven Consulting",
     "description": "Data analytics and business intelligence services.",
     "id": 4,
-    "url": "https://data-driven-consulting-lvhr.vercel.app/"
+    "url": "https://data-driven-consulting-lvhr.vercel.app/",
+    "backgroundImage": "/images/ddc-bg.jpg"
   }
 ]
