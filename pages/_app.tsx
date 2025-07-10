@@ -62,12 +62,7 @@ function App({
             <link rel="shortcut icon" href="/favicon.svg" />
           </Head>
 
-          <Stack
-            className={openSansFont.className}
-            mr={isErrorPage ? "0" : "10%"}
-            ml={isErrorPage ? "0" : "10%"}
-            style={{ direction: dir }}
-          >
+          <Stack className={openSansFont.className} style={{ direction: dir }}>
             {!isErrorPage && <MenuComponent />}
             <Component {...pageProps} />
             {!isErrorPage && <Footer />}

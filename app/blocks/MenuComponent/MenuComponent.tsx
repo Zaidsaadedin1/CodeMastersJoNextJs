@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Group, Text, Image, Menu, Flex } from "@mantine/core";
+import React, { useEffect, useState } from "react";
+import { Button, Group, Text, Image, Menu, Flex, Box } from "@mantine/core";
 import {
   IconHome,
   IconLogin,
@@ -26,6 +26,19 @@ const MenuComponent = () => {
   const isSmallMobile = useMediaQuery("(max-width: 480px)");
   const isMobile = useMediaQuery("(max-width: 768px)");
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [scrolled]);
   const renderAuthMenu = () => (
     <Menu>
       <Menu.Target>
@@ -253,72 +266,97 @@ const MenuComponent = () => {
     );
 
   return (
-    <Flex
-      align="center"
-      justify="space-between"
-      mt={isSmallMobile ? "xs" : "sm"}
-      direction={isRTL ? "row-reverse" : "row"}
+    <Box
+      component="nav"
       style={{
-        padding: isSmallMobile ? "0 8px" : isMobile ? "0 12px" : "0 16px",
-        minHeight: isSmallMobile ? "48px" : isMobile ? "56px" : "64px",
+        position: router.pathname === "/" ? "fixed" : "static",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        padding: 0,
+        margin: 0,
+        "&::before": {
+          content: '""',
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backdropFilter: "blur(4px)",
+          zIndex: -1,
+        },
       }}
     >
-      {/* Logo */}
-      {isRTL ? (
-        <Flex
-          align="center"
-          gap={isSmallMobile ? "xs" : "sm"}
-          direction={isRTL ? "row-reverse" : "row"}
-          justify="flex-start"
-          style={{ flexShrink: 0 }}
-        >
-          <LanguageSwitcher />
-          {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
-          {renderMainMenu()}
-        </Flex>
-      ) : (
-        <Flex
-          align="center"
-          gap={isSmallMobile ? "xs" : "md"}
-          justify={isRTL ? "flex-end" : "flex-start"}
-          dir={isRTL ? "rtl" : "ltr"}
-          style={{ flexShrink: 0 }}
-        >
+      <Flex
+        align="center"
+        justify="space-between"
+        direction={isRTL ? "row-reverse" : "row"}
+        style={(theme) => ({
+          padding: 0,
+          margin: 0,
+          minHeight: isSmallMobile ? "48px" : isMobile ? "56px" : "64px",
+          backgroundColor: scrolled ? "white" : "transparent",
+        })}
+        p={0}
+      >
+        {/* Logo */}
+        {isRTL ? (
+          <Flex
+            align="center"
+            gap={isSmallMobile ? "xs" : "sm"}
+            direction={isRTL ? "row-reverse" : "row"}
+            justify="flex-start"
+            style={{ flexShrink: 0 }}
+          >
+            <LanguageSwitcher />
+            {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
+            {renderMainMenu()}
+          </Flex>
+        ) : (
+          <Flex
+            align="center"
+            gap={isSmallMobile ? "xs" : "md"}
+            justify={isRTL ? "flex-end" : "flex-start"}
+            dir={isRTL ? "rtl" : "ltr"}
+            style={{ flexShrink: 0 }}
+          >
+            <Image
+              src={"/images/logo.png"}
+              alt="Logo"
+              w={80}
+              h={80}
+              style={{ cursor: "pointer" }}
+              onClick={() => router.push(`/${currentLang}/`)}
+            />
+          </Flex>
+        )}
+
+        {/* Right Side Actions */}
+        {isRTL ? (
           <Image
-            src="/images/logo.png"
+            src={"/images/logo.png"}
             alt="Logo"
-            w={50}
-            h={50}
+            w={80}
+            h={80}
             style={{ cursor: "pointer" }}
             onClick={() => router.push(`/${currentLang}/`)}
           />
-        </Flex>
-      )}
-
-      {/* Right Side Actions */}
-      {isRTL ? (
-        <Image
-          src="/images/logo.png"
-          alt="Logo"
-          w={50}
-          h={50}
-          style={{ cursor: "pointer" }}
-          onClick={() => router.push(`/${currentLang}/`)}
-        />
-      ) : (
-        <Flex
-          align="center"
-          gap={isSmallMobile ? "xs" : "sm"}
-          direction={isRTL ? "row-reverse" : "row"}
-          justify="flex-end"
-          style={{ flexShrink: 0 }}
-        >
-          {renderMainMenu()}
-          {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
-          <LanguageSwitcher />
-        </Flex>
-      )}
-    </Flex>
+        ) : (
+          <Flex
+            align="center"
+            gap={isSmallMobile ? "xs" : "sm"}
+            direction={isRTL ? "row-reverse" : "row"}
+            justify="flex-end"
+            style={{ flexShrink: 0 }}
+          >
+            {renderMainMenu()}
+            {isAuthenticated ? renderAuthMenu() : renderAccountMenu()}
+            <LanguageSwitcher />
+          </Flex>
+        )}
+      </Flex>
+    </Box>
   );
 };
 
