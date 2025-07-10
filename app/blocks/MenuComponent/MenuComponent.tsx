@@ -292,12 +292,12 @@ const MenuComponent = () => {
         align="center"
         justify="space-between"
         direction={isRTL ? "row-reverse" : "row"}
-        style={(theme) => ({
+        style={{
           padding: 0,
           margin: 0,
           minHeight: isSmallMobile ? "48px" : isMobile ? "56px" : "64px",
           backgroundColor: scrolled ? "white" : "transparent",
-        })}
+        }}
         p={0}
       >
         {/* Logo */}
