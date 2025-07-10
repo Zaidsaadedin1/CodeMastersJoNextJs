@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { Swiper as SwiperReact, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
-import { getSolutions } from "../../blocks/HardCodedData/Solutions";
+import { getSolutions } from "../HardCodedData/Solutions";
 import "swiper/css";
 import "swiper/css/free-mode";
 

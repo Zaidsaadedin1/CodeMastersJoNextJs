@@ -22,7 +22,7 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import HorizontalSection from "../../blocks/HandleSlideClick/HandleSlideClick";
+import HorizontalSection from "../../blocks/HorizontalSection/HorizontalSection";
 import WebsitesIdeas from "../../blocks/WebsitesIdeas/WebsitesIdeas";
 import ScrollVelocity from "../Ui/ScrollVelocity/ScrollVelocity";
 import {
