@@ -10,11 +10,12 @@ import {
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
+import { getLocalizedPath } from "../../utils/i18n";
 
-const sectionIcons = {
+const sectionIcons: Record<string, typeof IconFileText> = {
   mainPages: IconHome,
   userAccount: IconUsers,
-  orderProducts: IconShoppingCart,
+  services: IconShoppingCart,
   support: IconHeadset,
   resources: IconArticle,
   legal: IconFileText,
@@ -25,15 +26,15 @@ export default function Sitemap() {
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
   const router = useRouter();
-
-  const sections: (keyof typeof sectionIcons)[] = [
-    "mainPages",
-    "userAccount",
-    "orderProducts",
-    "support",
-    "resources",
-    "legal",
-  ];
+  const sections = t("sections", {
+    returnObjects: true,
+  }) as Record<
+    string,
+    { title: string; items: { path: string; title: string; description: string }[] }
+  >;
+  const sectionEntries = Object.entries(sections).filter(
+    ([, section]) => Array.isArray(section.items) && section.items.length > 0
+  );
 
   return (
     <Stack py="xl" dir={isRTL ? "rtl" : "ltr"}>
@@ -43,14 +44,8 @@ export default function Sitemap() {
       <Text mb="xl">{t("description")}</Text>
 
       <Stack gap="xl">
-        {sections.map((sectionKey: keyof typeof sectionIcons) => {
-          const IconComponent = sectionIcons[sectionKey];
-          const section = t(`sections.${sectionKey}`, {
-            returnObjects: true,
-          }) as {
-            title: string;
-            items: { path: string; title: string; description: string }[];
-          };
+        {sectionEntries.map(([sectionKey, section]) => {
+          const IconComponent = sectionIcons[sectionKey] ?? IconFileText;
 
           return (
             <Paper key={sectionKey} withBorder p="md" radius="md">
@@ -62,7 +57,9 @@ export default function Sitemap() {
                 {section.items.map((item) => (
                   <List.Item key={item.path}>
                     <Anchor
-                      onClick={() => router.push(`/${currentLang}${item.path}`)}
+                      onClick={() =>
+                        router.push(getLocalizedPath(currentLang, item.path))
+                      }
                     >
                       {item.title}
                     </Anchor>

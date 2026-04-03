@@ -2,15 +2,15 @@
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import ForgotPassword from "../app/components/ForgotPassword/ForgotPassword";
+import { getPageNamespaces, normalizeLocale } from "../app/utils/i18n";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "en", [
-        "forgotPassword",
-
-        "common",
-      ])),
+      ...(await serverSideTranslations(
+        normalizeLocale(locale),
+        getPageNamespaces("forgotPassword")
+      )),
     },
   };
 };

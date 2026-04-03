@@ -1,7 +1,7 @@
 import { Box, Text } from "@mantine/core";
 import { motion } from "framer-motion";
 import React, { useRef, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 import { Swiper as SwiperReact, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";

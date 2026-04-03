@@ -33,6 +33,7 @@ import {
 } from "@mantine/core";
 
 import { useTranslation } from "next-i18next";
+import { getLocalizedPath } from "../../utils/i18n";
 import { useRouter } from "next/router";
 import SpotlightCard from "@/app/components/Ui/SpotlightCard/SpotlightCard";
 
@@ -200,7 +201,7 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({ category, index }) => {
         transition: { duration: 0.2 },
       }}
       style={{ height: "100%" }}
-      onClick={() => router.push(`${currentLang}/requestService`)}
+      onClick={() => router.push(getLocalizedPath(currentLang, "/requestService"))}
     >
       <SpotlightCard className="category-card">
         <Box className="card-content">

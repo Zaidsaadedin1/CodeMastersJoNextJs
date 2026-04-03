@@ -15,12 +15,10 @@ const UnAuthorized = () => {
   return (
     <Stack p="2rem" ta="center" dir={isRTL ? "rtl" : "ltr"}>
       <Text>{t("unauthorized.title")}</Text>
-      <Link href="/login" passHref legacyBehavior>
-        <Button component="a" variant="subtle">
-          <IconHome size={16} />
-          {t("unauthorized.login_button")}
-        </Button>
-      </Link>
+      <Button component={Link} href="/login" locale={locale} variant="subtle">
+        <IconHome size={16} />
+        {t("unauthorized.login_button")}
+      </Button>
     </Stack>
   );
 };

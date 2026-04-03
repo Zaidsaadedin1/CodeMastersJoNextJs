@@ -22,12 +22,6 @@ const NotFound = () => {
   const { locale } = useRouter();
   const isRtl = locale === "ar";
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
-
-  const handleHomeClick = () => {
-    setLoading(true);
-    router.push("/", undefined, { locale });
-  };
 
   return (
     <>
@@ -62,24 +56,24 @@ const NotFound = () => {
                 {t("description")}
               </Text>
 
-              <Link href="/" passHref locale={locale}>
-                <Button
-                  component="a"
-                  variant="light"
-                  size="md"
-                  leftSection={<IconHome size={20} />}
-                  style={(theme) => ({
-                    backgroundColor: theme.colors.dark[6],
-                    "&:hover": {
-                      backgroundColor: theme.colors.gray[1],
-                    },
-                  })}
-                  disabled={loading}
-                  onClick={handleHomeClick}
-                >
-                  {t("homeButton")}
-                </Button>
-              </Link>
+              <Button
+                component={Link}
+                href="/"
+                locale={locale}
+                variant="light"
+                size="md"
+                leftSection={<IconHome size={20} />}
+                style={(theme) => ({
+                  backgroundColor: theme.colors.dark[6],
+                  "&:hover": {
+                    backgroundColor: theme.colors.gray[1],
+                  },
+                })}
+                disabled={loading}
+                onClick={() => setLoading(true)}
+              >
+                {t("homeButton")}
+              </Button>
             </Stack>
           </Flex>
         </Container>

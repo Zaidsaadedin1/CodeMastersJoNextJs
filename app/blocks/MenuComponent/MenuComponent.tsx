@@ -117,13 +117,13 @@ const MenuComponent = () => {
         </Menu.Target>
         <Menu.Dropdown ff="Oswald, sans-serif">
           {[
-            { path: "/discoverMore", icon: IconHome, text: t("discover_more") },
+            { path: "discoverMore", icon: IconHome, text: t("discover_more") },
             {
-              path: "/joinTheJourney",
+              path: "joinTheJourney",
               icon: IconUserScan,
               text: t("join_the_journey"),
             },
-            { path: "/ourPower", icon: IconSettings, text: t("our_power") },
+            { path: "ourPower", icon: IconSettings, text: t("our_power") },
           ].map((item) => (
             <Menu.Item
               key={item.path}
@@ -148,13 +148,13 @@ const MenuComponent = () => {
         }}
       >
         {[
-          { path: "/discoverMore", icon: IconHome, text: t("discover_more") },
+          { path: "discoverMore", icon: IconHome, text: t("discover_more") },
           {
-            path: "/joinTheJourney",
+            path: "joinTheJourney",
             icon: IconUserScan,
             text: t("join_the_journey"),
           },
-          { path: "/ourPower", icon: IconSettings, text: t("our_power") },
+          { path: "ourPower", icon: IconSettings, text: t("our_power") },
         ].map((item) => (
           <Button
             key={item.path}

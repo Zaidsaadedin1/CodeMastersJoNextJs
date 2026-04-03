@@ -2,7 +2,7 @@ import React from "react";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { DecodedToken, decodeToken } from "../utils/authDecode";
 import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "next-i18next";
 
 type AuthContextType = {
   user: DecodedToken | null;

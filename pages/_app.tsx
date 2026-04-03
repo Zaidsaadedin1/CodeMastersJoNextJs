@@ -1,5 +1,5 @@
 import React from "react";
-import { appWithTranslation } from "next-i18next";
+import { appWithTranslation, type UserConfig } from "next-i18next";
 import Head from "next/head";
 import { MantineProvider, Stack } from "@mantine/core";
 import MenuComponent from "../app/blocks/MenuComponent/MenuComponent";
@@ -13,6 +13,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
 import { Open_Sans } from "next/font/google";
+import nextI18NextConfig from "../next-i18next.config";
 
 const openSansFont = Open_Sans({
   subsets: ["latin"],
@@ -73,4 +74,4 @@ function App({
   );
 }
 
-export default appWithTranslation(App);
+export default appWithTranslation(App, nextI18NextConfig as UserConfig);
