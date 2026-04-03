@@ -13,6 +13,7 @@ import {
   Divider,
   Stack,
   LoadingOverlay,
+  Container,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconMail, IconLock, IconX, IconCheck } from "@tabler/icons-react";
@@ -46,7 +47,7 @@ export default function Login() {
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || // email
           /^\+?\d{7,15}$/.test(val) || // phone (simple international)
           /^[a-zA-Z0-9_.-]{3,}$/.test(val), // username (at least 3 chars)
-        { message: t("validation.identifier_invalid") }
+        { message: t("validation.identifier_invalid") },
       ),
     password: z.string().min(1, { message: t("validation.password_required") }),
     rememberMe: z.boolean().optional(),
@@ -120,7 +121,7 @@ export default function Login() {
     onError: (error: unknown) => {
       let errorMessage = t(
         "notifications.error_generic",
-        "An error occurred. Please try again."
+        "An error occurred. Please try again.",
       );
 
       // Define a type for the expected error response
@@ -144,7 +145,7 @@ export default function Login() {
         ) {
           errorMessage = t(
             "notifications.error_user_exists",
-            "User already exists."
+            "User already exists.",
           );
           form.setErrors({ loginIdentifier: errorMessage });
           form.setErrors({ password: errorMessage });
@@ -167,7 +168,7 @@ export default function Login() {
   });
 
   return (
-    <>
+    <Container size="lg" py={80}>
       {loginMutation.isPending && <LoadingOverlay visible />}
 
       <Stack dir={isRTL ? "rtl" : "ltr"}>
@@ -257,6 +258,6 @@ export default function Login() {
           </Text>
         </Box>
       </Stack>
-    </>
+    </Container>
   );
 }

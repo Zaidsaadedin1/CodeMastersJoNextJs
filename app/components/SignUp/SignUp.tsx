@@ -14,6 +14,7 @@ import {
   Stack,
   LoadingOverlay,
   Select,
+  Container,
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { IconUser, IconPhone, IconCheck, IconX } from "@tabler/icons-react";
@@ -91,7 +92,7 @@ const SignUp = () => {
             }
             return age >= 13;
           },
-          { message: t("validation.age_minimum") }
+          { message: t("validation.age_minimum") },
         ),
 
       termsAccepted: z.boolean().refine((value) => value === true, {
@@ -200,11 +201,11 @@ const SignUp = () => {
           form.setErrors({ email: errorMessage });
         } else if (
           responseData.message?.includes(
-            "Invalid registration details. Something is missing."
+            "Invalid registration details. Something is missing.",
           )
         ) {
           errorMessage = t(
-            "notifications.error_user_exists_invalid_registration_details_Something_is_missing"
+            "notifications.error_user_exists_invalid_registration_details_Something_is_missing",
           );
           form.setErrors({ username: errorMessage });
         } else if (responseData.message) {
@@ -238,7 +239,7 @@ const SignUp = () => {
   });
 
   return (
-    <>
+    <Container size="lg" py={80}>
       {registerMutation.isPending && <LoadingOverlay visible />}
       <Stack dir={isRTL ? "rtl" : "ltr"} p="md">
         {/* Main Form Content */}
@@ -432,7 +433,7 @@ const SignUp = () => {
           </Anchor>
         </Center>
       </Stack>
-    </>
+    </Container>
   );
 };
 
