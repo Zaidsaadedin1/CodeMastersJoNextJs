@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
 import {
   Title,
   Card,
@@ -20,10 +22,7 @@ import {
   IconClipboardList,
   IconMessage2Star,
 } from "@tabler/icons-react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
-import HorizontalSection from "../../blocks/HorizontalSection/HorizontalSection";
-import WebsitesIdeas from "../../blocks/WebsitesIdeas/WebsitesIdeas";
 import ScrollVelocity from "../Ui/ScrollVelocity/ScrollVelocity";
 import {
   useScroll,
@@ -33,8 +32,35 @@ import {
   useTrail,
 } from "@react-spring/web";
 import { useIntersection } from "@mantine/hooks";
+import { getLocalizedPath } from "../../utils/i18n";
 
 const homePageVideo = "/videos/homePageWebVideo.mp4";
+
+const SectionPlaceholder = ({ height }: { readonly height: number }) => (
+  <Box
+    style={{
+      minHeight: height,
+      width: "100%",
+      borderRadius: 24,
+      background:
+        "linear-gradient(135deg, rgba(20, 20, 20, 0.08) 0%, rgba(20, 20, 20, 0.16) 100%)",
+    }}
+  />
+);
+
+const HorizontalSection = dynamic(
+  () => import("../../blocks/HorizontalSection/HorizontalSection"),
+  {
+    loading: () => <SectionPlaceholder height={500} />,
+  }
+);
+
+const WebsitesIdeas = dynamic(
+  () => import("../../blocks/WebsitesIdeas/WebsitesIdeas"),
+  {
+    loading: () => <SectionPlaceholder height={720} />,
+  }
+);
 
 const AnimatedTitle = animated(Title);
 const AnimatedCard = animated(Card) as React.FC<
@@ -46,8 +72,8 @@ const HomePage = () => {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const { scrollYProgress } = useScroll();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const router = useRouter();
   const currentLang = i18n.language;
+  const requestServiceHref = getLocalizedPath(currentLang, "/requestService");
   const AnimatedBox = animated(Box) as React.FC<
     BoxProps & { children?: React.ReactNode }
   >;
@@ -315,37 +341,46 @@ const HomePage = () => {
                     p="lg"
                     radius="lg"
                   >
-                    <Stack
-                      onClick={() =>
-                        router.push(`/${currentLang}/requestService`)
-                      }
-                      align="center"
-                      m="xs"
+                    <Box
+                      component={Link}
+                      href={requestServiceHref}
+                      style={{
+                        display: "block",
+                        height: "100%",
+                        color: "inherit",
+                        textDecoration: "none",
+                      }}
                     >
-                      <Box
-                        style={{
-                          marginBottom: 16,
-                          transition: "all 0.3s ease",
-                          ":hover": {
-                            transform: "scale(1.1)",
-                          },
-                        }}
+                      <Stack
+                        align="center"
+                        m="xs"
+                        style={{ minHeight: "100%" }}
                       >
-                        {icon}
-                      </Box>
-                      <Title
-                        order={3}
-                        style={{
-                          textAlign: "center",
-                          fontFamily: "Oswald, sans-serif",
-                        }}
-                      >
-                        {t(`services.${key}.title`)}
-                      </Title>
-                      <Text style={{ textAlign: "center" }}>
-                        {t(`services.${key}.description`)}
-                      </Text>
-                    </Stack>
+                        <Box
+                          style={{
+                            marginBottom: 16,
+                            transition: "all 0.3s ease",
+                            ":hover": {
+                              transform: "scale(1.1)",
+                            },
+                          }}
+                        >
+                          {icon}
+                        </Box>
+                        <Title
+                          order={3}
+                          style={{
+                            textAlign: "center",
+                            fontFamily: "Oswald, sans-serif",
+                          }}
+                        >
+                          {t(`services.${key}.title`)}
+                        </Title>
+                        <Text style={{ textAlign: "center" }}>
+                          {t(`services.${key}.description`)}
+                        </Text>
+                      </Stack>
+                    </Box>
                   </AnimatedCard>
                 );
               })}

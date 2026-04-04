@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { appWithTranslation, type UserConfig } from "next-i18next";
 import Head from "next/head";
 import { MantineProvider, Stack } from "@mantine/core";
@@ -8,7 +8,6 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import { theme } from "../theme";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "../app/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
@@ -36,7 +35,7 @@ function App({
     document.documentElement.lang = router.locale ?? "en";
   }, [dir, router.locale]);
 
-  const queryClient = new QueryClient();
+  const [queryClient] = useState(() => new QueryClient());
 
   // Check if the current page is an error page
   const isErrorPage =

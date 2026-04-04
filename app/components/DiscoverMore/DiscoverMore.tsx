@@ -1,9 +1,11 @@
 import React from "react";
+import Link from "next/link";
 import {
   Container,
   Title,
   Text,
   Button,
+  Box,
   Grid,
   Card,
   Badge,
@@ -24,13 +26,14 @@ import {
   IconChartLine,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
+import { getLocalizedPath } from "../../utils/i18n";
 
 const DiscoverMore: React.FC = () => {
   const { t, i18n } = useTranslation("discoverMore");
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
-  const router = useRouter();
+  const homeHref = getLocalizedPath(currentLang, "/");
+  const requestServiceHref = getLocalizedPath(currentLang, "/requestService");
 
   const keyFeatures = [
     {
@@ -103,15 +106,17 @@ const DiscoverMore: React.FC = () => {
               </Text>
               <Group>
                 <Button
+                  component={Link}
+                  href={homeHref}
                   size="lg"
                   variant="gradient"
                   gradient={{ from: "blue", to: "cyan", deg: 45 }}
-                  onClick={() => router.push(`/${currentLang}/`)}
                 >
                   {t("buttons.discover")}
                 </Button>
                 <Button
-                  onClick={() => router.push(`/${currentLang}/requestService`)}
+                  component={Link}
+                  href={requestServiceHref}
                   size="lg"
                   variant="outline"
                   color="blue"
@@ -162,31 +167,30 @@ const DiscoverMore: React.FC = () => {
           </Title>
           <SimpleGrid cols={{ base: 1, md: 3 }} spacing="xl">
             {websiteServices.map((service) => (
-              <Card
+              <Box
                 key={service.key}
-                shadow="sm"
-                padding="lg"
-                radius="md"
-                withBorder
-                style={{ cursor: "pointer" }}
-                onClick={() => router.push(`/${currentLang}/requestService`)}
+                component={Link}
+                href={requestServiceHref}
+                style={{ color: "inherit", textDecoration: "none" }}
               >
-                <ThemeIcon
-                  size={60}
-                  radius="md"
-                  variant="gradient"
-                  gradient={{ from: "blue", to: "cyan" }}
-                  mb="md"
-                >
-                  <service.icon size={32} stroke={1.5} />
-                </ThemeIcon>
-                <Text fz="xl" fw={700} mb="md">
-                  {t(`services.${service.key}.title`)}
-                </Text>
-                <Text fz="md" c="dimmed" mb="md">
-                  {t(`services.${service.key}.description`)}
-                </Text>
-              </Card>
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                  <ThemeIcon
+                    size={60}
+                    radius="md"
+                    variant="gradient"
+                    gradient={{ from: "blue", to: "cyan" }}
+                    mb="md"
+                  >
+                    <service.icon size={32} stroke={1.5} />
+                  </ThemeIcon>
+                  <Text fz="xl" fw={700} mb="md">
+                    {t(`services.${service.key}.title`)}
+                  </Text>
+                  <Text fz="md" c="dimmed" mb="md">
+                    {t(`services.${service.key}.description`)}
+                  </Text>
+                </Card>
+              </Box>
             ))}
           </SimpleGrid>
         </Container>

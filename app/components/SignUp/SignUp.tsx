@@ -21,6 +21,7 @@ import { IconUser, IconPhone, IconCheck, IconX } from "@tabler/icons-react";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
 import { DatePickerInput } from "@mantine/dates";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
@@ -28,6 +29,7 @@ import { useMutation } from "@tanstack/react-query";
 import { RegisterUserDto } from "../../Apis/types/authDtos/authDtos";
 import authController from "../../Apis/controllers/authController";
 import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { getLocalizedPath } from "../../utils/i18n";
 
 const fadeIn = keyframes({
   from: { opacity: 0, transform: "translateY(20px)" },
@@ -426,8 +428,8 @@ const SignUp = () => {
         <Center mt="lg">
           <Anchor
             size="sm"
-            href="/login"
-            onClick={() => router.push(`/${currentLang}/login`)}
+            component={Link}
+            href={getLocalizedPath(currentLang, "/login")}
           >
             {t("login.existingAccount")}
           </Anchor>

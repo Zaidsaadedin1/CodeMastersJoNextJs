@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import {
   Title,
   Text,
@@ -22,8 +23,8 @@ import {
   IconTrophy,
   IconArrowRight,
 } from "@tabler/icons-react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { getLocalizedPath } from "../../utils/i18n";
 
 // React Bits Animations
 const zoomIn = keyframes({
@@ -60,9 +61,9 @@ const pulse = keyframes({
 });
 
 const JoinTheJourney: React.FC = () => {
-  const router = useRouter();
   const { t, i18n } = useTranslation("joinTheJourney");
   const currentLang = i18n.language;
+  const requestServiceHref = getLocalizedPath(currentLang, "/requestService");
   const theme = useMantineTheme();
 
   const milestones = [
@@ -138,6 +139,8 @@ const JoinTheJourney: React.FC = () => {
           </Text>
 
           <Button
+            component={Link}
+            href={requestServiceHref}
             rightSection={<IconArrowRight size={18} />}
             size="xl"
             radius="xl"
@@ -145,7 +148,6 @@ const JoinTheJourney: React.FC = () => {
               animation: `${pulse} 2s infinite ease-in-out`,
               animationDelay: "1s",
             }}
-            onClick={() => router.push(`/${currentLang}/requestService`)}
           >
             {t("join_us")}
           </Button>
@@ -270,10 +272,11 @@ const JoinTheJourney: React.FC = () => {
             {t("cta_description")}
           </Text>
           <Button
+            component={Link}
+            href={requestServiceHref}
             rightSection={<IconArrowRight size={18} />}
             size="xl"
             radius="xl"
-            onClick={() => router.push(`/${currentLang}/requestService`)}
           >
             {t("get_started")}
           </Button>

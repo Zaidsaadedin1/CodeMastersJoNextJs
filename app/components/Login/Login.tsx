@@ -19,12 +19,14 @@ import { notifications } from "@mantine/notifications";
 import { IconMail, IconLock, IconX, IconCheck } from "@tabler/icons-react";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
 import { useMutation } from "@tanstack/react-query";
 import authController from "../../Apis/controllers/authController";
 import { useAuth } from "../../contexts/AuthContext";
+import { getLocalizedPath } from "../../utils/i18n";
 
 const fadeIn = keyframes({
   from: { opacity: 0, transform: "translateY(20px)" },
@@ -248,9 +250,9 @@ export default function Login() {
           <Text size="xs" color="dimmed" ta="center" mt="md">
             {t("links.no_account")}
             <Anchor
-              component="a"
+              component={Link}
+              href={getLocalizedPath(currentLang, "/signUp")}
               size="xs"
-              onClick={() => router.push(`/${currentLang}/signUp`)}
               ml="xs"
             >
               {t("links.signup")}

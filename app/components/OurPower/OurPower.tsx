@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import {
   Title,
   Text,
@@ -23,8 +24,8 @@ import {
   IconRocket,
   IconChartGridDots,
 } from "@tabler/icons-react";
-import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
+import { getLocalizedPath } from "../../utils/i18n";
 
 // Animation keyframes
 const fadeIn = keyframes({
@@ -44,8 +45,8 @@ const scaleIn = keyframes({
 });
 
 const OurJourney: React.FC = () => {
-  const router = useRouter();
   const { t, i18n } = useTranslation("ourPower");
+  const requestServiceHref = getLocalizedPath(i18n.language, "/requestService");
 
   const milestones = [
     {
@@ -113,11 +114,12 @@ const OurJourney: React.FC = () => {
 
           <Box style={{ animation: `${fadeIn} 1.6s ease-out` }}>
             <Button
+              component={Link}
+              href={requestServiceHref}
               size="xl"
               radius="md"
               px={40}
               rightSection={<IconRocket size={24} />}
-              onClick={() => router.push(`/${i18n.language}/requestService`)}
             >
               {t("hero.cta")}
             </Button>
@@ -210,10 +212,11 @@ const OurJourney: React.FC = () => {
             </Box>
             <Box style={{ animation: `${float} 4s ease-in-out infinite` }}>
               <Button
+                component={Link}
+                href={requestServiceHref}
                 size="xl"
                 radius="md"
                 px={40}
-                onClick={() => router.push(`/${i18n.language}/requestService`)}
               >
                 {t("future.cta")}
               </Button>

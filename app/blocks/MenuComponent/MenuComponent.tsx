@@ -11,9 +11,11 @@ import {
 } from "@tabler/icons-react";
 import { useMediaQuery } from "@mantine/hooks";
 import { useTranslation } from "next-i18next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import LanguageSwitcher from "../LanguageSwitcher/LanguageSwitcher";
 import { useAuth } from "../../contexts/AuthContext";
+import { getLocalizedPath } from "../../utils/i18n";
 
 const MenuComponent = () => {
   const { t, i18n } = useTranslation("menuComponent");
@@ -28,17 +30,39 @@ const MenuComponent = () => {
 
   const [scrolled, setScrolled] = useState(false);
 
+  const homeHref = getLocalizedPath(currentLang, "/");
+  const dashboardHref = getLocalizedPath(currentLang, "/dashboard");
+  const adminHref = getLocalizedPath(currentLang, "/admin");
+  const profileHref = getLocalizedPath(currentLang, "/profile");
+  const signUpHref = getLocalizedPath(currentLang, "/signUp");
+  const loginHref = getLocalizedPath(currentLang, "/login");
+  const mainMenuItems = [
+    {
+      path: getLocalizedPath(currentLang, "/discoverMore"),
+      icon: IconHome,
+      text: t("discover_more"),
+    },
+    {
+      path: getLocalizedPath(currentLang, "/joinTheJourney"),
+      icon: IconUserScan,
+      text: t("join_the_journey"),
+    },
+    {
+      path: getLocalizedPath(currentLang, "/ourPower"),
+      icon: IconSettings,
+      text: t("our_power"),
+    },
+  ];
+
   useEffect(() => {
     const handleScroll = () => {
-      const isScrolled = window.scrollY > 10;
-      if (isScrolled !== scrolled) {
-        setScrolled(isScrolled);
-      }
+      setScrolled(window.scrollY > 10);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [scrolled]);
+  }, []);
   const renderAuthMenu = () => (
     <Menu>
       <Menu.Target>
@@ -57,7 +81,8 @@ const MenuComponent = () => {
       </Menu.Target>
       <Menu.Dropdown>
         <Menu.Item
-          onClick={() => router.push(`/${currentLang}/dashboard`)}
+          component={Link}
+          href={dashboardHref}
           style={{ direction: isRTL ? "rtl" : "ltr" }}
           ff="Oswald, sans-serif"
         >
@@ -68,7 +93,8 @@ const MenuComponent = () => {
         </Menu.Item>
         {user?.Roles === "Admin" && (
           <Menu.Item
-            onClick={() => router.push(`/${currentLang}/admin`)}
+            component={Link}
+            href={adminHref}
             style={{ direction: isRTL ? "rtl" : "ltr" }}
             ff="Oswald, sans-serif"
           >
@@ -79,7 +105,8 @@ const MenuComponent = () => {
           </Menu.Item>
         )}
         <Menu.Item
-          onClick={() => router.push(`/${currentLang}/profile`)}
+          component={Link}
+          href={profileHref}
           style={{ direction: isRTL ? "rtl" : "ltr" }}
           ff="Oswald, sans-serif"
         >
@@ -116,18 +143,11 @@ const MenuComponent = () => {
           </Button>
         </Menu.Target>
         <Menu.Dropdown ff="Oswald, sans-serif">
-          {[
-            { path: "discoverMore", icon: IconHome, text: t("discover_more") },
-            {
-              path: "joinTheJourney",
-              icon: IconUserScan,
-              text: t("join_the_journey"),
-            },
-            { path: "ourPower", icon: IconSettings, text: t("our_power") },
-          ].map((item) => (
+          {mainMenuItems.map((item) => (
             <Menu.Item
               key={item.path}
-              onClick={() => router.push(`/${currentLang}/${item.path}`)}
+              component={Link}
+              href={item.path}
               style={{ direction: isRTL ? "rtl" : "ltr" }}
             >
               <Group>
@@ -147,19 +167,12 @@ const MenuComponent = () => {
           flexDirection: isRTL ? "row-reverse" : "row",
         }}
       >
-        {[
-          { path: "discoverMore", icon: IconHome, text: t("discover_more") },
-          {
-            path: "joinTheJourney",
-            icon: IconUserScan,
-            text: t("join_the_journey"),
-          },
-          { path: "ourPower", icon: IconSettings, text: t("our_power") },
-        ].map((item) => (
+        {mainMenuItems.map((item) => (
           <Button
             key={item.path}
             variant="subtle"
-            onClick={() => router.push(`/${currentLang}/${item.path}`)}
+            component={Link}
+            href={item.path}
             style={{ flexDirection: isRTL ? "row-reverse" : "row" }}
           >
             <Group
@@ -188,7 +201,7 @@ const MenuComponent = () => {
           </Button>
         </Menu.Target>
         <Menu.Dropdown>
-          <Menu.Item onClick={() => router.push(`/${currentLang}/signUp`)}>
+          <Menu.Item component={Link} href={signUpHref}>
             <Group
               gap={2}
               style={{
@@ -200,7 +213,7 @@ const MenuComponent = () => {
               <Text size="sm">{t("sign_up")}</Text>
             </Group>
           </Menu.Item>
-          <Menu.Item onClick={() => router.push(`/${currentLang}/login`)}>
+          <Menu.Item component={Link} href={loginHref}>
             <Group
               gap={2}
               style={{
@@ -225,7 +238,8 @@ const MenuComponent = () => {
       >
         <Button
           variant="subtle"
-          onClick={() => router.push(`/${currentLang}/signUp`)}
+          component={Link}
+          href={signUpHref}
           style={{
             fontFamily: "Oswald, sans-serif",
             flexDirection: isRTL ? "row-reverse" : "row",
@@ -244,7 +258,8 @@ const MenuComponent = () => {
         </Button>
         <Button
           variant="subtle"
-          onClick={() => router.push(`/${currentLang}/login`)}
+          component={Link}
+          href={loginHref}
           style={{
             fontFamily: "Oswald, sans-serif",
             flexDirection: isRTL ? "row-reverse" : "row",
@@ -321,27 +336,17 @@ const MenuComponent = () => {
             dir={isRTL ? "rtl" : "ltr"}
             style={{ flexShrink: 0 }}
           >
-            <Image
-              src={"/images/logo.png"}
-              alt="Logo"
-              w={80}
-              h={80}
-              style={{ cursor: "pointer" }}
-              onClick={() => router.push(`/${currentLang}/`)}
-            />
+            <Box component={Link} href={homeHref} style={{ display: "inline-flex" }}>
+              <Image src={"/images/logo.png"} alt="Logo" w={80} h={80} />
+            </Box>
           </Flex>
         )}
 
         {/* Right Side Actions */}
         {isRTL ? (
-          <Image
-            src={"/images/logo.png"}
-            alt="Logo"
-            w={80}
-            h={80}
-            style={{ cursor: "pointer" }}
-            onClick={() => router.push(`/${currentLang}/`)}
-          />
+          <Box component={Link} href={homeHref} style={{ display: "inline-flex" }}>
+            <Image src={"/images/logo.png"} alt="Logo" w={80} h={80} />
+          </Box>
         ) : (
           <Flex
             align="center"

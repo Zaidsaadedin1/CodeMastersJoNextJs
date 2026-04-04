@@ -1,12 +1,13 @@
 import { Box, Text } from "@mantine/core";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import React, { useRef, useEffect, useState } from "react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import { Swiper as SwiperReact, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 import type { Swiper as SwiperClass } from "swiper";
 import { getSolutions } from "../HardCodedData/Solutions";
+import { getLocalizedPath } from "../../utils/i18n";
 import "swiper/css";
 import "swiper/css/free-mode";
 
@@ -21,13 +22,12 @@ type Solution = {
 
 const HorizontalSection = () => {
   const swiperRef = useRef<SwiperClass | null>(null);
-  const router = useRouter();
   const { t, i18n } = useTranslation("home");
   const [isMounted, setIsMounted] = useState(false);
   const [key, setKey] = useState(0);
   const items = getSolutions(t);
   const isRTL = i18n.language === "ar";
-  const currentLang = i18n.language;
+  const requestServiceHref = getLocalizedPath(i18n.language, "/requestService");
 
   useEffect(() => {
     setIsMounted(true);
@@ -39,10 +39,6 @@ const HorizontalSection = () => {
       swiperRef.current.update();
     }
   }, [i18n.language]);
-
-  const handleSlideClick = () => {
-    router.push(`/${currentLang}/requestService`);
-  };
 
   if (!isMounted) {
     return (
@@ -124,9 +120,18 @@ const HorizontalSection = () => {
               width: 300,
               height: 450,
             }}
-            onClick={handleSlideClick}
           >
-            <AnimatedCard solution={solution} />
+            <Link
+              href={requestServiceHref}
+              style={{
+                display: "block",
+                height: "100%",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              <AnimatedCard solution={solution} />
+            </Link>
           </SwiperSlide>
         ))}
       </SwiperReact>

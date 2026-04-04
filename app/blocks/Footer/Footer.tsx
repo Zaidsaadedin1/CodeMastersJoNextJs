@@ -10,6 +10,7 @@ import {
   Anchor,
   Box,
 } from "@mantine/core";
+import Link from "next/link";
 import {
   IconBrandFacebook,
   IconBrandLinkedin,
@@ -19,11 +20,10 @@ import {
   IconMapPin,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
+import { getLocalizedPath } from "../../utils/i18n";
 
 const Footer = () => {
   const { t, i18n } = useTranslation("footer");
-  const router = useRouter();
   const isRTL = i18n.language === "ar";
   const currentLang = i18n.language;
 
@@ -77,13 +77,25 @@ const Footer = () => {
             <List.Item>
               <Group gap="sm" wrap="nowrap">
                 <IconPhone size={16} />
-                <Text size="sm">{t("phone")}</Text>
+                <Text
+                  size="sm"
+                  dir="ltr"
+                  style={{ unicodeBidi: "isolate", textAlign: "left" }}
+                >
+                  {t("phone")}
+                </Text>
               </Group>
             </List.Item>
             <List.Item>
               <Group gap="sm" wrap="nowrap">
                 <IconMail size={16} />
-                <Text size="sm">{t("email")}</Text>
+                <Text
+                  size="sm"
+                  dir="ltr"
+                  style={{ unicodeBidi: "isolate", textAlign: "left" }}
+                >
+                  {t("email")}
+                </Text>
               </Group>
             </List.Item>
           </List>
@@ -91,27 +103,33 @@ const Footer = () => {
       </Group>
       <Divider my="xl" opacity={1} />
       <Group gap="lg">
-        <Text
+        <Anchor
+          component={Link}
+          href={getLocalizedPath(currentLang, "/privacyPolicy")}
           size="xs"
-          onClick={() => router.push(`/${currentLang}/privacyPolicy`)}
-          style={{ cursor: "pointer" }}
+          underline="never"
+          c="inherit"
         >
           {t("privacy_policy")}
-        </Text>
-        <Text
+        </Anchor>
+        <Anchor
+          component={Link}
+          href={getLocalizedPath(currentLang, "/termsOfService")}
           size="xs"
-          onClick={() => router.push(`/${currentLang}/termsOfService`)}
-          style={{ cursor: "pointer" }}
+          underline="never"
+          c="inherit"
         >
           {t("terms_of_service")}
-        </Text>
-        <Text
+        </Anchor>
+        <Anchor
+          component={Link}
+          href={getLocalizedPath(currentLang, "/sitemap")}
           size="xs"
-          onClick={() => router.push(`/${currentLang}/sitemap`)}
-          style={{ cursor: "pointer" }}
+          underline="never"
+          c="inherit"
         >
           {t("sitemap")}
-        </Text>
+        </Anchor>
       </Group>
     </Box>
   );

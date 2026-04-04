@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { Title, Text, List, Group, Anchor, Paper, Stack } from "@mantine/core";
 import {
   IconHome,
@@ -9,7 +10,6 @@ import {
   IconArticle,
 } from "@tabler/icons-react";
 import { useTranslation } from "next-i18next";
-import { useRouter } from "next/router";
 import { getLocalizedPath } from "../../utils/i18n";
 
 const sectionIcons: Record<string, typeof IconFileText> = {
@@ -25,7 +25,6 @@ export default function Sitemap() {
   const { t, i18n } = useTranslation("siteMap");
   const currentLang = i18n.language;
   const isRTL = currentLang === "ar";
-  const router = useRouter();
   const sections = t("sections", {
     returnObjects: true,
   }) as Record<
@@ -56,11 +55,7 @@ export default function Sitemap() {
               <List spacing="sm" size="md" icon={<span>•</span>}>
                 {section.items.map((item) => (
                   <List.Item key={item.path}>
-                    <Anchor
-                      onClick={() =>
-                        router.push(getLocalizedPath(currentLang, item.path))
-                      }
-                    >
+                    <Anchor component={Link} href={getLocalizedPath(currentLang, item.path)}>
                       {item.title}
                     </Anchor>
                     {" - "}

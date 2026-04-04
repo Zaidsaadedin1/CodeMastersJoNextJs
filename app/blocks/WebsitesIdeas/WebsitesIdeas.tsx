@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import {
   IconBrush,
   IconCamera,
@@ -34,7 +35,6 @@ import {
 
 import { useTranslation } from "next-i18next";
 import { getLocalizedPath } from "../../utils/i18n";
-import { useRouter } from "next/router";
 import SpotlightCard from "@/app/components/Ui/SpotlightCard/SpotlightCard";
 
 interface Category {
@@ -173,7 +173,6 @@ const blogCategories: Category[] = [
 const AnimatedCard: React.FC<AnimatedCardProps> = ({ category, index }) => {
   const { t, i18n } = useTranslation("websitesIdeas");
   const currentLang = i18n.language;
-  const router = useRouter();
   const controls = useAnimation();
   const ref = useRef(null);
   const inView = useInView(ref, {
@@ -192,38 +191,47 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({ category, index }) => {
   }, [controls, inView, index]);
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={controls}
-      whileHover={{
-        scale: 1.05,
-        transition: { duration: 0.2 },
+    <Link
+      href={getLocalizedPath(currentLang, "/requestService")}
+      style={{
+        display: "block",
+        height: "100%",
+        color: "inherit",
+        textDecoration: "none",
       }}
-      style={{ height: "100%" }}
-      onClick={() => router.push(getLocalizedPath(currentLang, "/requestService"))}
     >
-      <SpotlightCard className="category-card">
-        <Box className="card-content">
-          <Stack align="center" justify="center" h="100%">
-            <Box
-              p={12}
-              mb={12}
-              style={{
-                background: "rgba(255, 255, 255, 0.1)",
-                borderRadius: "50%",
-                display: "inline-flex",
-              }}
-            >
-              {category.icon}
-            </Box>
-            <Text size="lg" fw={600} ta="center" c="white">
-              {t(category.translationKey)}
-            </Text>
-          </Stack>
-        </Box>
-      </SpotlightCard>
-    </motion.div>
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 20 }}
+        animate={controls}
+        whileHover={{
+          scale: 1.05,
+          transition: { duration: 0.2 },
+        }}
+        style={{ height: "100%" }}
+      >
+        <SpotlightCard className="category-card">
+          <Box className="card-content">
+            <Stack align="center" justify="center" h="100%">
+              <Box
+                p={12}
+                mb={12}
+                style={{
+                  background: "rgba(255, 255, 255, 0.1)",
+                  borderRadius: "50%",
+                  display: "inline-flex",
+                }}
+              >
+                {category.icon}
+              </Box>
+              <Text size="lg" fw={600} ta="center" c="white">
+                {t(category.translationKey)}
+              </Text>
+            </Stack>
+          </Box>
+        </SpotlightCard>
+      </motion.div>
+    </Link>
   );
 };
 
