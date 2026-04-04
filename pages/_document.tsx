@@ -1,9 +1,10 @@
 import React from "react";
 import { mantineHtmlProps } from "@mantine/core";
 import Document, { Html, Head, Main, NextScript } from "next/document";
+import { normalizeLocale } from "../app/utils/i18n";
 class MyDocument extends Document {
   render() {
-    const currentLocale = this.props.__NEXT_DATA__.locale || "en";
+    const currentLocale = normalizeLocale(this.props.__NEXT_DATA__.locale);
 
     return (
       <Html lang={currentLocale} {...mantineHtmlProps}>

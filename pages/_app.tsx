@@ -4,6 +4,7 @@ import Head from "next/head";
 import { MantineProvider, Stack } from "@mantine/core";
 import MenuComponent from "../app/blocks/MenuComponent/MenuComponent";
 import Footer from "../app/blocks/Footer/Footer";
+import SeoHead from "../app/components/SEO/SeoHead";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import { theme } from "../theme";
@@ -13,6 +14,7 @@ import { AuthProvider } from "../app/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
 import { Open_Sans } from "next/font/google";
 import nextI18NextConfig from "../next-i18next.config";
+import { getHomeStructuredData } from "../app/utils/seo";
 
 const openSansFont = Open_Sans({
   subsets: ["latin"],
@@ -53,13 +55,15 @@ function App({
       <Notifications position="top-right" zIndex={1000} />
       <AuthProvider>
         <QueryClientProvider client={queryClient}>
+          <SeoHead
+            structuredData={router.pathname === "/" ? getHomeStructuredData() : []}
+          />
           <Head>
-            <title>Code Masters</title>
             <meta
               name="viewport"
               content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
             />
-            <link rel="shortcut icon" href="/favicon.svg" />
+            <link rel="icon" href="/favicon.ico" />
           </Head>
 
           <Stack className={openSansFont.className} style={{ direction: dir }}>
