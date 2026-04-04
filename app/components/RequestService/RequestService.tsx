@@ -12,11 +12,15 @@ import {
   Checkbox,
   Divider,
   Anchor,
-  Input,
 } from "@mantine/core";
 import { z } from "zod";
 import { useForm } from "@mantine/form";
-import { IconUser, IconMail, IconDeviceLaptop } from "@tabler/icons-react";
+import {
+  IconUser,
+  IconMail,
+  IconDeviceLaptop,
+  IconPhone,
+} from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useTranslation } from "next-i18next";
 import { keyframes } from "@emotion/react";
@@ -164,7 +168,7 @@ export default function RequestService() {
 
   const getProjectTypeOptions = () => {
     return Object.entries(t("projectTypes", { returnObjects: true })).map(
-      ([value, label]) => ({ value, label })
+      ([value, label]) => ({ value, label }),
     );
   };
 
@@ -180,7 +184,7 @@ export default function RequestService() {
   };
 
   const timelineOptions = Object.entries(
-    t("timelines", { returnObjects: true })
+    t("timelines", { returnObjects: true }),
   ).map(([value, label]) => ({ value, label }));
 
   const handleProjectTypeChange = (value: string | null) => {
@@ -263,10 +267,16 @@ export default function RequestService() {
               />
             </Grid.Col>
             <Grid.Col span={6}>
-              <Input.Wrapper
-                label={t("fields.phoneNumber")}
-                error={form.errors.phone}
+              <TextInput
+                label={t("fields.phone")}
+                placeholder={t("placeholders.phone")}
+                leftSection={<IconPhone size={16} />}
+                mb="md"
+                required
+                value={form.values.phone}
+                disabled={!!user?.phoneNumber}
                 {...form.getInputProps("phone")}
+                error={form.errors.phone}
               />
             </Grid.Col>
           </Grid>

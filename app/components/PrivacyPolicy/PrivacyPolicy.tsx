@@ -1,5 +1,13 @@
 import React from "react";
-import { Title, Text, Box, List, Divider, Stack } from "@mantine/core";
+import {
+  Title,
+  Text,
+  Box,
+  List,
+  Divider,
+  Stack,
+  Container,
+} from "@mantine/core";
 import { useTranslation } from "next-i18next";
 
 export default function PrivacyPolicy() {
@@ -64,7 +72,7 @@ export default function PrivacyPolicy() {
                     item.content || ""
                   )}
                 </List.Item>
-              )
+              ),
             )}
           </List>
         )}
@@ -77,35 +85,37 @@ export default function PrivacyPolicy() {
   };
 
   return (
-    <Stack py="xl" dir={isRTL ? "rtl" : "ltr"}>
-      <Title order={1} mb="md">
-        {t("title")}
-      </Title>
-      <Text color="dimmed" mb="xl">
-        {t("lastUpdated")}
-      </Text>
-
-      {renderSection("introduction")}
-      <Divider my="xl" />
-
-      {renderSection("informationCollected")}
-      <Divider my="xl" />
-
-      {renderSection("informationUse")}
-      <Divider my="xl" />
-
-      {renderSection("dataSharing")}
-      <Divider my="xl" />
-
-      {renderSection("yourRights")}
-      <Divider my="xl" />
-
-      <Box mb="xl">
-        <Title order={3} mb="md">
-          {t("sections.contact.title")}
+    <Container size="md" py="xl" dir={isRTL ? "rtl" : "ltr"}>
+      <Stack py="xl" dir={isRTL ? "rtl" : "ltr"}>
+        <Title order={1} mb="md">
+          {t("title")}
         </Title>
-        <Text mb="md">{t("sections.contact.content", { email })}</Text>
-      </Box>
-    </Stack>
+        <Text color="dimmed" mb="xl">
+          {t("lastUpdated")}
+        </Text>
+
+        {renderSection("introduction")}
+        <Divider my="xl" />
+
+        {renderSection("informationCollected")}
+        <Divider my="xl" />
+
+        {renderSection("informationUse")}
+        <Divider my="xl" />
+
+        {renderSection("dataSharing")}
+        <Divider my="xl" />
+
+        {renderSection("yourRights")}
+        <Divider my="xl" />
+
+        <Box mb="xl">
+          <Title order={3} mb="md">
+            {t("sections.contact.title")}
+          </Title>
+          <Text mb="md">{t("sections.contact.content", { email })}</Text>
+        </Box>
+      </Stack>
+    </Container>
   );
 }
