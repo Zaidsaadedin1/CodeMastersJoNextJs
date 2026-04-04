@@ -16,11 +16,37 @@ export default function PrivacyPolicy() {
   const isRTL = currentLang === "ar";
   const email = "info@codemastersjo.site";
 
+  interface SectionItem {
+    title?: string;
+    content?: string;
+  }
+
   interface Section {
     title: string;
-    content: string[] | string;
-    items: { title?: string; content?: string }[];
-    contact: string;
+    content?: string[] | string;
+    intro?: string;
+    items?: Array<SectionItem | string>;
+    contact?: string;
+  }
+
+  const renderSectionItem = (item: SectionItem | string) => {
+    if (typeof item === "string") {
+      return item;
+    }
+
+    if (item.title && item.content) {
+      return (
+        <>
+          <strong>{item.title}:</strong> {item.content}
+        </>
+      );
+    }
+
+    if (item.title) {
+      return <strong>{item.title}</strong>;
+    }
+
+    return item.content ?? "";
   }
 
   const renderSection = (sectionKey: string) => {
@@ -34,17 +60,20 @@ export default function PrivacyPolicy() {
           {section.title}
         </Title>
 
-        {Array.isArray(section.content) ? (
-          section.content.map((paragraph, index) => (
-            <Text key={index} mb="md">
-              {paragraph}
-            </Text>
-          ))
-        ) : (
-          <Text mb="md">{section.content}</Text>
-        )}
+        {section.content &&
+          (Array.isArray(section.content) ? (
+            section.content.map((paragraph, index) => (
+              <Text key={index} mb="md">
+                {paragraph}
+              </Text>
+            ))
+          ) : (
+            <Text mb="md">{section.content}</Text>
+          ))}
 
-        {section.items && (
+        {section.intro && <Text mb="md">{section.intro}</Text>}
+
+        {section.items && section.items.length > 0 && (
           <List
             mb="md"
             spacing="sm"
@@ -61,19 +90,9 @@ export default function PrivacyPolicy() {
               </span>
             }
           >
-            {section.items.map(
-              (item: { title?: string; content?: string }, index: number) => (
-                <List.Item key={index}>
-                  {item.title ? (
-                    <>
-                      <strong>{item.title}:</strong> {item.content}
-                    </>
-                  ) : (
-                    item.content || ""
-                  )}
-                </List.Item>
-              ),
-            )}
+            {section.items.map((item, index) => (
+              <List.Item key={index}>{renderSectionItem(item)}</List.Item>
+            ))}
           </List>
         )}
 
